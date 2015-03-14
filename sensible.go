@@ -29,20 +29,22 @@ type Page struct {
 }
 
 func indexHandler(w http.ResponseWriter, r *http.Request) {
-//	classifiedTweets := getTechTweets
 	classifiedTweets := classifyTweets(timelineTweets)
 	p := &Page{Title: "Tech Tweets", TechTweets: classifiedTweets["tech"], PoliticsTweets: classifiedTweets["politics"]}
-	t, err := template.ParseFiles("index.html")
-	if err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
-		return
-	}
-	err = t.Execute(w, p)
-	if err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
-	}
+	renderTemplate(w, "index", p)
 }
 
+func renderTemplate(w http.ResponseWriter, tmpl string, p *Page) {
+    t, err := template.ParseFiles(tmpl + ".html")
+    if err != nil {
+        http.Error(w, err.Error(), http.StatusInternalServerError)
+        return
+    }
+    err = t.Execute(w, p)
+    if err != nil {
+        http.Error(w, err.Error(), http.StatusInternalServerError)
+    }
+}
 
 func classifyTweets(timelineTweets []anaconda.Tweet) map[string][]anaconda.Tweet {
 	classifiedTweets := make(map[string][]anaconda.Tweet)
@@ -90,7 +92,5 @@ func main() {
 	anaconda.SetConsumerSecret(consumerSecret)
 	timelineTweets = getTimelineTweets()
 	http.HandleFunc("/", indexHandler)
-//	http.HandleFunc("/politics", politicsHandler)
-//	http.HandleFunc("/sports", sportsHandler)
 	log.Fatal(http.ListenAndServe(":8080", nil))
 }
