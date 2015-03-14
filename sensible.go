@@ -24,25 +24,25 @@ var timelineTweets []anaconda.Tweet
 
 type Page struct {
 	Title  string
-	Tweets []anaconda.Tweet
-	Length int
+	TechTweets []anaconda.Tweet
+	PoliticsTweets []anaconda.Tweet
 }
 
 func indexHandler(w http.ResponseWriter, r *http.Request) {
-	techTweets := getTechTweets(timelineTweets)
-//	classifiedTweets := classifyTweets(timelineTweets)
-	p := &Page{Title: "Tech Tweets", Tweets: techTweets}
-	t, _ := template.ParseFiles("index.html")
-	t.Execute(w, p)
+//	classifiedTweets := getTechTweets
+	classifiedTweets := classifyTweets(timelineTweets)
+	p := &Page{Title: "Tech Tweets", TechTweets: classifiedTweets["tech"], PoliticsTweets: classifiedTweets["politics"]}
+	t, err := template.ParseFiles("index.html")
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+	err = t.Execute(w, p)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+	}
 }
 
-func politicsHandler(w http.ResponseWriter, r *http.Request) {
-
-	tweets := getPoliticsTweets(timelineTweets)
-	p := &Page{Title: "Politics Tweets", Tweets: tweets, Length: len(tweets)}
-	t, _ := template.ParseFiles("politics.html")
-	t.Execute(w, p)
-}
 
 func getTechTweets(timelineTweets []anaconda.Tweet) []anaconda.Tweet {
 	techKeywords := []string{"golang", "ruby", "devs", "developers", "android", "ios", "programming", "code", "java", "coders", "developer", "fullstack", "full stack", "product", "hack", "hacker", "bug", "technology", "software"}
@@ -79,7 +79,7 @@ func classifyTweets(timelineTweets []anaconda.Tweet) map[string][]anaconda.Tweet
 func itIs(context string, tweet anaconda.Tweet) bool {
 	keywordMap := make(map[string][]string)
 	keywordMap["tech"] = []string{"golang", "ruby", "devs", "developers", "android", "ios", "programming", "code", "java", "coders", "developer", "fullstack", "full stack", "product", "hack", "hacker", "bug", "technology", "software"}
-	keywordMap["politics"] = []string{"modi", "congress", "bjp", "rahul gandhi", "manmohan singh", "narendra modi"}
+	keywordMap["politics"] = []string{"modi", "congress", "bjp", "rahul gandhi", "manmohan singh", "narendra modi", "jashn"}
 	for _, keyword := range keywordMap[context] {
 		if strings.Contains(tweet.Text, keyword) {
 			return true
@@ -119,7 +119,7 @@ func main() {
 	anaconda.SetConsumerSecret(consumerSecret)
 	timelineTweets = getTimelineTweets()
 	http.HandleFunc("/", indexHandler)
-	http.HandleFunc("/politics", politicsHandler)
+//	http.HandleFunc("/politics", politicsHandler)
 //	http.HandleFunc("/sports", sportsHandler)
 	log.Fatal(http.ListenAndServe(":8080", nil))
 }
