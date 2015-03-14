@@ -30,41 +30,6 @@ var nonTechTweet2 = anaconda.Tweet {
 
 func TestCanary(t *testing.T) {
 }
-func TestTechTweetsShouldIncludeAndroidTweets(t *testing.T) {
-	expected := []anaconda.Tweet{techTweet1}
-	timelineTweets := []anaconda.Tweet{techTweet1, nonTechTweet}
-	actual := getTechTweets(timelineTweets)
-	if len(actual) != len(expected) {
-		t.Errorf("Did not match")
-	}
-}
-	
-func TestTechTweetsShouldIncludeAllRelevantTweets(t *testing.T) {
-	timelineTweets := []anaconda.Tweet{techTweet1, techTweet2, nonTechTweet}
-	expected := []anaconda.Tweet{techTweet1, techTweet2}
-	actual := getTechTweets(timelineTweets)
-	if len(actual) != len(expected) {
-		t.Errorf("Did not match")
-	}
-}
-
-func TestTechTweetsShouldIncludeARelevantTweetOnlyOnce(t *testing.T) {
-	timelineTweets := []anaconda.Tweet{techTweetMixed, techTweet2, nonTechTweet}
-	expected := []anaconda.Tweet{techTweet1, techTweet2}
-	actual := getTechTweets(timelineTweets)
-	if len(actual) != len(expected) {
-		t.Errorf("Did not match")
-	}
-}
-
-func TestTechTweetsShouldIncludeOnlyWithActualKeywords(t *testing.T) {
-	timelineTweets := []anaconda.Tweet{techTweetMixed, nonTechTweet2, nonTechTweet}
-	expected := []anaconda.Tweet{techTweet1}
-	actual := getTechTweets(timelineTweets)
-	if len(actual) != len(expected) {
-		t.Errorf("Did not match")
-	}
-}
 
 func TestCanClassifyTwoDifferentTweets(t *testing.T) {
 	timelineTweets := []anaconda.Tweet{techTweet1, politicsTweet}

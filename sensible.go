@@ -44,21 +44,6 @@ func indexHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 
-func getTechTweets(timelineTweets []anaconda.Tweet) []anaconda.Tweet {
-	techKeywords := []string{"golang", "ruby", "devs", "developers", "android", "ios", "programming", "code", "java", "coders", "developer", "fullstack", "full stack", "product", "hack", "hacker", "bug", "technology", "software"}
-	var techTweets []anaconda.Tweet
-	for _, tweet := range timelineTweets {
-		for _, kwd := range techKeywords {
-			//			match, _ := regexp.MatchString("."+kwd+".", tweet.Text)
-			if strings.Contains(tweet.Text, kwd) {
-				techTweets = append(techTweets, tweet)
-				break
-			}
-		}
-	}
-	return techTweets
-}
-
 func classifyTweets(timelineTweets []anaconda.Tweet) map[string][]anaconda.Tweet {
 	classifiedTweets := make(map[string][]anaconda.Tweet)
 	var techTweets []anaconda.Tweet
@@ -89,20 +74,6 @@ func itIs(context string, tweet anaconda.Tweet) bool {
 }
 
 
-func getPoliticsTweets(timelineTweets []anaconda.Tweet) []anaconda.Tweet {
-	techKeywords := []string{"bjp", "modi", "congress", "sonia gandhi", "rahul baba", "arnab", "budget"}
-	var techTweets []anaconda.Tweet
-	for _, tweet := range timelineTweets {
-		for _, kwd := range techKeywords {
-			//			match, _ := regexp.MatchString("."+kwd+".", tweet.Text)
-			if strings.Contains(tweet.Text, kwd) {
-				techTweets = append(techTweets, tweet)
-				break
-			}
-		}
-	}
-	return techTweets
-}
 
 func getTimelineTweets() []anaconda.Tweet{
 	v := url.Values{}
