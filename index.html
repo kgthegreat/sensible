@@ -32,7 +32,7 @@
               <hr>
               {{end}}
             </div>
-            <div role="tabpanel" class="tab-pane fade in active" id="politics" style="margin-top: 15px;">
+            <div role="tabpanel" class="tab-pane fade in" id="politics" style="margin-top: 15px;">
               {{range $tweet := .PoliticsTweets }}
               <div class="">{{$tweet.User.Name}}: {{$tweet.Text}}</div>
               <hr>
