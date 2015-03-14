@@ -19,8 +19,6 @@ const (
 )
 
 var api = anaconda.NewTwitterApi(accessToken, accessTokenSecret)
-//var templates = template.Must(template.ParseFiles("index.html"))
-var timelineTweets []anaconda.Tweet
 
 type Page struct {
 	Title  string
@@ -29,6 +27,7 @@ type Page struct {
 }
 
 func indexHandler(w http.ResponseWriter, r *http.Request) {
+	var timelineTweets = getTimelineTweets()
 	classifiedTweets := classifyTweets(timelineTweets)
 	p := &Page{Title: "Tech Tweets", TechTweets: classifiedTweets["tech"], PoliticsTweets: classifiedTweets["politics"]}
 	renderTemplate(w, "index", p)
@@ -90,7 +89,9 @@ func getTimelineTweets() []anaconda.Tweet{
 func main() {
 	anaconda.SetConsumerKey(consumerKey)
 	anaconda.SetConsumerSecret(consumerSecret)
-	timelineTweets = getTimelineTweets()
+
+
+
 	http.HandleFunc("/", indexHandler)
 	log.Fatal(http.ListenAndServe(":8080", nil))
 }
