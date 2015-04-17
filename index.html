@@ -21,7 +21,7 @@
             <li role="presentation"><a href="#politics" aria-controls="messages" role="tab" data-toggle="tab">Politics</a></li>
             <li role="presentation"><a href="#settings" aria-controls="settings" role="tab" data-toggle="tab">Startups</a></li>
             <li role="presentation"><a href="#settings" aria-controls="settings" role="tab" data-toggle="tab">Movies</a></li>
-            <li role="presentation"><a href="#settings" aria-controls="settings" role="tab" data-toggle="tab">Travel</a></li>
+            <li role="presentation"><a href="#travel" aria-controls="travel" role="tab" data-toggle="tab">Travel</a></li>
             <li role="presentation"><a href="#settings" aria-controls="settings" role="tab" data-toggle="tab">Events</a></li>
             <li role="presentation"><a href="#settings" aria-controls="settings" role="tab" data-toggle="tab">Others</a></li>
           </ul>
@@ -32,8 +32,16 @@
               <hr>
               {{end}}
             </div>
+
             <div role="tabpanel" class="tab-pane fade in" id="politics" style="margin-top: 15px;">
               {{range $tweet := .PoliticsTweets }}
+              <div class="">{{$tweet.User.Name}}: {{$tweet.Text}}</div>
+              <hr>
+              {{end}}
+            </div>
+
+            <div role="tabpanel" class="tab-pane fade in" id="travel" style="margin-top: 15px;">
+              {{range $tweet := .TravelTweets }}
               <div class="">{{$tweet.User.Name}}: {{$tweet.Text}}</div>
               <hr>
               {{end}}

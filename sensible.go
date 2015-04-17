@@ -19,17 +19,19 @@ const (
 )
 
 var api = anaconda.NewTwitterApi(accessToken, accessTokenSecret)
+var keywordMap = make(map[string][]string)
 
 type Page struct {
 	Title  string
 	TechTweets []anaconda.Tweet
 	PoliticsTweets []anaconda.Tweet
+	TravelTweets []anaconda.Tweet
 }
 
 func indexHandler(w http.ResponseWriter, r *http.Request) {
 	var timelineTweets = getTimelineTweets()
 	classifiedTweets := classifyTweets(timelineTweets)
-	p := &Page{Title: "Tech Tweets", TechTweets: classifiedTweets["tech"], PoliticsTweets: classifiedTweets["politics"]}
+	p := &Page{Title: "Tech Tweets", TechTweets: classifiedTweets["tech"], PoliticsTweets: classifiedTweets["politics"], TravelTweets: classifiedTweets["travel"]}
 	renderTemplate(w, "index", p)
 }
 
@@ -49,6 +51,7 @@ func classifyTweets(timelineTweets []anaconda.Tweet) map[string][]anaconda.Tweet
 	classifiedTweets := make(map[string][]anaconda.Tweet)
 	var techTweets []anaconda.Tweet
 	var politicsTweets []anaconda.Tweet
+	var travelTweets []anaconda.Tweet
 	for _, tweet := range timelineTweets {
 		if itIs("tech", tweet) {
 			techTweets = append(techTweets, tweet)
@@ -56,24 +59,32 @@ func classifyTweets(timelineTweets []anaconda.Tweet) map[string][]anaconda.Tweet
 		if itIs("politics", tweet) {
 			politicsTweets = append(politicsTweets, tweet)
 		}
+		if itIs("travel", tweet) {
+			travelTweets = append(travelTweets, tweet)
+		}
 	}
 	classifiedTweets["tech"] = techTweets
 	classifiedTweets["politics"] = politicsTweets
+	classifiedTweets["travel"] = travelTweets
 	return classifiedTweets
 }
 
 func itIs(context string, tweet anaconda.Tweet) bool {
-	keywordMap := make(map[string][]string)
-	keywordMap["tech"] = []string{"golang", "ruby", "devs", "developers", "android", "ios", "programming", "code", "java", "coders", "developer", "fullstack", "full stack", "product", "hack", "hacker", "bug", "technology", "software"}
-	keywordMap["politics"] = []string{"modi", "congress", "bjp", "rahul gandhi", "manmohan singh", "narendra modi", "jashn"}
+	populateKeywordMap()
 	for _, keyword := range keywordMap[context] {
-		if strings.Contains(tweet.Text, keyword) {
+		if strings.Contains(strings.ToLower(tweet.Text), strings.ToLower(keyword)) {
 			return true
 		}
 	}
 	return false
 }
 
+func populateKeywordMap() {
+	keywordMap["tech"] = []string{"golang", "ruby", "devs", "developers", "android", "ios", "programming", "code", "java", "coders", "developer", "fullstack", "full stack", "product", "hack", "hacker", "bug", "technology", "software", "mvc"}
+	keywordMap["politics"] = []string{"modi", "congress", "bjp", "rahul gandhi", "manmohan singh", "narendra modi", "jashn"}
+	keywordMap["travel"] = []string{"travel","#lp"}
+
+}
 
 
 func getTimelineTweets() []anaconda.Tweet{
@@ -89,8 +100,6 @@ func getTimelineTweets() []anaconda.Tweet{
 func main() {
 	anaconda.SetConsumerKey(consumerKey)
 	anaconda.SetConsumerSecret(consumerSecret)
-
-
 
 	http.HandleFunc("/", indexHandler)
 	log.Fatal(http.ListenAndServe(":8080", nil))
