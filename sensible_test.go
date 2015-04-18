@@ -31,9 +31,22 @@ var nonTechTweet2 = anaconda.Tweet {
 var techPoliticsTweet = anaconda.Tweet {
 		Text: "Android Modi Travel",
 	}
+var genericTweet = anaconda.Tweet {
+		Text: "What is happening",
+	}
 
 
 func TestCanary(t *testing.T) {
+}
+
+func TestGenericTweetShouldBeClassifiedAsOthers(t *testing.T) {
+	timelineTweets := []anaconda.Tweet{genericTweet}
+	
+	actual := classifyTweets(timelineTweets)
+ 	if len(actual["other"]) != 1 {
+		t.Errorf("Others did not match. Actual length : %v, Expected length : %v",len(actual["other"]), 1)
+	}
+	
 }
 
 func TestShouldNotClassifySameTweetTwice(t *testing.T) {

@@ -26,12 +26,13 @@ type Page struct {
 	TechTweets []anaconda.Tweet
 	PoliticsTweets []anaconda.Tweet
 	TravelTweets []anaconda.Tweet
+	OtherTweets []anaconda.Tweet
 }
 
 func indexHandler(w http.ResponseWriter, r *http.Request) {
 	var timelineTweets = getTimelineTweets()
 	classifiedTweets := classifyTweets(timelineTweets)
-	p := &Page{Title: "Tech Tweets", TechTweets: classifiedTweets["tech"], PoliticsTweets: classifiedTweets["politics"], TravelTweets: classifiedTweets["travel"]}
+	p := &Page{Title: "Tech Tweets", TechTweets: classifiedTweets["tech"], PoliticsTweets: classifiedTweets["politics"], TravelTweets: classifiedTweets["travel"], OtherTweets: classifiedTweets["other"]}
 	renderTemplate(w, "index", p)
 }
 
@@ -52,6 +53,7 @@ func classifyTweets(timelineTweets []anaconda.Tweet) map[string][]anaconda.Tweet
 	var techTweets []anaconda.Tweet
 	var politicsTweets []anaconda.Tweet
 	var travelTweets []anaconda.Tweet
+	var otherTweets []anaconda.Tweet
 	for _, tweet := range timelineTweets {
 		if itIs("tech", tweet) {
 			techTweets = append(techTweets, tweet)
@@ -59,12 +61,15 @@ func classifyTweets(timelineTweets []anaconda.Tweet) map[string][]anaconda.Tweet
 			politicsTweets = append(politicsTweets, tweet)
 		} else if itIs("travel", tweet) {
 			travelTweets = append(travelTweets, tweet)
-		} 
+		} else {
+			otherTweets = append(otherTweets, tweet)
+		}
 		
 	}
 	classifiedTweets["tech"] = techTweets
 	classifiedTweets["politics"] = politicsTweets
 	classifiedTweets["travel"] = travelTweets
+	classifiedTweets["other"] = otherTweets
 	return classifiedTweets
 }
 
@@ -80,7 +85,7 @@ func itIs(context string, tweet anaconda.Tweet) bool {
 
 func populateKeywordMap() {
 	keywordMap["tech"] = []string{"golang", "ruby", "devs", "developers", "android", "ios", "programming", "code", "java", "coders", "developer", "fullstack", "full stack", "product", "hack", "hacker", "bug", "technology", "software", "mvc"}
-	keywordMap["politics"] = []string{"modi", "congress", "bjp", "rahul gandhi", "manmohan singh", "narendra modi", "jashn"}
+	keywordMap["politics"] = []string{"modi", "congress", "bjp", "rahul gandhi", "manmohan singh", "narendra modi"}
 	keywordMap["travel"] = []string{"travel","#lp"}
 
 }
