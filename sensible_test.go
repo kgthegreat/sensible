@@ -28,7 +28,33 @@ var nonTechTweet2 = anaconda.Tweet {
 		Text: "The newest thing in happy",
 	}
 
+var techPoliticsTweet = anaconda.Tweet {
+		Text: "Android Modi Travel",
+	}
+
+
 func TestCanary(t *testing.T) {
+}
+
+func TestShouldNotClassifySameTweetTwice(t *testing.T) {
+	timelineTweets := []anaconda.Tweet{techPoliticsTweet}
+	expected := map[string][]anaconda.Tweet{
+		"tech": []anaconda.Tweet{techPoliticsTweet},
+	}
+	
+	actual := classifyTweets(timelineTweets)
+
+ 	if len(actual["tech"]) != len(expected["tech"]) {
+		t.Errorf("Tech did not match. Actual length : %v, Expected length : %v",len(actual["tech"]),len(expected["tech"]))
+	}
+ 	if len(actual["politics"]) != 0 {
+		t.Errorf("Politics did not match. Actual length : %v, Expected length : %v",len(actual["politics"]),0)
+	}
+
+ 	if len(actual["travel"]) != 0 {
+		t.Errorf("Travel did not match. Actual length : %v, Expected length : %v",len(actual["travel"]),0)
+	}
+
 }
 
 func TestCanClassifyTwoDifferentTweets(t *testing.T) {
@@ -91,26 +117,3 @@ func TestContextBasedIdentificationOfTweet(t *testing.T) {
 		t.Errorf("Could not classify politics tweet")
 	}
 }
-/*
-func TestCanClassifyOneTweet(t *testing.T) {
-	techTweet := anaconda.Tweet {
-		Text: "Looking for android developer golang",
-	}
-	politicsTweet := anaconda.Tweet {
-		Text: "The latest thing in India is BJP government",
-	}
-	
-	timelineTweets := []anaconda.Tweet{techTweet, politicsTweet}
-	expected := map[string][]anaconda.Tweet{
-		"tech": []anaconda.Tweet{techTweet1},
-		"politics": []anaconda.Tweet{politicsTweet},
-	}
-
-	actual := getTechTweets(timelineTweets)
-	if len(actual) != len(expected) {
-		t.Errorf("Did not match")
-	}
-
-
-	
-}*/

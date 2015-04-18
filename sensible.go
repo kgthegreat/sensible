@@ -55,13 +55,12 @@ func classifyTweets(timelineTweets []anaconda.Tweet) map[string][]anaconda.Tweet
 	for _, tweet := range timelineTweets {
 		if itIs("tech", tweet) {
 			techTweets = append(techTweets, tweet)
-		}
-		if itIs("politics", tweet) {
+		} else if itIs("politics", tweet) {
 			politicsTweets = append(politicsTweets, tweet)
-		}
-		if itIs("travel", tweet) {
+		} else if itIs("travel", tweet) {
 			travelTweets = append(travelTweets, tweet)
-		}
+		} 
+		
 	}
 	classifiedTweets["tech"] = techTweets
 	classifiedTweets["politics"] = politicsTweets
