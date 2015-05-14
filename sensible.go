@@ -104,7 +104,12 @@ func getTimelineTweets() []anaconda.Tweet{
 func main() {
 	anaconda.SetConsumerKey(consumerKey)
 	anaconda.SetConsumerSecret(consumerSecret)
-
+	cssHandler := http.FileServer(http.Dir("./css/"))
+	jsHandler := http.FileServer(http.Dir("./js/"))
+	imagesHandler := http.FileServer(http.Dir("./images/"))
 	http.HandleFunc("/", indexHandler)
-	log.Fatal(http.ListenAndServe(":8080", nil))
+	http.Handle("/css/", http.StripPrefix("/css/", cssHandler))
+	http.Handle("/js/", http.StripPrefix("/js/", jsHandler))
+	http.Handle("/images/", http.StripPrefix("/images/", imagesHandler))
+	log.Fatal(http.ListenAndServe(":8081", nil))
 }
