@@ -10,6 +10,8 @@ import (
 	_ "regexp"
 	"strings"
 	"flag"
+	"encoding/json"
+	"io/ioutil"
 )
 
 const (
@@ -109,16 +111,37 @@ func getTimelineTweets() []anaconda.Tweet{
 
 }
 
-func getDummyTimeline() []anaconda.Tweet{
-	var techTweet = anaconda.Tweet {
-		Text: "Looking for android developer",
+func getDummyTimeline() []anaconda.Tweet {
+	var dummyTimeline = []anaconda.Tweet{}
+	filename := "timeline.json"
+	timeline, err := ioutil.ReadFile(filename)
+	if err != nil {
+		fmt.Println("error", err)
 	}
-	dummyTimeline := []anaconda.Tweet{techTweet}
+	_ = json.Unmarshal(timeline, &dummyTimeline)
 	return dummyTimeline
 }
 
+func dumpHandler(w http.ResponseWriter, r *http.Request) {
+	v := url.Values{}
+	v.Set("count", "200")
+	timelineTweets, _ := api.GetHomeTimeline(v)
+	fmt.Println("time", timelineTweets)
+	b, err := json.Marshal(timelineTweets)
+	fmt.Println("json", b)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+
+	filename := "timeline.json"
+	ioutil.WriteFile(filename, b, 0600)
+
+//	renderTemplate(w, "index", p)
+}
+
 func main() {
-	wordPtr := flag.String("mode", "dev", "which mode to run")
+	wordPtr := flag.String("mode", "", "which mode to run")
 	flag.Parse()
 
 	fmt.Println("word:", *wordPtr)
@@ -133,6 +156,7 @@ func main() {
 	jsHandler := http.FileServer(http.Dir("./js/"))
 	imagesHandler := http.FileServer(http.Dir("./images/"))
 	http.HandleFunc("/", indexHandler)
+	http.HandleFunc("/dump", dumpHandler)
 	http.Handle("/css/", http.StripPrefix("/css/", cssHandler))
 	http.Handle("/js/", http.StripPrefix("/js/", jsHandler))
 	http.Handle("/images/", http.StripPrefix("/images/", imagesHandler))
