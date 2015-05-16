@@ -2,9 +2,9 @@
 <html lang="en">
 <head>
   <link rel="stylesheet" type="text/css" href="/css/bootstrap.min.css">
+  <link rel="stylesheet" type="text/css" href="/css/style.css">
   <script src="/js/jquery-2.1.4.min.js"></script>
-  <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
-
+  <script src="/js/bootstrap.min.js"></script>
   <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 <body>
@@ -28,7 +28,7 @@
           <div class="tab-content">
             <div role="tabpanel" class="tab-pane fade in active" id="tech" style="margin-top: 15px;">
               {{range $tweet := .TechTweets }}
-              <div class="">{{$tweet.User.Name}}: {{$tweet.Text}}</div>
+              <div class="tweet-content">{{$tweet.User.Name}}: {{$tweet.Text}}</div>
               <hr>
               {{end}}
             </div>
