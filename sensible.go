@@ -112,7 +112,6 @@ func getTimelineTweets() []anaconda.Tweet{
 func getDummyTimeline() []anaconda.Tweet{
 	var techTweet = anaconda.Tweet {
 		Text: "Looking for android developer",
-		User: ,
 	}
 	dummyTimeline := []anaconda.Tweet{techTweet}
 	return dummyTimeline
