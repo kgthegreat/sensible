@@ -9,6 +9,7 @@ import (
 	"net/url"
 	_ "regexp"
 	"strings"
+	"flag"
 )
 
 const (
@@ -20,6 +21,7 @@ const (
 
 var api = anaconda.NewTwitterApi(accessToken, accessTokenSecret)
 var keywordMap = make(map[string][]string)
+var mode = ""
 
 type Page struct {
 	Title  string
@@ -94,14 +96,38 @@ func populateKeywordMap() {
 func getTimelineTweets() []anaconda.Tweet{
 	v := url.Values{}
 	v.Set("count", "200")
-	timelineTweets, err := api.GetHomeTimeline(v)
-	if err != nil {
-		fmt.Println(err)
+	if mode == "dev" {
+		timelineTweets := getDummyTimeline()
+		return timelineTweets
+	} else {
+		timelineTweets, err := api.GetHomeTimeline(v)
+		if err != nil {
+			fmt.Println(err)
+		}
+		return timelineTweets
 	}
-	return timelineTweets
+
+}
+
+func getDummyTimeline() []anaconda.Tweet{
+	var techTweet = anaconda.Tweet {
+		Text: "Looking for android developer",
+		User: ,
+	}
+	dummyTimeline := []anaconda.Tweet{techTweet}
+	return dummyTimeline
 }
 
 func main() {
+	wordPtr := flag.String("mode", "dev", "which mode to run")
+	flag.Parse()
+
+	fmt.Println("word:", *wordPtr)
+
+	if *wordPtr == "dev" {
+		mode = "dev"
+	}
+
 	anaconda.SetConsumerKey(consumerKey)
 	anaconda.SetConsumerSecret(consumerSecret)
 	cssHandler := http.FileServer(http.Dir("./css/"))
