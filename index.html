@@ -5,12 +5,13 @@
   <link rel="stylesheet" type="text/css" href="/css/style.css">
   <script src="/js/jquery-2.1.4.min.js"></script>
   <script src="/js/bootstrap.min.js"></script>
+  <script src="/js/sensible.js"></script>
   <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 <body>
   <div class="container-fluid">
     <div class="row">
-      <div class="col-md-7 col-md-offset-3">
+      <div class="col-md-6 col-md-offset-3">
         <h2>Sensible Twitter</h2>
         <hr>
         <div role="tabpanel">
@@ -28,28 +29,40 @@
           <div class="tab-content">
             <div role="tabpanel" class="tab-pane fade in active" id="tech" style="margin-top: 15px;">
               {{range $tweet := .TechTweets }}
-              <div class="tweet-content">{{$tweet.User.Name}}: {{$tweet.Text}}</div>
+              <div class="row tweet-content">
+                <div class="col-md-1"><img class="avatar" src="{{$tweet.User.ProfileImageURL}}"></div>
+                <div class="col-md-11"><div><b>{{$tweet.User.Name}}</b> <a href="http://twitter.com/{{$tweet.User.ScreenName}}">@{{$tweet.User.ScreenName}}</a></br><div class="tweet-block">{{$tweet.Text}}</div></div></div>
+              </div>
               <hr>
               {{end}}
             </div>
 
             <div role="tabpanel" class="tab-pane fade in" id="politics" style="margin-top: 15px;">
               {{range $tweet := .PoliticsTweets }}
-              <div class="">{{$tweet.User.Name}}: {{$tweet.Text}}</div>
+              <div class="row tweet-content">
+                <div class="col-md-1"><img class="avatar" src="{{$tweet.User.ProfileImageURL}}"></div>
+                <div class="col-md-11"><div class="tweet-block"><b>{{$tweet.User.Name}}</b> <a href="http://twitter.com/{{$tweet.User.ScreenName}}">@{{$tweet.User.ScreenName}}</a></br>{{$tweet.Text}}</div></div>
+              </div>
               <hr>
               {{end}}
             </div>
 
             <div role="tabpanel" class="tab-pane fade in" id="travel" style="margin-top: 15px;">
               {{range $tweet := .TravelTweets }}
-              <div class="">{{$tweet.User.Name}}: {{$tweet.Text}}</div>
+              <div class="row tweet-content">
+                <div class="col-md-1"><img class="avatar" src="{{$tweet.User.ProfileImageURL}}"></div>
+                <div class="col-md-11"><div class="tweet-block"><b>{{$tweet.User.Name}}</b> <a href="http://twitter.com/{{$tweet.User.ScreenName}}">@{{$tweet.User.ScreenName}}</a></br>{{$tweet.Text}}</div></div>
+              </div>
               <hr>
               {{end}}
             </div>
 
             <div role="tabpanel" class="tab-pane fade in" id="others" style="margin-top: 15px;">
               {{range $tweet := .OtherTweets }}
-              <div class="">{{$tweet.User.Name}}: {{$tweet.Text}}</div>
+              <div class="row tweet-content">
+                <div class="col-md-1"><img class="avatar" src="{{$tweet.User.ProfileImageURL}}"></div>
+                <div class="col-md-11"><div class="tweet-block"><b>{{$tweet.User.Name}}</b> <a href="http://twitter.com/{{$tweet.User.ScreenName}}">@{{$tweet.User.ScreenName}}</a></br>{{$tweet.Text}}</div></div>
+              </div>
               <hr>
               {{end}}
             </div>
@@ -60,11 +73,6 @@
     </div>
   </div>
 </body>
-<script>
-  $(function () {
-    $('#myTab a:first').tab('show')
-  })
-</script>
 </html>
 
 
