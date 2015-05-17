@@ -41,7 +41,7 @@
               {{range $tweet := .PoliticsTweets }}
               <div class="row tweet-content">
                 <div class="col-md-1"><img class="avatar" src="{{$tweet.User.ProfileImageURL}}"></div>
-                <div class="col-md-11"><div class="tweet-block"><b>{{$tweet.User.Name}}</b> <a href="http://twitter.com/{{$tweet.User.ScreenName}}">@{{$tweet.User.ScreenName}}</a></br>{{$tweet.Text}}</div></div>
+                <div class="col-md-11"><div><b>{{$tweet.User.Name}}</b> <a href="http://twitter.com/{{$tweet.User.ScreenName}}">@{{$tweet.User.ScreenName}}</a></br><div class="tweet-block">{{$tweet.Text}}</div></div></div>
               </div>
               <hr>
               {{end}}
@@ -51,7 +51,7 @@
               {{range $tweet := .TravelTweets }}
               <div class="row tweet-content">
                 <div class="col-md-1"><img class="avatar" src="{{$tweet.User.ProfileImageURL}}"></div>
-                <div class="col-md-11"><div class="tweet-block"><b>{{$tweet.User.Name}}</b> <a href="http://twitter.com/{{$tweet.User.ScreenName}}">@{{$tweet.User.ScreenName}}</a></br>{{$tweet.Text}}</div></div>
+                <div class="col-md-11"><div><b>{{$tweet.User.Name}}</b> <a href="http://twitter.com/{{$tweet.User.ScreenName}}">@{{$tweet.User.ScreenName}}</a></br><div class="tweet-block">{{$tweet.Text}}</div></div></div>
               </div>
               <hr>
               {{end}}
@@ -61,7 +61,7 @@
               {{range $tweet := .OtherTweets }}
               <div class="row tweet-content">
                 <div class="col-md-1"><img class="avatar" src="{{$tweet.User.ProfileImageURL}}"></div>
-                <div class="col-md-11"><div class="tweet-block"><b>{{$tweet.User.Name}}</b> <a href="http://twitter.com/{{$tweet.User.ScreenName}}">@{{$tweet.User.ScreenName}}</a></br>{{$tweet.Text}}</div></div>
+                <div class="col-md-11"><div><b>{{$tweet.User.Name}}</b> <a href="http://twitter.com/{{$tweet.User.ScreenName}}">@{{$tweet.User.ScreenName}}</a></br><div class="tweet-block">{{$tweet.Text}}</div></div></div>
               </div>
               <hr>
               {{end}}
