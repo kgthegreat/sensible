@@ -16,3 +16,9 @@ Indicative instructions. Better set coming soon!
 - Run the application. 
       go run sensible.go
 - Hit http://localhost:8081
+
+Frameworks/Libraries used
+--------------
+- http://github.com/ChimeraCoder/anaconda
+- http://getbootstrap.com
+- http://jquery.com
