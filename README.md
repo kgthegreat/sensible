@@ -5,7 +5,7 @@ Making sense of your twitter timeline
 
 Introduction
 --------------
-This app segregates your timeline into various topics and categories automagically. 
+This app segregates your timeline into various topics and categories automagically(well, almost ;)). Written entirely in golang. 
 
 Run The App
 --------------
