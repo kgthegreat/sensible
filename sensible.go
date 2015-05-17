@@ -14,16 +14,16 @@ import (
 	"io/ioutil"
 )
 
-const (
-	consumerKey       = "6CfGgaWC42SlfSHJ0AusSH64j"
-	consumerSecret    = "WGGQwcaDZ6mMyHB9WoZgTyJFczHzy865GPiCL5EeukFoPanmvH"
-	accessToken       = "14741206-HBQKBY4WHW93EWVv1bgLhBlLrrRqMwgdTpEoDreiI"
-	accessTokenSecret = "NgvGtxH5UaGiX3hbcXKbjuB5LbVS4WXWyg960XC4w0Ksn"
-)
+type Token struct {
+    ConsumerKey string
+    ConsumerSecret string
+    AccessToken string
+    AccessTokenSecret string
+}
 
-var api = anaconda.NewTwitterApi(accessToken, accessTokenSecret)
+var api *anaconda.TwitterApi
 var keywordMap = make(map[string][]string)
-var mode = ""
+var mode string
 
 type Page struct {
 	Title  string
@@ -133,11 +133,19 @@ func dumpHandler(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
-
 	filename := "timeline.json"
 	ioutil.WriteFile(filename, b, 0600)
+}
 
-//	renderTemplate(w, "index", p)
+func getTokens() Token {
+	var token Token 
+	filename := "token.json"
+	token_bytes, err := ioutil.ReadFile(filename)
+	err = json.Unmarshal(token_bytes, &token)
+	if err != nil {
+		fmt.Println("Error: ", err)
+	}
+	return token
 }
 
 func main() {
@@ -149,9 +157,10 @@ func main() {
 	if *wordPtr == "dev" {
 		mode = "dev"
 	}
-
-	anaconda.SetConsumerKey(consumerKey)
-	anaconda.SetConsumerSecret(consumerSecret)
+	token := getTokens()
+	api = anaconda.NewTwitterApi(token.AccessToken, token.AccessTokenSecret)
+	anaconda.SetConsumerKey(token.ConsumerKey)
+	anaconda.SetConsumerSecret(token.ConsumerSecret)
 	cssHandler := http.FileServer(http.Dir("./css/"))
 	jsHandler := http.FileServer(http.Dir("./js/"))
 	imagesHandler := http.FileServer(http.Dir("./images/"))
