@@ -15,14 +15,17 @@ import (
 )
 
 type Token struct {
-    ConsumerKey string
-    ConsumerSecret string
-    AccessToken string
-    AccessTokenSecret string
+	ConsumerKey string
+	ConsumerSecret string
+	AccessToken string
+	AccessTokenSecret string
 }
 
+type Keyword struct {
+	keywordMap map[string][]string
+}
 var api *anaconda.TwitterApi
-var keywordMap = make(map[string][]string)
+//var keywordMap = make(map[string][]string)
 var mode string
 
 type Page struct {
@@ -34,8 +37,9 @@ type Page struct {
 }
 
 func indexHandler(w http.ResponseWriter, r *http.Request) {
-	var timelineTweets = getTimelineTweets()
-	classifiedTweets := classifyTweets(timelineTweets)
+	timelineTweets := getTimelineTweets()
+	keywordMap := populateKeywordMap()
+	classifiedTweets := classifyTweets(timelineTweets, keywordMap)
 	p := &Page{Title: "Tech Tweets", TechTweets: classifiedTweets["tech"], PoliticsTweets: classifiedTweets["politics"], TravelTweets: classifiedTweets["travel"], OtherTweets: classifiedTweets["other"]}
 	renderTemplate(w, "index", p)
 }
@@ -52,18 +56,18 @@ func renderTemplate(w http.ResponseWriter, tmpl string, p *Page) {
     }
 }
 
-func classifyTweets(timelineTweets []anaconda.Tweet) map[string][]anaconda.Tweet {
+func classifyTweets(timelineTweets []anaconda.Tweet, keywordMap map[string][]string) map[string][]anaconda.Tweet {
 	classifiedTweets := make(map[string][]anaconda.Tweet)
 	var techTweets []anaconda.Tweet
 	var politicsTweets []anaconda.Tweet
 	var travelTweets []anaconda.Tweet
 	var otherTweets []anaconda.Tweet
 	for _, tweet := range timelineTweets {
-		if itIs("tech", tweet) {
+		if itIs(keywordMap["tech"], tweet) {
 			techTweets = append(techTweets, tweet)
-		} else if itIs("politics", tweet) {
+		} else if itIs(keywordMap["politics"], tweet) {
 			politicsTweets = append(politicsTweets, tweet)
-		} else if itIs("travel", tweet) {
+		} else if itIs(keywordMap["travel"], tweet) {
 			travelTweets = append(travelTweets, tweet)
 		} else {
 			otherTweets = append(otherTweets, tweet)
@@ -77,9 +81,8 @@ func classifyTweets(timelineTweets []anaconda.Tweet) map[string][]anaconda.Tweet
 	return classifiedTweets
 }
 
-func itIs(context string, tweet anaconda.Tweet) bool {
-	populateKeywordMap()
-	for _, keyword := range keywordMap[context] {
+func itIs(keywords []string, tweet anaconda.Tweet) bool {
+	for _, keyword := range keywords {
 		if strings.Contains(strings.ToLower(tweet.Text), strings.ToLower(keyword)) {
 			return true
 		}
@@ -87,11 +90,13 @@ func itIs(context string, tweet anaconda.Tweet) bool {
 	return false
 }
 
-func populateKeywordMap() {
+func populateKeywordMap() map[string][]string {
+	var keywordMap = make(map[string][]string)
+
 	keywordMap["tech"] = []string{"golang", "ruby", "devs", "developers", "android", "ios", "programming", "code", "java", "coders", "developer", "fullstack", "full stack", "product", "hack", "hacker", "bug", "technology", "software", "mvc"}
 	keywordMap["politics"] = []string{"modi", "congress", "bjp", "rahul gandhi", "manmohan singh", "narendra modi"}
 	keywordMap["travel"] = []string{"travel","#lp"}
-
+	return keywordMap
 }
 
 
@@ -157,6 +162,7 @@ func main() {
 	if *wordPtr == "dev" {
 		mode = "dev"
 	}
+	//populateKeywordMap()
 	token := getTokens()
 	api = anaconda.NewTwitterApi(token.AccessToken, token.AccessTokenSecret)
 	anaconda.SetConsumerKey(token.ConsumerKey)

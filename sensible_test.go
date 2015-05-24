@@ -35,14 +35,14 @@ var genericTweet = anaconda.Tweet {
 		Text: "What is happening",
 	}
 
+var keywordMap = populateKeywordMap()
 
 func TestCanary(t *testing.T) {
 }
 
 func TestGenericTweetShouldBeClassifiedAsOthers(t *testing.T) {
 	timelineTweets := []anaconda.Tweet{genericTweet}
-	
-	actual := classifyTweets(timelineTweets)
+	actual := classifyTweets(timelineTweets, keywordMap)
  	if len(actual["other"]) != 1 {
 		t.Errorf("Others did not match. Actual length : %v, Expected length : %v",len(actual["other"]), 1)
 	}
@@ -55,7 +55,7 @@ func TestShouldNotClassifySameTweetTwice(t *testing.T) {
 		"tech": []anaconda.Tweet{techPoliticsTweet},
 	}
 	
-	actual := classifyTweets(timelineTweets)
+	actual := classifyTweets(timelineTweets, keywordMap)
 
  	if len(actual["tech"]) != len(expected["tech"]) {
 		t.Errorf("Tech did not match. Actual length : %v, Expected length : %v",len(actual["tech"]),len(expected["tech"]))
@@ -77,7 +77,7 @@ func TestCanClassifyTwoDifferentTweets(t *testing.T) {
 		"politics": []anaconda.Tweet{politicsTweet},
 	}
 
-	actual := classifyTweets(timelineTweets)
+	actual := classifyTweets(timelineTweets, keywordMap)
  	if len(actual["tech"]) != len(expected["tech"]) {
 		t.Errorf("Tech did not match. Actual length : %v, Expected length : %v",len(actual["tech"]),len(expected["tech"]))
 	}
@@ -99,7 +99,7 @@ func TestCanClassifyOneTechTweet(t *testing.T) {
 		"tech": []anaconda.Tweet{techTweet1},
 	}
 
-	actual := classifyTweets(timelineTweets)
+	actual := classifyTweets(timelineTweets, keywordMap)
 	if len(actual["tech"]) != len(expected["tech"]) {
 		t.Errorf("Did not match. Actual length : %v, Expected length : %v",len(actual["tech"]),len(expected["tech"]))
 	}
@@ -110,23 +110,23 @@ func TestCanClassifyOneTechTweet(t *testing.T) {
 
 
 func TestATechTweetIsIdentifiedAsTech(t *testing.T) {
-	if !itIs("tech", techTweet1) {
+	if !itIs(keywordMap["tech"], techTweet1) {
 		t.Errorf("Did not classify")
 	}
 }
 
 func TestAnotherTechTweetIsIdentifiedAsTech(t *testing.T) {
-	if !itIs("tech", techTweet2) {
+	if !itIs(keywordMap["tech"], techTweet2) {
 		t.Errorf("Did not classify")
 	}
 }
 
 func TestContextBasedIdentificationOfTweet(t *testing.T) {
-	if !itIs("tech", techTweet1) {
+	if !itIs(keywordMap["tech"], techTweet1) {
 		t.Errorf("Did not classify")
 	}
 	
-	if !itIs("politics", politicsTweet) {
+	if !itIs(keywordMap["politics"], politicsTweet) {
 		t.Errorf("Could not classify politics tweet")
 	}
 }
