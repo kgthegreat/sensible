@@ -22,10 +22,11 @@ type Token struct {
 }
 
 type Keyword struct {
-	keywordMap map[string][]string
+	TechKeywords []string
+	PoliticsKeywords []string
+	TravelKeywords []string
 }
 var api *anaconda.TwitterApi
-//var keywordMap = make(map[string][]string)
 var mode string
 
 type Page struct {
@@ -38,8 +39,8 @@ type Page struct {
 
 func indexHandler(w http.ResponseWriter, r *http.Request) {
 	timelineTweets := getTimelineTweets()
-	keywordMap := populateKeywordMap()
-	classifiedTweets := classifyTweets(timelineTweets, keywordMap)
+	keywordStore := populateKeywordStore()
+	classifiedTweets := classifyTweets(timelineTweets, keywordStore)
 	p := &Page{Title: "Tech Tweets", TechTweets: classifiedTweets["tech"], PoliticsTweets: classifiedTweets["politics"], TravelTweets: classifiedTweets["travel"], OtherTweets: classifiedTweets["other"]}
 	renderTemplate(w, "index", p)
 }
@@ -56,18 +57,18 @@ func renderTemplate(w http.ResponseWriter, tmpl string, p *Page) {
     }
 }
 
-func classifyTweets(timelineTweets []anaconda.Tweet, keywordMap map[string][]string) map[string][]anaconda.Tweet {
+func classifyTweets(timelineTweets []anaconda.Tweet, keywordStore Keyword) map[string][]anaconda.Tweet {
 	classifiedTweets := make(map[string][]anaconda.Tweet)
 	var techTweets []anaconda.Tweet
 	var politicsTweets []anaconda.Tweet
 	var travelTweets []anaconda.Tweet
 	var otherTweets []anaconda.Tweet
 	for _, tweet := range timelineTweets {
-		if itIs(keywordMap["tech"], tweet) {
+		if itIs(keywordStore.TechKeywords, tweet) {
 			techTweets = append(techTweets, tweet)
-		} else if itIs(keywordMap["politics"], tweet) {
+		} else if itIs(keywordStore.PoliticsKeywords, tweet) {
 			politicsTweets = append(politicsTweets, tweet)
-		} else if itIs(keywordMap["travel"], tweet) {
+		} else if itIs(keywordStore.TravelKeywords, tweet) {
 			travelTweets = append(travelTweets, tweet)
 		} else {
 			otherTweets = append(otherTweets, tweet)
@@ -90,13 +91,16 @@ func itIs(keywords []string, tweet anaconda.Tweet) bool {
 	return false
 }
 
-func populateKeywordMap() map[string][]string {
-	var keywordMap = make(map[string][]string)
-
-	keywordMap["tech"] = []string{"golang", "ruby", "devs", "developers", "android", "ios", "programming", "code", "java", "coders", "developer", "fullstack", "full stack", "product", "hack", "hacker", "bug", "technology", "software", "mvc"}
-	keywordMap["politics"] = []string{"modi", "congress", "bjp", "rahul gandhi", "manmohan singh", "narendra modi"}
-	keywordMap["travel"] = []string{"travel","#lp"}
-	return keywordMap
+func populateKeywordStore() Keyword {
+	var keywordStore Keyword
+	filename := "keyword.json"
+	keyword_bytes, err := ioutil.ReadFile(filename)
+	if err != nil {
+		fmt.Println("error", err)
+	}
+	
+	_ = json.Unmarshal(keyword_bytes, &keywordStore)
+	return keywordStore
 }
 
 
@@ -162,7 +166,6 @@ func main() {
 	if *wordPtr == "dev" {
 		mode = "dev"
 	}
-	//populateKeywordMap()
 	token := getTokens()
 	api = anaconda.NewTwitterApi(token.AccessToken, token.AccessTokenSecret)
 	anaconda.SetConsumerKey(token.ConsumerKey)
