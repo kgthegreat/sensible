@@ -2,7 +2,7 @@ package main
 
 import (
 	"fmt"
-	"github.com/ChimeraCoder/anaconda"
+	"github.com/kgthegreat/anaconda"
 	"html/template"
 	"log"
 	"net/http"
