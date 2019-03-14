@@ -2,7 +2,7 @@ package main
 
 import (
 	"fmt"
-	"github.com/kgthegreat/anaconda"
+	"github.com/ChimeraCoder/anaconda"
 	"html/template"
 	"log"
 	"net/http"
@@ -84,7 +84,7 @@ func classifyTweets(timelineTweets []anaconda.Tweet, keywordStore Keyword) map[s
 
 func itIs(keywords []string, tweet anaconda.Tweet) bool {
 	for _, keyword := range keywords {
-		if strings.Contains(strings.ToLower(tweet.Text), strings.ToLower(keyword)) {
+		if strings.Contains(strings.ToLower(tweet.FullText), strings.ToLower(keyword)) {
 			return true
 		}
 	}
@@ -107,6 +107,7 @@ func populateKeywordStore() Keyword {
 func getTimelineTweets() []anaconda.Tweet{
 	v := url.Values{}
 	v.Set("count", "200")
+	v.Set("tweet_mode", "extended")
 	if mode == "dev" {
 		timelineTweets := getDummyTimeline()
 		return timelineTweets
@@ -157,6 +158,22 @@ func getTokens() Token {
 	return token
 }
 
+func signinHandler(w http.ResponseWriter, r *http.Request) {
+	callback := "http://" + r.Host + "/callback"
+	authURL, tempCred, err := anaconda.AuthorizationURL(callback)
+	if err != nil {
+		http.Error(w, "Error getting temp cred, "+err.Error(), 500)
+		return 
+	}
+	s := session.Get(r)
+	s[tempCredKey] = tempCred
+	if err := session.Save(w, r, s); err != nil {
+		http.Error(w, "Error saving session, " +err.Error(), 500)
+		return
+	}
+	http.Redirect(w, r, authURL, 302)
+}
+
 func main() {
 	wordPtr := flag.String("mode", "", "which mode to run")
 	flag.Parse()
@@ -167,13 +184,14 @@ func main() {
 		mode = "dev"
 	}
 	token := getTokens()
-	api = anaconda.NewTwitterApi(token.AccessToken, token.AccessTokenSecret)
+	api = anaconda.NewTwitterApiWithCredentials(token.AccessToken, token.AccessTokenSecret, token.ConsumerKey, token.ConsumerSecret)
 	anaconda.SetConsumerKey(token.ConsumerKey)
 	anaconda.SetConsumerSecret(token.ConsumerSecret)
 	cssHandler := http.FileServer(http.Dir("./css/"))
 	jsHandler := http.FileServer(http.Dir("./js/"))
 	imagesHandler := http.FileServer(http.Dir("./images/"))
 	http.HandleFunc("/", indexHandler)
+	http.HandleFunc("/signin", signinHandler)
 	http.HandleFunc("/dump", dumpHandler)
 	http.Handle("/css/", http.StripPrefix("/css/", cssHandler))
 	http.Handle("/js/", http.StripPrefix("/js/", jsHandler))
