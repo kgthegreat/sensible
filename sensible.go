@@ -129,7 +129,8 @@ func classifyTweets(timelineTweets []anaconda.Tweet, keywordStore Keyword) map[s
 
 func itIs(keywords []string, tweet anaconda.Tweet) bool {
 	for _, keyword := range keywords {
-		if strings.Contains(strings.ToLower(tweet.FullText), strings.ToLower(keyword)) {
+		if strings.Contains(strings.ToLower(tweet.FullText), strings.ToLower(" "+keyword+" ")) {
+			//		if strings.ToLower(tweet.FullText) == strings.ToLower(keyword) {
 			return true
 		}
 	}
