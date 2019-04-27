@@ -11,12 +11,13 @@
 
 .logo {
     text-align: center;
-    padding: 20px;
+    padding-top: 20px;
+    padding-bottom: 20px;
     font-weight: bold;
     margin-bottom: 1rem;
     display: block;
     text-align: left;
-    width: 960px;
+//    width: 960px;
     margin: 0 auto;
     font: 28px Helvetica, sans-serif; color: #333;
     
@@ -24,22 +25,19 @@
 
 .home {
     text-align: center;
-    padding: 80px;
+    padding-top: 40px;
     font-weight: bold;
     margin-bottom: 1rem;
     display: block;
     text-align: left;
-    width: 960px;
     margin: 0 auto;
     font: 24px Helvetica, sans-serif; color: #333;
 }
-
-html {}
-body {   }
-h1 { }
-.home p {font-size: 1.5rem; margin-bottom: 1rem;}
-body {  }
-
+.home p {
+    font-size: 2rem;
+    margin-top: 3rem;
+    margin-bottom: 3rem;
+}
 a { color: #dc8100; text-decoration: none; }
 a:hover { color: #333; text-decoration: none; }
  

@@ -229,7 +229,7 @@ func signinHandler(w http.ResponseWriter, r *http.Request) {
 func twitterCallbackHandler(w http.ResponseWriter, r *http.Request) {
 	s, err := store.Get(r, "twit")
 	if err != nil {
-		log.Print("We have an error: ", err)
+		log.Print("We have an error getting the session cookie: ", err)
 
 	}
 
@@ -270,6 +270,24 @@ func twitterCallbackHandler(w http.ResponseWriter, r *http.Request) {
 
 }
 
+// serveLogout clears the authentication cookie.
+func twitterLogoutHandler(w http.ResponseWriter, r *http.Request) {
+
+	s, err := store.Get(r, "twit")
+	if err != nil {
+		log.Print("We have an error getting the session cookie: ", err)
+
+	}
+
+	delete(s.Values, tokenCredKey)
+	if err := s.Save(r, w); err != nil {
+		http.Error(w, "Error saving session , "+err.Error(), 500)
+		return
+	}
+	log.Print("Logged out!!")
+	http.Redirect(w, r, "/", 302)
+}
+
 func main() {
 	wordPtr := flag.String("mode", "", "which mode to run")
 	flag.Parse()
@@ -294,7 +312,8 @@ func main() {
 	http.HandleFunc("/", indexHandler)
 	http.HandleFunc("/signin", signinHandler)
 	http.HandleFunc("/callback", twitterCallbackHandler)
-	http.HandleFunc("/dump", dumpHandler)
+	http.HandleFunc("/logout", twitterLogoutHandler)
+	//	http.HandleFunc("/dump", dumpHandler)
 	http.Handle("/css/", http.StripPrefix("/css/", cssHandler))
 	http.Handle("/js/", http.StripPrefix("/js/", jsHandler))
 	http.Handle("/images/", http.StripPrefix("/images/", imagesHandler))
