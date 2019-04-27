@@ -1,60 +1,105 @@
 package main
 
 import (
+	"encoding/gob"
+	"encoding/json"
+	"flag"
 	"fmt"
-	"github.com/ChimeraCoder/anaconda"
 	"html/template"
+	"io/ioutil"
 	"log"
 	"net/http"
 	"net/url"
 	_ "regexp"
 	"strings"
-	"flag"
-	"encoding/json"
-	"io/ioutil"
+
+	"github.com/ChimeraCoder/anaconda"
+	"github.com/garyburd/go-oauth/oauth"
+	"github.com/gorilla/sessions"
 )
 
 type Token struct {
-	ConsumerKey string
-	ConsumerSecret string
-	AccessToken string
+	ConsumerKey       string
+	ConsumerSecret    string
+	AccessToken       string
 	AccessTokenSecret string
 }
 
 type Keyword struct {
-	TechKeywords []string
+	TechKeywords     []string
 	PoliticsKeywords []string
-	TravelKeywords []string
+	TravelKeywords   []string
 }
+
 var api *anaconda.TwitterApi
 var mode string
 
+var store = sessions.NewCookieStore([]byte("asdaskdhasdhgsajdgasdsadksakdhasidoajsdousdasf"))
+
+//var store = sessions.NewCookieStore([]byte(storeGUID))
+
+// Session state keys.
+const (
+	tempCredKey  = "tempCred"
+	tokenCredKey = "tokenCred"
+)
+
+var oauthClient = oauth.Client{
+	TemporaryCredentialRequestURI: "https://api.twitter.com/oauth/request_token",
+	ResourceOwnerAuthorizationURI: "https://api.twitter.com/oauth/authorize",
+	TokenRequestURI:               "https://api.twitter.com/oauth/access_token",
+}
+
+var signinOAuthClient oauth.Client
+
 type Page struct {
-	Title  string
-	TechTweets []anaconda.Tweet
+	Title          string
+	TechTweets     []anaconda.Tweet
 	PoliticsTweets []anaconda.Tweet
-	TravelTweets []anaconda.Tweet
-	OtherTweets []anaconda.Tweet
+	TravelTweets   []anaconda.Tweet
+	OtherTweets    []anaconda.Tweet
 }
 
 func indexHandler(w http.ResponseWriter, r *http.Request) {
-	timelineTweets := getTimelineTweets()
-	keywordStore := populateKeywordStore()
-	classifiedTweets := classifyTweets(timelineTweets, keywordStore)
-	p := &Page{Title: "Tech Tweets", TechTweets: classifiedTweets["tech"], PoliticsTweets: classifiedTweets["politics"], TravelTweets: classifiedTweets["travel"], OtherTweets: classifiedTweets["other"]}
-	renderTemplate(w, "index", p)
+	s, err := store.Get(r, "twit")
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+	}
+	tokenCred, ok := s.Values[tokenCredKey].(oauth.Credentials)
+
+	if !ok {
+		log.Print("Cannot get tokenCred")
+	}
+
+	if tokenCred.Token != "" {
+		log.Print("Printing tokenCred:", tokenCred)
+		token1 := getTokens()
+
+		api1 := anaconda.NewTwitterApiWithCredentials(tokenCred.Token, tokenCred.Secret, token1.ConsumerKey, token1.ConsumerSecret)
+
+		timelineTweets := getTimelineTweets(api1)
+		keywordStore := populateKeywordStore()
+		classifiedTweets := classifyTweets(timelineTweets, keywordStore)
+		p := &Page{Title: "Tech Tweets", TechTweets: classifiedTweets["tech"], PoliticsTweets: classifiedTweets["politics"], TravelTweets: classifiedTweets["travel"], OtherTweets: classifiedTweets["other"]}
+		renderTemplate(w, "index", p)
+
+	} else {
+		e := &Page{}
+		renderTemplate(w, "login", e)
+	}
+
 }
 
 func renderTemplate(w http.ResponseWriter, tmpl string, p *Page) {
-    t, err := template.ParseFiles(tmpl + ".html")
-    if err != nil {
-        http.Error(w, err.Error(), http.StatusInternalServerError)
-        return
-    }
-    err = t.Execute(w, p)
-    if err != nil {
-        http.Error(w, err.Error(), http.StatusInternalServerError)
-    }
+	t, err := template.ParseFiles(tmpl + ".html")
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+	err = t.Execute(w, p)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+	}
 }
 
 func classifyTweets(timelineTweets []anaconda.Tweet, keywordStore Keyword) map[string][]anaconda.Tweet {
@@ -73,7 +118,7 @@ func classifyTweets(timelineTweets []anaconda.Tweet, keywordStore Keyword) map[s
 		} else {
 			otherTweets = append(otherTweets, tweet)
 		}
-		
+
 	}
 	classifiedTweets["tech"] = techTweets
 	classifiedTweets["politics"] = politicsTweets
@@ -98,13 +143,12 @@ func populateKeywordStore() Keyword {
 	if err != nil {
 		fmt.Println("error", err)
 	}
-	
+
 	_ = json.Unmarshal(keyword_bytes, &keywordStore)
 	return keywordStore
 }
 
-
-func getTimelineTweets() []anaconda.Tweet{
+func getTimelineTweets(ap *anaconda.TwitterApi) []anaconda.Tweet {
 	v := url.Values{}
 	v.Set("count", "200")
 	v.Set("tweet_mode", "extended")
@@ -112,7 +156,7 @@ func getTimelineTweets() []anaconda.Tweet{
 		timelineTweets := getDummyTimeline()
 		return timelineTweets
 	} else {
-		timelineTweets, err := api.GetHomeTimeline(v)
+		timelineTweets, err := ap.GetHomeTimeline(v)
 		if err != nil {
 			fmt.Println(err)
 		}
@@ -148,7 +192,7 @@ func dumpHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func getTokens() Token {
-	var token Token 
+	var token Token
 	filename := "token.json"
 	token_bytes, err := ioutil.ReadFile(filename)
 	err = json.Unmarshal(token_bytes, &token)
@@ -159,19 +203,70 @@ func getTokens() Token {
 }
 
 func signinHandler(w http.ResponseWriter, r *http.Request) {
+	log.Print("entering signinhandler")
 	callback := "http://" + r.Host + "/callback"
-	authURL, tempCred, err := anaconda.AuthorizationURL(callback)
+	tempCred, err := signinOAuthClient.RequestTemporaryCredentials(nil, callback, nil)
+
+	//	authURL, tempCred, err := api.AuthorizationURL(callback)
 	if err != nil {
 		http.Error(w, "Error getting temp cred, "+err.Error(), 500)
-		return 
-	}
-	s := session.Get(r)
-	s[tempCredKey] = tempCred
-	if err := session.Save(w, r, s); err != nil {
-		http.Error(w, "Error saving session, " +err.Error(), 500)
 		return
 	}
-	http.Redirect(w, r, authURL, 302)
+	//	ctx := context.Context
+	//	context.WithValue(ctx, key interface{}, val interface{})
+	s, _ := store.Get(r, "twit")
+	s.Values[tempCredKey] = tempCred
+
+	if err := s.Save(r, w); err != nil {
+		http.Error(w, "Error saving session, "+err.Error(), 500)
+		return
+	}
+
+	http.Redirect(w, r, signinOAuthClient.AuthorizationURL(tempCred, nil), 302)
+}
+
+func twitterCallbackHandler(w http.ResponseWriter, r *http.Request) {
+	s, err := store.Get(r, "twit")
+	if err != nil {
+		log.Print("We have an error: ", err)
+
+	}
+
+	tempCred, _ := s.Values[tempCredKey].(oauth.Credentials)
+
+	//	t, ok1 := tempCred1.(*oauth.Credentials)
+	//	tempCred := t.(oauth.Credentials)
+
+	//	log.Print("Printing resifual from type assertion: ", ok1)
+	//	log.Print("Trying to get tempCred1 in callback: ", tempCred1)
+	log.Print("Trying to get tempCred in callback: ", tempCred)
+	log.Print("Trying to print Token ", tempCred.Token)
+
+	token := r.FormValue("oauth_token")
+	verifier := r.FormValue("oauth_verifier")
+
+	if tempCred.Token != token {
+		http.Error(w, "Unknown oauth_token", 500)
+	}
+
+	//	tokenCred, _, err := api.GetCredentials(tempCred, verifier)
+	tokenCred, _, err := oauthClient.RequestToken(nil, &tempCred, verifier)
+
+	if err != nil {
+		http.Error(w, "Error getting request token, "+err.Error(), 500)
+		return
+	}
+
+	delete(s.Values, tempCredKey)
+	s.Values[tokenCredKey] = tokenCred
+	if err := s.Save(r, w); err != nil {
+		http.Error(w, "Error saving sessions, "+err.Error(), 500)
+		return
+	}
+
+	log.Print("tokenCred is :", tokenCred)
+	http.Redirect(w, r, "/", 302)
+
 }
 
 func main() {
@@ -184,14 +279,20 @@ func main() {
 		mode = "dev"
 	}
 	token := getTokens()
-	api = anaconda.NewTwitterApiWithCredentials(token.AccessToken, token.AccessTokenSecret, token.ConsumerKey, token.ConsumerSecret)
-	anaconda.SetConsumerKey(token.ConsumerKey)
-	anaconda.SetConsumerSecret(token.ConsumerSecret)
+	//	api = anaconda.NewTwitterApiWithCredentials(token.AccessToken, token.AccessTokenSecret, token.ConsumerKey, token.ConsumerSecret)
+	oauthClient.Credentials.Token = token.ConsumerKey
+	oauthClient.Credentials.Secret = token.ConsumerSecret
+	signinOAuthClient = oauthClient
+	signinOAuthClient.ResourceOwnerAuthorizationURI = "https://api.twitter.com/oauth/authenticate"
+	gob.Register(oauth.Credentials{})
+	//	anaconda.SetConsumerKey(token.ConsumerKey)
+	//	anaconda.SetConsumerSecret(token.ConsumerSecret)
 	cssHandler := http.FileServer(http.Dir("./css/"))
 	jsHandler := http.FileServer(http.Dir("./js/"))
 	imagesHandler := http.FileServer(http.Dir("./images/"))
 	http.HandleFunc("/", indexHandler)
 	http.HandleFunc("/signin", signinHandler)
+	http.HandleFunc("/callback", twitterCallbackHandler)
 	http.HandleFunc("/dump", dumpHandler)
 	http.Handle("/css/", http.StripPrefix("/css/", cssHandler))
 	http.Handle("/js/", http.StripPrefix("/js/", jsHandler))
