@@ -313,7 +313,7 @@ func main() {
 	http.HandleFunc("/signin", signinHandler)
 	http.HandleFunc("/callback", twitterCallbackHandler)
 	http.HandleFunc("/logout", twitterLogoutHandler)
-	//	http.HandleFunc("/dump", dumpHandler)
+	http.HandleFunc("/dump", dumpHandler)
 	http.Handle("/css/", http.StripPrefix("/css/", cssHandler))
 	http.Handle("/js/", http.StripPrefix("/js/", jsHandler))
 	http.Handle("/images/", http.StripPrefix("/images/", imagesHandler))

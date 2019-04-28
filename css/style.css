@@ -10,7 +10,7 @@
 }
 
 .logo {
-    text-align: center;
+    text-align: left;
     padding-top: 20px;
     padding-bottom: 20px;
     font-weight: bold;
@@ -22,6 +22,18 @@
     font: 28px Helvetica, sans-serif; color: #333;
     
 }
+
+.logout {
+    text-align: right;
+    padding-top: 20px;
+    padding-bottom: 20px;
+    margin: 1.5rem;
+    display: block;
+//    margin: 0 auto;
+    font: 16px Helvetica, sans-serif; color: #33f;
+    
+}
+
 
 .home {
     text-align: center;
@@ -38,6 +50,5 @@
     margin-top: 3rem;
     margin-bottom: 3rem;
 }
-a { color: #dc8100; text-decoration: none; }
 a:hover { color: #333; text-decoration: none; }
  
