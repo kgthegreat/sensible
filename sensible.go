@@ -304,18 +304,13 @@ func main() {
 	signinOAuthClient = oauthClient
 	signinOAuthClient.ResourceOwnerAuthorizationURI = "https://api.twitter.com/oauth/authenticate"
 	gob.Register(oauth.Credentials{})
-	//	anaconda.SetConsumerKey(token.ConsumerKey)
-	//	anaconda.SetConsumerSecret(token.ConsumerSecret)
-	cssHandler := http.FileServer(http.Dir("./css/"))
-	jsHandler := http.FileServer(http.Dir("./js/"))
-	imagesHandler := http.FileServer(http.Dir("./images/"))
+	staticHandler := http.FileServer(http.Dir("static"))
 	http.HandleFunc("/", indexHandler)
 	http.HandleFunc("/signin", signinHandler)
 	http.HandleFunc("/callback", twitterCallbackHandler)
 	http.HandleFunc("/logout", twitterLogoutHandler)
 	http.HandleFunc("/dump", dumpHandler)
-	http.Handle("/css/", http.StripPrefix("/css/", cssHandler))
-	http.Handle("/js/", http.StripPrefix("/js/", jsHandler))
-	http.Handle("/images/", http.StripPrefix("/images/", imagesHandler))
+	http.Handle("/static/", http.StripPrefix("/static/", staticHandler))
+
 	log.Fatal(http.ListenAndServe(":8081", nil))
 }
