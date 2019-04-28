@@ -91,12 +91,14 @@ func indexHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func renderTemplate(w http.ResponseWriter, tmpl string, p *Page) {
-	t, err := template.ParseFiles(tmpl + ".html")
-	if err != nil {
+	templates := template.Must(template.ParseGlob("templates/*"))
+	//	t, err := template.ParseFiles(tmpl + ".html")
+	/*	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
-	}
-	err = t.Execute(w, p)
+	}*/
+	err := templates.ExecuteTemplate(w, tmpl+".html", p)
+	//	err = t.Execute(w, p)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 	}
