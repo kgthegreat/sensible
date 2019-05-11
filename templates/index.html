@@ -2,7 +2,8 @@
 <html lang="en">
     <head>
         <link rel="icon" href="/static/images/favicon.png">
-        <link rel="stylesheet" type="text/css" href="/static/css/bootstrap.min.css">
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+        <!--link rel="stylesheet" type="text/css" href="/static/css/bootstrap.min.css"-->
         <link rel="stylesheet" type="text/css" href="/static/css/style.css">
         <script src="/static/js/jquery-2.1.4.min.js"></script>
         <script src="/static/js/bootstrap.min.js"></script>
@@ -29,9 +30,7 @@
                             <li role="presentation"><a href="#profile" aria-controls="profile" role="tab" data-toggle="tab">Sports</a></li>
                             <li role="presentation"><a href="#politics" aria-controls="messages" role="tab" data-toggle="tab">Politics</a></li>
                             <li role="presentation"><a href="#settings" aria-controls="settings" role="tab" data-toggle="tab">Startups</a></li>
-                            <li role="presentation"><a href="#settings" aria-controls="settings" role="tab" data-toggle="tab">Movies</a></li>
                             <li role="presentation"><a href="#travel" aria-controls="travel" role="tab" data-toggle="tab">Travel</a></li>
-                            <li role="presentation"><a href="#settings" aria-controls="settings" role="tab" data-toggle="tab">Events</a></li>
                             <li role="presentation"><a href="#others" aria-controls="settings" role="tab" data-toggle="tab">Others</a></li>
                         </ul>
                         <div class="tab-content">
@@ -40,6 +39,8 @@
                                 <div class="row tweet-content">
                                     <div class="col-md-1"><img class="avatar" src="{{$tweet.User.ProfileImageURL}}"></div>
                                     <div class="col-md-11"><div><b>{{$tweet.User.Name}}</b> <a href="http://twitter.com/{{$tweet.User.ScreenName}}">@{{$tweet.User.ScreenName}}</a></br><div class="tweet-block">{{$tweet.FullText}}</div></div></div>
+                                    <br></br>
+
                                 </div>
                                 <hr>
                                 {{end}}
@@ -70,11 +71,31 @@
                                 <div class="row tweet-content">
                                     <div class="col-md-1"><img class="avatar" src="{{$tweet.User.ProfileImageURL}}"></div>
                                     <div class="col-md-11"><div><b>{{$tweet.User.Name}}</b> <a href="http://twitter.com/{{$tweet.User.ScreenName}}">@{{$tweet.User.ScreenName}}</a></br><div class="tweet-block">{{$tweet.FullText}}</div></div></div>
+
+                                </div>
+
+                                <div class="row classif">
+                                    <div class="col-md-1 pull-right"><a href="/classify?tweet={{$tweet.FullText}}&type=tech" class="btn btn-default btn-xs">tech</a></div>
+                                    <div class="col-md-1 pull-right"><a href="/classify?tweet={{$tweet.FullText}}" class=" btn btn-default btn-xs">sports</a></div>
+                                    <div class="col-md-1 pull-right"><a href="/classify?tweet={{$tweet.FullText}}" class=" btn btn-default btn-xs">politics</a></div>
+                                    <div class="col-md-1 pull-right"><a href="/classify?tweet={{$tweet.FullText}}" class=" btn btn-default btn-xs">startups</a></div>
+                                    <div class="col-md-1 pull-right"><a href="/classify?tweet={{$tweet.FullText}}" class=" btn btn-default btn-xs">travel</a></div>
                                 </div>
                                 <hr>
                                 {{end}}
                             </div>
+                            Hello
 
+      <!-- Small modal -->
+<button type="button" class="btn btn-primary" data-toggle="modal" data-target=".bs-example-modal-sm">Small modal</button>
+
+<div class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
+  <div class="modal-dialog modal-sm">
+    <div class="modal-content">
+      hello
+    </div>
+  </div>
+</div>
                         </div>
                     </div>
                 </div>
