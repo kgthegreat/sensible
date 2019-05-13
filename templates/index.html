@@ -3,38 +3,41 @@
     <head>
         <link rel="icon" href="/static/images/favicon.png">
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-        <!--link rel="stylesheet" type="text/css" href="/static/css/bootstrap.min.css"-->
+        <!--link rel="stylesheet" type="text/css" href="/static/css/bootstrap4.min.css"-->
         <link rel="stylesheet" type="text/css" href="/static/css/style.css">
         <script src="/static/js/jquery-2.1.4.min.js"></script>
-        <script src="/static/js/bootstrap.min.js"></script>
+        <script src="/static/js/bootstrap4.min.js"></script>
         <script src="/static/js/sensible.js"></script>
         <meta name="viewport" content="width=device-width, initial-scale=1">
     </head>
     <body>
         
-        <div class="container-fluid">
+        <div class="container">
             <div class="row">
-                <div class="col-md-6 col-md-offset-3">
+                
+                <div class="col">
                     <div class="row">
-                        <div class="logo col-md-10">
+                        <div class="logo col">
                             Sensible
                         </div>
                         <div class="logout">
                             <a class="btn btn-default btn-sm" href="/logout">Logout</a>
                         </div>
                     </div>
+
+
                     <div role="tabpanel">
                         <!-- Nav tabs -->
                         <ul class="nav nav-tabs" role="tablist" id="myTab">
-                            <li role="presentation" class="active"><a href="#tech" aria-controls="home" role="tab" data-toggle="tab">Tech</a></li>
-                            <li role="presentation"><a href="#profile" aria-controls="profile" role="tab" data-toggle="tab">Sports</a></li>
-                            <li role="presentation"><a href="#politics" aria-controls="messages" role="tab" data-toggle="tab">Politics</a></li>
-                            <li role="presentation"><a href="#settings" aria-controls="settings" role="tab" data-toggle="tab">Startups</a></li>
-                            <li role="presentation"><a href="#travel" aria-controls="travel" role="tab" data-toggle="tab">Travel</a></li>
-                            <li role="presentation"><a href="#others" aria-controls="settings" role="tab" data-toggle="tab">Others</a></li>
+                            <li role="presentation" class="nav-item"><a class="nav-link" href="#tech" aria-controls="home" role="tab" data-toggle="tab">Tech</a></li>
+                            <li role="presentation" class="nav-item"><a class="nav-link" href="#profile" aria-controls="profile" role="tab" data-toggle="tab">Sports</a></li>
+                            <li role="presentation" class="nav-item"><a class="nav-link" href="#politics" aria-controls="messages" role="tab" data-toggle="tab">Politics</a></li>
+                            <li role="presentation" class="nav-item"><a class="nav-link" href="#settings" aria-controls="settings" role="tab" data-toggle="tab">Business</a></li>
+                            <li role="presentation" class="nav-item"><a class="nav-link" href="#travel" aria-controls="travel" role="tab" data-toggle="tab">Travel</a></li>
+                            <li role="presentation" class="nav-item"><a class="nav-link" href="#others" aria-controls="settings" role="tab" data-toggle="tab">Others</a></li>
                         </ul>
                         <div class="tab-content">
-                            <div role="tabpanel" class="tab-pane fade in active" id="tech" style="margin-top: 15px;">
+                            <div role="tabpanel" class="tab-pane fade show active" id="tech" style="margin-top: 15px;">
                                 {{range $tweet := .TechTweets }}
                                 <div class="row tweet-content">
                                     <div class="col-md-1"><img class="avatar" src="{{$tweet.User.ProfileImageURL}}"></div>
@@ -46,7 +49,7 @@
                                 {{end}}
                             </div>
 
-                            <div role="tabpanel" class="tab-pane fade in" id="politics" style="margin-top: 15px;">
+                            <div role="tabpanel" class="tab-pane fade show" id="politics" style="margin-top: 15px;">
                                 {{range $tweet := .PoliticsTweets }}
                                 <div class="row tweet-content">
                                     <div class="col-md-1"><img class="avatar" src="{{$tweet.User.ProfileImageURL}}"></div>
@@ -56,7 +59,7 @@
                                 {{end}}
                             </div>
 
-                            <div role="tabpanel" class="tab-pane fade in" id="travel" style="margin-top: 15px;">
+                            <div role="tabpanel" class="tab-pane fade show" id="travel" style="margin-top: 15px;">
                                 {{range $tweet := .TravelTweets }}
                                 <div class="row tweet-content">
                                     <div class="col-md-1"><img class="avatar" src="{{$tweet.User.ProfileImageURL}}"></div>
@@ -66,7 +69,7 @@
                                 {{end}}
                             </div>
 
-                            <div role="tabpanel" class="tab-pane fade in" id="others" style="margin-top: 15px;">
+                            <div role="tabpanel" class="tab-pane fade show" id="others" style="margin-top: 15px;">
                                 {{range $tweet := .OtherTweets }}
                                 <div class="row tweet-content">
                                     <div class="col-md-1"><img class="avatar" src="{{$tweet.User.ProfileImageURL}}"></div>
@@ -74,28 +77,35 @@
 
                                 </div>
 
-                                <div class="row classif">
-                                    <div class="col-md-1 pull-right"><a href="/classify?tweet={{$tweet.FullText}}&type=tech" class="btn btn-default btn-xs">tech</a></div>
-                                    <div class="col-md-1 pull-right"><a href="/classify?tweet={{$tweet.FullText}}" class=" btn btn-default btn-xs">sports</a></div>
-                                    <div class="col-md-1 pull-right"><a href="/classify?tweet={{$tweet.FullText}}" class=" btn btn-default btn-xs">politics</a></div>
-                                    <div class="col-md-1 pull-right"><a href="/classify?tweet={{$tweet.FullText}}" class=" btn btn-default btn-xs">startups</a></div>
-                                    <div class="col-md-1 pull-right"><a href="/classify?tweet={{$tweet.FullText}}" class=" btn btn-default btn-xs">travel</a></div>
-                                </div>
                                 <hr>
                                 {{end}}
                             </div>
-                            Hello
 
-      <!-- Small modal -->
-<button type="button" class="btn btn-primary" data-toggle="modal" data-target=".bs-example-modal-sm">Small modal</button>
-
-<div class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
-  <div class="modal-dialog modal-sm">
+<!-- Modal -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
     <div class="modal-content">
-      hello
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+          <div class="container">
+              <div class="row">
+                  <div class="col-sm"><a href="#" class="btn btn-sm btn-outline-primary categorise" type="tech">tech</a></div>
+                  <div class="col-sm"><a href="#" class="btn btn-sm btn-outline-primary categorise" type="sports">sports</a></div>
+                  <div class="col-sm"><a href="#" class="btn btn-sm btn-outline-primary categorise" type="politics">politics</a></div>
+                  <div class="col-sm"><a href="#" class="btn btn-sm btn-outline-primary categorise" type="business">business</a></div>
+                  <div class="col-sm"><a href="#" class="btn btn-sm btn-outline-primary categorise" type="travel">travel</a></div>
+              </div>
+          </div>
+      </div>
     </div>
   </div>
 </div>
+
                         </div>
                     </div>
                 </div>

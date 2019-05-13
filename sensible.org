@@ -1,5 +1,40 @@
-* Features
-** Add a beautiful login page
-** Prepare CI/CD
-** Deploy
-** ML based classification
+* Feature
+** DONE Add a beautiful login page
+** DONE Deploy
+** TODO Self launch
+*** DONE Write keywords into file
+*** TODO Write into file for all categories
+    CLOCK: [2019-05-12 Sun 18:49]
+*** TODO Add more categories
+*** TODO Write keywords into file only for kgthegreat user
+*** TODO Deploy
+*** TODO Write keywords into different files for different users
+*** TODO Load different files for classification for different users
+** TODO 5 people launch
+*** Write keywords per user. Use db?
+*** TODO Error on offline
+** TODO MVP Launch
+*** TODO Security?
+*** TODO Authentication
+*** TODO Machine learning model?
+*** TODO Open source?
+*** TODO Refactor?
+*** TODO SSL
+*** TODO Better font
+*** TODO Better logout
+** TODO Start with human trained classification
+*** TODO HTML Layout
+*** TODO Change keyword.json to be a model understood by prose
+*** TODO Full tweets text needs to be shown
+*** DONE Categorise as an HTML page. Forget JS
+**** TODO Add ability to add more tags
+**** TODO Add ability to change category
+**** TODO Add ability to go back
+*** TODO Remove bootstrap and use a simple grid or atleast use bootstrap grid
+** TODO Add footer with about info
+** TODO Style footer so that the landing page definitely looks like a single page
+** TODO ML based classification
+* Infra
+** TODO Get Https
+** TODO Get a daemon
+** TODO Prepare CI/CD

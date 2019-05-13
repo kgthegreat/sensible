@@ -16,6 +16,7 @@ import (
 	"github.com/ChimeraCoder/anaconda"
 	"github.com/garyburd/go-oauth/oauth"
 	"github.com/gorilla/sessions"
+	"gopkg.in/jdkato/prose.v2"
 )
 
 type Token struct {
@@ -40,8 +41,11 @@ var store = sessions.NewCookieStore([]byte("asdaskdhasdhgsajdgasdsadksakdhasidoa
 
 // Session state keys.
 const (
-	tempCredKey  = "tempCred"
-	tokenCredKey = "tokenCred"
+	tempCredKey        = "tempCred"
+	tokenCredKey       = "tokenCred"
+	screenName         = "screenName"
+	sessionName        = "twit"
+	rootKeywordFilenam = "keyword.json"
 )
 
 var oauthClient = oauth.Client{
@@ -60,6 +64,83 @@ type Page struct {
 	OtherTweets    []anaconda.Tweet
 }
 
+type TweetToClassify struct {
+	Text         string
+	Type         string
+	SelectedTags []string
+}
+
+type KewordToAdd struct {
+	Phrase   string
+	Category string
+}
+
+func categoriseHandler(w http.ResponseWriter, r *http.Request) {
+	s := getSession(sessionName, r)
+	if r.Method == "POST" {
+		body, err := ioutil.ReadAll(r.Body)
+		if err != nil {
+			http.Error(w, "Error reading request body",
+				http.StatusInternalServerError)
+		}
+		log.Print(string(body))
+		//		results = append(results, string(body))
+
+		w.Header().Set("Content-Type", "application/json; charset=UTF-8")
+		w.WriteHeader(http.StatusOK)
+		//		fmt.Fprint(w, "POST done")
+		keywordStore1 := populateKeywordStore(rootKeywordFilename)
+		//		b, error = Json.Unmarshal()
+		var keywordToAdd KewordToAdd
+		err = json.Unmarshal(body, &keywordToAdd)
+		if keywordToAdd.Category == "politics" {
+			b, err := json.Marshal(keywordStore1)
+			fmt.Println("json", b)
+			if err != nil {
+				http.Error(w, err.Error(), http.StatusInternalServerError)
+				return
+			}
+			//			filename := "keyword.json"
+			log.Print("what are we getting", s.Values[screenName].(string))
+			filename := "keyword" + s.Values[screenName].(string) + ".json"
+			ioutil.WriteFile(filename, b, 0600)
+
+		}
+
+	} else {
+		http.Error(w, "Invalid request method", http.StatusMethodNotAllowed)
+	}
+}
+
+func classifyHandler(w http.ResponseWriter, r *http.Request) {
+	keys, ok := r.URL.Query()["tweet"]
+	cat, ok := r.URL.Query()["type"]
+
+	if !ok || len(keys[0]) < 1 || len(cat[0]) < 1 {
+		log.Println("Url Param 'tweet' or 'type' is missing")
+		return
+	}
+	//	tweetText := "Narendra Modi is astonishing. Virat Kohli is a good batsman. Madhya Pradesh polls are going to be exciting. Hum logon ko kuch nahi pata. (How), do we know this?"
+	//	tweetText := "@jdkato, go to http://example.com thanks :)."
+	doc, err := prose.NewDocument(keys[0])
+	if err != nil {
+		log.Fatal(err)
+	}
+	var selectedTags []string
+	for _, ent := range doc.Tokens() {
+		tag := ent.Tag
+		text := ent.Text
+		log.Print(text + " " + tag)
+		if tag == "NNP" || tag == "NN" || tag == "JJ" {
+			selectedTags = append(selectedTags, text+" "+tag)
+		}
+		// Go GPE
+		// Google GPE
+	}
+	e := &TweetToClassify{Text: keys[0], Type: cat[0], SelectedTags: selectedTags}
+	renderTemplate(w, "classify", e)
+}
+
 func indexHandler(w http.ResponseWriter, r *http.Request) {
 	s, err := store.Get(r, "twit")
 	if err != nil {
@@ -71,14 +152,14 @@ func indexHandler(w http.ResponseWriter, r *http.Request) {
 		log.Print("Cannot get tokenCred")
 	}
 
-	if tokenCred.Token != "" {
+	if tokenCred.Token != "" || mode == "dev" {
 		log.Print("Printing tokenCred:", tokenCred)
 		token1 := getTokens()
 
 		api1 := anaconda.NewTwitterApiWithCredentials(tokenCred.Token, tokenCred.Secret, token1.ConsumerKey, token1.ConsumerSecret)
 
 		timelineTweets := getTimelineTweets(api1)
-		keywordStore := populateKeywordStore()
+		keywordStore := populateKeywordStore(rootKeywordFilename)
 		classifiedTweets := classifyTweets(timelineTweets, keywordStore)
 		p := &Page{Title: "Tech Tweets", TechTweets: classifiedTweets["tech"], PoliticsTweets: classifiedTweets["politics"], TravelTweets: classifiedTweets["travel"], OtherTweets: classifiedTweets["other"]}
 		renderTemplate(w, "index", p)
@@ -90,7 +171,7 @@ func indexHandler(w http.ResponseWriter, r *http.Request) {
 
 }
 
-func renderTemplate(w http.ResponseWriter, tmpl string, p *Page) {
+func renderTemplate(w http.ResponseWriter, tmpl string, p interface{}) {
 	templates := template.Must(template.ParseGlob("templates/*"))
 	//	t, err := template.ParseFiles(tmpl + ".html")
 	/*	if err != nil {
@@ -131,7 +212,7 @@ func classifyTweets(timelineTweets []anaconda.Tweet, keywordStore Keyword) map[s
 
 func itIs(keywords []string, tweet anaconda.Tweet) bool {
 	for _, keyword := range keywords {
-		if strings.Contains(strings.ToLower(tweet.FullText), strings.ToLower(" "+keyword+" ")) {
+		if strings.Contains(strings.ToLower(tweet.FullText), strings.ToLower(keyword)) {
 			//		if strings.ToLower(tweet.FullText) == strings.ToLower(keyword) {
 			return true
 		}
@@ -139,15 +220,18 @@ func itIs(keywords []string, tweet anaconda.Tweet) bool {
 	return false
 }
 
-func populateKeywordStore() Keyword {
+func populateKeywordStore(filename string) Keyword {
 	var keywordStore Keyword
-	filename := "keyword.json"
+	//	filename := "keyword.json"
 	keyword_bytes, err := ioutil.ReadFile(filename)
 	if err != nil {
 		fmt.Println("error", err)
 	}
 
-	_ = json.Unmarshal(keyword_bytes, &keywordStore)
+	err = json.Unmarshal(keyword_bytes, &keywordStore)
+	if err != nil {
+		log.Print("Error reading keyword file: ", err)
+	}
 	return keywordStore
 }
 
@@ -228,13 +312,25 @@ func signinHandler(w http.ResponseWriter, r *http.Request) {
 	http.Redirect(w, r, signinOAuthClient.AuthorizationURL(tempCred, nil), 302)
 }
 
-func twitterCallbackHandler(w http.ResponseWriter, r *http.Request) {
+func getSession(name string, r *http.Request) *sessions.Session {
 	s, err := store.Get(r, "twit")
 	if err != nil {
 		log.Print("We have an error getting the session cookie: ", err)
 
 	}
+	return s
 
+}
+
+func twitterCallbackHandler(w http.ResponseWriter, r *http.Request) {
+	/*	s, err := store.Get(r, "twit")
+		if err != nil {
+			log.Print("We have an error getting the session cookie: ", err)
+
+
+		}*/
+
+	s := getSession("twit", r)
 	tempCred, _ := s.Values[tempCredKey].(oauth.Credentials)
 
 	//	t, ok1 := tempCred1.(*oauth.Credentials)
@@ -253,8 +349,9 @@ func twitterCallbackHandler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	//	tokenCred, _, err := api.GetCredentials(tempCred, verifier)
-	tokenCred, _, err := oauthClient.RequestToken(nil, &tempCred, verifier)
+	tokenCred, urlValues, err := oauthClient.RequestToken(nil, &tempCred, verifier)
 
+	log.Print("We have the screen name!: ", urlValues["screen_name"])
 	if err != nil {
 		http.Error(w, "Error getting request token, "+err.Error(), 500)
 		return
@@ -262,6 +359,7 @@ func twitterCallbackHandler(w http.ResponseWriter, r *http.Request) {
 
 	delete(s.Values, tempCredKey)
 	s.Values[tokenCredKey] = tokenCred
+	s.Values[screenName] = urlValues["screen_name"]
 	if err := s.Save(r, w); err != nil {
 		http.Error(w, "Error saving sessions, "+err.Error(), 500)
 		return
@@ -312,6 +410,8 @@ func main() {
 	http.HandleFunc("/callback", twitterCallbackHandler)
 	http.HandleFunc("/logout", twitterLogoutHandler)
 	http.HandleFunc("/dump", dumpHandler)
+	http.HandleFunc("/classify", classifyHandler)
+	http.HandleFunc("/categorise", categoriseHandler)
 	http.Handle("/static/", http.StripPrefix("/static/", staticHandler))
 
 	log.Fatal(http.ListenAndServe(":8081", nil))

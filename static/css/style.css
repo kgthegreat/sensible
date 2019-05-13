@@ -1,3 +1,44 @@
+@media (min-width: 768px) {
+    .container-small {
+        width: 300px;
+    }
+    .container-large {
+        width: 970px;
+    }
+    .container-medium {
+        width: 500px;
+    } 
+} 
+} 
+@media (min-width: 992px) {
+    .container-small {
+        width: 500px;
+    }
+    .container-large {
+        width: 1170px;
+    }
+    .container-medium {
+        width: 700px;
+    } 
+
+} 
+@media (min-width: 1200px) {
+    .container-small {
+        width: 700px;
+    }
+    .container-large {
+        width: 1500px;
+    }
+    .container-medium {
+        width: 970px;
+    } 
+    
+}
+
+.container-small, .container-large {
+    max-width: 100%;
+}
+
 .tweet-content {
 //height: 100px;
 }
@@ -18,14 +59,14 @@
     display: block;
     text-align: left;
 //    width: 960px;
-    margin: 0 auto;
+//    margin: 0 auto;
     font: 28px Helvetica, sans-serif; color: #333;
     
 }
 
 .logout {
     text-align: right;
-    padding-top: 20px;
+    padding-top: 10px;
     padding-bottom: 20px;
     margin: 1.5rem;
     display: block;
