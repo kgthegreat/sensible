@@ -50,6 +50,7 @@ const (
 	keywordPrefix           = "keyword_"
 	dotJson                 = ".json"
 	userKeywordPresent      = "filePresent"
+	adminKeywordFile        = "keyword_kgthegreat.json"
 )
 
 var oauthClient = oauth.Client{
@@ -225,6 +226,10 @@ func indexHandler(w http.ResponseWriter, r *http.Request) {
 
 		timelineTweets := getTimelineTweets(api1)
 		keywordStore := populateKeywordStore(rootKeywordFilename)
+
+		adminKeywordStore := populateKeywordStore(adminKeywordFile)
+
+		keywordStore = mergeKeywords(keywordStore, adminKeywordStore)
 
 		userKeywordFilename := s.Values[userKeywordPresent].(string)
 
