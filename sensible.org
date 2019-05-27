@@ -3,13 +3,12 @@
 ** DONE Deploy
 ** TODO Self launch
 *** DONE Write keywords into file
-*** TODO Write into file for all categories
-    CLOCK: [2019-05-12 Sun 18:49]
-*** TODO Add more categories
-*** TODO Write keywords into file only for kgthegreat user
-*** TODO Deploy
 *** TODO Write keywords into different files for different users
+*** TODO Write keywords into file only for kgthegreat user
 *** TODO Load different files for classification for different users
+*** TODO Write into file for all categories
+*** TODO Add more categories to the UI and backend
+*** TODO Deploy
 ** TODO 5 people launch
 *** Write keywords per user. Use db?
 *** TODO Error on offline
@@ -22,6 +21,7 @@
 *** TODO SSL
 *** TODO Better font
 *** TODO Better logout
+*** TODO Multiple words in the same sentence should trigger a category. They need not be together. For e.g. "When you call cow your mother and drink its urine, the world for you becomes an animal kingdom". Here cow and mother forms a context but are not together. In the present model of classification, it will be difficult to classify
 ** TODO Start with human trained classification
 *** TODO HTML Layout
 *** TODO Change keyword.json to be a model understood by prose
