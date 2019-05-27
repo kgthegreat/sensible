@@ -35,6 +35,7 @@
 ** TODO Style footer so that the landing page definitely looks like a single page
 ** TODO ML based classification
 * Infra
+** TODO Add decent logging
 ** TODO Get Https
 ** TODO Get a daemon
 ** TODO Prepare CI/CD
