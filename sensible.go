@@ -142,11 +142,12 @@ func categoriseHandler(w http.ResponseWriter, r *http.Request) {
 
 		//reflection or metaprogramming in golang
 		if keywordToAdd.Category == "politics" {
-			log.Print("Its politics")
-			//
-			log.Print("Name of kewyord file", keywordFile)
 			keywordStore.PoliticsKeywords = append(keywordStore.PoliticsKeywords, keywordToAdd.Phrase)
 
+		} else if keywordToAdd.Category == "travel" {
+			keywordStore.TravelKeywords = append(keywordStore.TravelKeywords, keywordToAdd.Phrase)
+		} else if keywordToAdd.Category == "tech" {
+			keywordStore.TechKeywords = append(keywordStore.TechKeywords, keywordToAdd.Phrase)
 		}
 
 		log.Print("keywordstore has been appended: ", keywordStore)
