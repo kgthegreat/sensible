@@ -29,9 +29,9 @@
                         <!-- Nav tabs -->
                         <ul class="nav nav-tabs" role="tablist" id="myTab">
                             <li role="presentation" class="nav-item"><a class="nav-link" href="#tech" aria-controls="home" role="tab" data-toggle="tab">Tech</a></li>
-                            <!--li role="presentation" class="nav-item"><a class="nav-link" href="#profile" aria-controls="profile" role="tab" data-toggle="tab">Sports</a></li-->
+                            <li role="presentation" class="nav-item"><a class="nav-link" href="#business" aria-controls="settings" role="tab" data-toggle="tab">Business</a></li>
                             <li role="presentation" class="nav-item"><a class="nav-link" href="#politics" aria-controls="messages" role="tab" data-toggle="tab">Politics</a></li>
-                            <li role="presentation" class="nav-item"><a class="nav-link" href="#settings" aria-controls="settings" role="tab" data-toggle="tab">Business</a></li>
+                            <li role="presentation" class="nav-item"><a class="nav-link" href="#sports" aria-controls="profile" role="tab" data-toggle="tab">Sports</a></li>
                             <li role="presentation" class="nav-item"><a class="nav-link" href="#travel" aria-controls="travel" role="tab" data-toggle="tab">Travel</a></li>
                             <li role="presentation" class="nav-item"><a class="nav-link" href="#others" aria-controls="settings" role="tab" data-toggle="tab">Others</a></li>
                         </ul>
@@ -47,6 +47,17 @@
                                 <hr>
                                 {{end}}
                             </div>
+                            
+                            <div role="tabpanel" class="tab-pane fade show" id="business" style="margin-top: 15px;">
+                                {{range $tweet := .BusinessTweets }}
+                                <div class="row tweet-content">
+                                    <div class="col-md-1"><img class="avatar" src="{{$tweet.User.ProfileImageURL}}"></div>
+                                    <div class="col-md-11"><div><b>{{$tweet.User.Name}}</b> <a href="http://twitter.com/{{$tweet.User.ScreenName}}">@{{$tweet.User.ScreenName}}</a></br><div class="tweet-block">{{$tweet.FullText}}</div></div></div>
+                                </div>
+                                <hr>
+                                {{end}}
+                            </div>
+
 
                             <div role="tabpanel" class="tab-pane fade show" id="politics" style="margin-top: 15px;">
                                 {{range $tweet := .PoliticsTweets }}
@@ -57,6 +68,17 @@
                                 <hr>
                                 {{end}}
                             </div>
+
+                            <div role="tabpanel" class="tab-pane fade show" id="sports" style="margin-top: 15px;">
+                                {{range $tweet := .SportsTweets }}
+                                <div class="row tweet-content">
+                                    <div class="col-md-1"><img class="avatar" src="{{$tweet.User.ProfileImageURL}}"></div>
+                                    <div class="col-md-11"><div><b>{{$tweet.User.Name}}</b> <a href="http://twitter.com/{{$tweet.User.ScreenName}}">@{{$tweet.User.ScreenName}}</a></br><div class="tweet-block">{{$tweet.FullText}}</div></div></div>
+                                </div>
+                                <hr>
+                                {{end}}
+                            </div>
+
 
                             <div role="tabpanel" class="tab-pane fade show" id="travel" style="margin-top: 15px;">
                                 {{range $tweet := .TravelTweets }}
@@ -97,6 +119,7 @@
                   <!--div class="col-sm"><a href="#" class="btn btn-sm btn-outline-primary categorise" type="sports">sports</a></div-->
                   <div class="col-sm"><a href="#" class="btn btn-sm btn-outline-primary categorise" type="business">business</a></div>
                   <div class="col-sm"><a href="#" class="btn btn-sm btn-outline-primary categorise" type="politics">politics</a></div>
+                  <div class="col-sm"><a href="#" class="btn btn-sm btn-outline-primary categorise" type="sports">sports</a></div>
 
                   <div class="col-sm"><a href="#" class="btn btn-sm btn-outline-primary categorise" type="travel">travel</a></div>
               </div>

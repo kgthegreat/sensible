@@ -12,10 +12,13 @@ import (
 )
 
 func classifyTweets(timelineTweets []anaconda.Tweet, keywordStore Keyword) map[string][]anaconda.Tweet {
+	// TODO change the below to use Page model
 	classifiedTweets := make(map[string][]anaconda.Tweet)
 	var techTweets []anaconda.Tweet
 	var politicsTweets []anaconda.Tweet
 	var travelTweets []anaconda.Tweet
+	var sportsTweets []anaconda.Tweet
+	var businessTweets []anaconda.Tweet
 	var otherTweets []anaconda.Tweet
 
 	//	totalKeywordStore := mergeKeywords(keywordStore, populateKeywordStore())
@@ -27,6 +30,10 @@ func classifyTweets(timelineTweets []anaconda.Tweet, keywordStore Keyword) map[s
 			politicsTweets = append(politicsTweets, tweet)
 		} else if itIs(keywordStore.TravelKeywords, tweet) {
 			travelTweets = append(travelTweets, tweet)
+		} else if itIs(keywordStore.SportsKeywords, tweet) {
+			sportsTweets = append(sportsTweets, tweet)
+		} else if itIs(keywordStore.BusinessKeywords, tweet) {
+			businessTweets = append(businessTweets, tweet)
 		} else {
 			otherTweets = append(otherTweets, tweet)
 		}
@@ -35,6 +42,8 @@ func classifyTweets(timelineTweets []anaconda.Tweet, keywordStore Keyword) map[s
 	classifiedTweets["tech"] = techTweets
 	classifiedTweets["politics"] = politicsTweets
 	classifiedTweets["travel"] = travelTweets
+	classifiedTweets["sports"] = sportsTweets
+	classifiedTweets["business"] = businessTweets
 	classifiedTweets["other"] = otherTweets
 	return classifiedTweets
 }
@@ -43,6 +52,8 @@ func mergeKeywords(keyword1 Keyword, keyword2 Keyword) Keyword {
 	keyword1.PoliticsKeywords = append(keyword1.PoliticsKeywords, keyword2.PoliticsKeywords...)
 	keyword1.TechKeywords = append(keyword1.TechKeywords, keyword2.TechKeywords...)
 	keyword1.TravelKeywords = append(keyword1.TravelKeywords, keyword2.TravelKeywords...)
+	keyword1.SportsKeywords = append(keyword1.SportsKeywords, keyword2.SportsKeywords...)
+	keyword1.BusinessKeywords = append(keyword1.BusinessKeywords, keyword2.BusinessKeywords...)
 	return keyword1
 
 }

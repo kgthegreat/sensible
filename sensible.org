@@ -3,15 +3,20 @@
 ** DONE Deploy
 ** TODO Self launch
 *** DONE Write keywords into file
-*** TODO Write keywords into different files for different users
-*** TODO Write keywords into file only for kgthegreat user
-*** TODO Load different files for classification for different users
-*** TODO Write into file for all categories
-*** TODO Add more categories to the UI and backend
+*** DONE Write keywords into different files for different users
+*** DONE Write keywords into file only for kgthegreat user
+*** DONE Load different files for classification for different users
+*** DONE Write into file for all categories
+*** DONE Add more categories to the UI and backend
 *** TODO Deploy
+*** TODO Categorise frequently - dog food
+*** TODO Don't be open source for now
 ** TODO 5 people launch
-*** Write keywords per user. Use db?
-*** TODO Error on offline
+*** TODO Better representation of tweets - beautify
+*** TODO Add academic as category
+*** DONE Write keywords per user. Use db?
+*** TODO Proper Error page on offline
+*** TODO Machine learning model? Don't actually use but save keywords as an ML model. You can then use that as an USP
 ** TODO MVP Launch
 *** TODO Security?
 *** TODO Authentication
@@ -34,6 +39,11 @@
 ** TODO Add footer with about info
 ** TODO Style footer so that the landing page definitely looks like a single page
 ** TODO ML based classification
+** TODO Add ability to add categories per user
+** TODO Add ability to share categories - these can be curated categories and also list of handle to follow
+** TODO iOS App
+** TODO Android App
+** TODO Ability to edit keywords - Can be file edit through a web interface
 * Infra
 ** TODO Redirect IP to domain name
 ** TODO Add decent logging

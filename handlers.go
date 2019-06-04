@@ -51,7 +51,7 @@ func indexHandler(w http.ResponseWriter, r *http.Request) {
 		}
 		//		userKeywordStore := populateKeywordStore("keyword_" + s.Values[screenName].([]string)[0] + dotJson)
 		classifiedTweets := classifyTweets(timelineTweets, keywordStore)
-		p := &Page{Title: "Tech Tweets", TechTweets: classifiedTweets["tech"], PoliticsTweets: classifiedTweets["politics"], TravelTweets: classifiedTweets["travel"], OtherTweets: classifiedTweets["other"]}
+		p := &Page{Title: "Tech Tweets", TechTweets: classifiedTweets["tech"], BusinessTweets: classifiedTweets["business"], PoliticsTweets: classifiedTweets["politics"], SportsTweets: classifiedTweets["sports"], TravelTweets: classifiedTweets["travel"], OtherTweets: classifiedTweets["other"]}
 
 		if err := s.Save(r, w); err != nil {
 			http.Error(w, "Error saving session, "+err.Error(), 500)
@@ -165,6 +165,10 @@ func categoriseHandler(w http.ResponseWriter, r *http.Request) {
 			keywordStore.TravelKeywords = append(keywordStore.TravelKeywords, keywordToAdd.Phrase)
 		} else if keywordToAdd.Category == "tech" {
 			keywordStore.TechKeywords = append(keywordStore.TechKeywords, keywordToAdd.Phrase)
+		} else if keywordToAdd.Category == "sports" {
+			keywordStore.SportsKeywords = append(keywordStore.SportsKeywords, keywordToAdd.Phrase)
+		} else if keywordToAdd.Category == "business" {
+			keywordStore.BusinessKeywords = append(keywordStore.BusinessKeywords, keywordToAdd.Phrase)
 		}
 
 		log.Print("keywordstore has been appended: ", keywordStore)
