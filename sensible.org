@@ -46,7 +46,10 @@
 ** TODO Ability to edit keywords - Can be file edit through a web interface
 * Infra
 ** TODO Redirect IP to domain name
-** TODO Add decent logging
 ** TODO Get Https
 ** TODO Get a daemon
 ** TODO Prepare CI/CD
+* Framework
+** TODO Write tests
+** TODO Templates and layouts
+** TODO Add decent logging

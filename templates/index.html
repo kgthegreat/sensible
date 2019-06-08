@@ -4,14 +4,15 @@
         <link rel="icon" href="/static/images/favicon.png">
         <link rel="stylesheet" type="text/css" href="/static/css/bootstrap4.min.css">
         <link rel="stylesheet" type="text/css" href="/static/css/style.css">
+        <link rel="stylesheet" type="text/css" href="/static/css/jquery.scrolling-tabs.min.css">
         <script src="/static/js/jquery-2.1.4.min.js"></script>
         <script src="/static/js/bootstrap4.min.js"></script>
         <script src="/static/js/sensible.js"></script>
+        <script src="/static/js/jquery.scrolling-tabs.min.js"></script>
         <meta name="viewport" content="width=device-width, initial-scale=1">
     </head>
-    <body>
-        
-        <div class="container">
+    <body class="bg-grey">
+        <div class="container container-small bg-white">
             <div class="row">
                 
                 <div class="col">
@@ -43,6 +44,13 @@
                                     <div class="col-md-11"><div><b>{{$tweet.User.Name}}</b> <a href="http://twitter.com/{{$tweet.User.ScreenName}}">@{{$tweet.User.ScreenName}}</a></br><div class="tweet-block">{{$tweet.FullText}}</div></div></div>
                                     <br></br>
 
+                                </div>
+                                <div class="row interactions">
+                                    <div class="col-sm-1 tweet-reply"></div>
+                                    <div class="col-sm-2 tweet-reply">Reply icon</div>
+                                    <div class="col-sm-2 tweet-reply">Retweet icon</div>
+                                    <div class="col-sm-2 tweet-reply">Like icon</div>
+                                    <div class="col-sm-2 tweet-reply">DM icon</div>
                                 </div>
                                 <hr>
                                 {{end}}

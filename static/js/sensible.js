@@ -41,7 +41,17 @@ $( document ).ready(function() {
       }
     })
   });
+  $('.nav-tabs').scrollingTabs({
+    bootstrapVersion: 4,
+    cssClassLeftArrow: 'arrow left i',
+    cssClassRightArrow: 'arrow right i',
+    enableSwiping: true,
+    scrollToTabEdge: true,
+    disableScrollArrowsOnFullyScrolled: true
+    //    leftArrowContent: ['']
 
+    
+  });
 });
 
 function openModal(selection) {
