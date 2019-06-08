@@ -51,5 +51,5 @@
 ** TODO Prepare CI/CD
 * Framework
 ** TODO Write tests
-** TODO Templates and layouts
+** TODO Templates and layouts and partials
 ** TODO Add decent logging

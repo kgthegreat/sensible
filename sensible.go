@@ -43,12 +43,14 @@ var oauthClient = oauth.Client{
 var signinOAuthClient oauth.Client
 
 func main() {
-	wordPtr := flag.String("mode", "", "which mode to run")
+	modePtr := flag.String("mode", "", "which mode to run")
+
+	portPtr := flag.String("port", "8081", "Which port to run")
 	flag.Parse()
+	fmt.Println("word:", *modePtr)
+	fmt.Println("port:", *portPtr)
 
-	fmt.Println("word:", *wordPtr)
-
-	if *wordPtr == "dev" {
+	if *modePtr == "dev" {
 		mode = "dev"
 	}
 	token := getTokens()
@@ -68,5 +70,5 @@ func main() {
 	http.HandleFunc("/categorise", categoriseHandler)
 	http.Handle("/static/", http.StripPrefix("/static/", staticHandler))
 
-	log.Fatal(http.ListenAndServe(":8081", nil))
+	log.Fatal(http.ListenAndServe(":"+*portPtr, nil))
 }
