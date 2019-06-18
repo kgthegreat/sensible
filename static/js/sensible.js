@@ -19,7 +19,8 @@ $( document ).ready(function() {
     }
   });
 
-  $(".categorise").click(function(){
+  $(".categorise").click(function(e){
+    e.preventDefault()
     console.log("Clicked on category")
     var buttonEl = $(this)
     var category = buttonEl.attr('type')
@@ -33,6 +34,7 @@ $( document ).ready(function() {
       }),
       type: 'POST',
       success: function(res) {
+        console.log("success1")
         $('#myModal').modal('hide');
       },
       error: function(error) {

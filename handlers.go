@@ -188,6 +188,8 @@ func categoriseHandler(w http.ResponseWriter, r *http.Request) {
 		}
 		log.Print("Fetching from cookie after saving: ", s.Values[userKeywordPresent])
 		//		http.Redirect(w, r, "/", 302)
+		//		w.Header().Set("Content-Type", "application/json; charset=UTF-8")
+		//		w.WriteHeader(http.StatusOK)
 
 	} else {
 		http.Error(w, "Invalid request method", http.StatusMethodNotAllowed)

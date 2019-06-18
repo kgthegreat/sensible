@@ -8,16 +8,21 @@
 *** DONE Load different files for classification for different users
 *** DONE Write into file for all categories
 *** DONE Add more categories to the UI and backend
-*** TODO Deploy
-*** TODO Categorise frequently - dog food
+*** DONE Deploy
+*** DONE Categorise frequently - dog food
 *** TODO Don't be open source for now
 ** TODO 5 people launch
-*** TODO Better representation of tweets - beautify
-*** TODO Add academic as category
+*** DONE Better representation of tweets - beautify
 *** DONE Write keywords per user. Use db?
+*** DONE land back on same tweet after categorisation
+*** TODO Allow interactions
+*** TODO Allow adding tweet
+*** TODO HTTPs
+** TODO MVP Launch
+*** TODO Public roadmap with ability for people to give feedback and vote
 *** TODO Proper Error page on offline
 *** TODO Machine learning model? Don't actually use but save keywords as an ML model. You can then use that as an USP
-** TODO MVP Launch
+*** TODO Add academic as category
 *** TODO Security?
 *** TODO Authentication
 *** TODO Machine learning model?
@@ -25,7 +30,7 @@
 *** TODO Refactor?
 *** TODO SSL
 *** TODO Better font
-*** TODO Better logout
+*** DONE Better logout
 *** TODO Multiple words in the same sentence should trigger a category. They need not be together. For e.g. "When you call cow your mother and drink its urine, the world for you becomes an animal kingdom". Here cow and mother forms a context but are not together. In the present model of classification, it will be difficult to classify
 ** TODO Start with human trained classification
 *** TODO HTML Layout
@@ -44,6 +49,7 @@
 ** TODO iOS App
 ** TODO Android App
 ** TODO Ability to edit keywords - Can be file edit through a web interface
+** TODO Add ability to add users? Like lists?
 * Infra
 ** TODO Redirect IP to domain name
 ** TODO Get Https
