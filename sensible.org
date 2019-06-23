@@ -55,6 +55,8 @@
 ** TODO Get Https
 ** TODO Get a daemon
 ** TODO Prepare CI/CD
+** TODO Separate out keywords/storage files from deployment folder
+** TODO Take precautions against deleting storage files
 * Framework
 ** TODO Write tests
 ** TODO Templates and layouts and partials

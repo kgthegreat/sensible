@@ -5,8 +5,11 @@ import (
 	"flag"
 	"fmt"
 	"log"
+	"net"
 	"net/http"
+	"os"
 	_ "regexp"
+	"strconv"
 
 	"github.com/ChimeraCoder/anaconda"
 	"github.com/garyburd/go-oauth/oauth"
@@ -72,5 +75,17 @@ func main() {
 	http.HandleFunc("/fav", favHandler)
 	http.Handle("/static/", http.StripPrefix("/static/", staticHandler))
 
-	log.Fatal(http.ListenAndServe(":"+*portPtr, nil))
+	if os.Getenv("LISTEN_PID") == strconv.Itoa(os.Getpid()) {
+		// systemd run
+		f := os.NewFile(3, "from systemd")
+		l, err := net.FileListener(f)
+		if err != nil {
+			log.Fatal(err)
+		}
+		http.Serve(l, nil)
+	} else {
+		// manual run
+		//		log.Fatal(http.ListenAndServe(":8080", nil))
+		log.Fatal(http.ListenAndServe(":"+*portPtr, nil))
+	}
 }
