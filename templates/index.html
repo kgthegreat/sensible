@@ -50,34 +50,34 @@
                             </div>
                             
                             <div role="tabpanel" class="tab-pane fade show active" id="business" style="margin-top: 15px;">
-                                {{range $tweet := .BusinessTweets }}
-                                {{ template "tweet" $tweet }}
+                                {{range $tweet1 := .BusinessTweets }}
+                                {{ template "tweet" $tweet1 }}
                                 {{end}}
                             </div>
 
 
-                            <div role="tabpanel" class="tab-pane fade show active" id="politics" style="margin-top: 15px;">
-                                {{range $tweet := .PoliticsTweets }}
-                                {{ template "tweet" $tweet }}                                
+                            <div role="tabpanel" class="tab-pane fade show" id="politics" style="margin-top: 15px;">
+                                {{range $tweet2 := .PoliticsTweets }}
+                                {{ template "tweet" $tweet2 }}                                
                                 {{end}}
                             </div>
 
-                            <div role="tabpanel" class="tab-pane fade show active" id="sports" style="margin-top: 15px;">
-                                {{range $tweet := .SportsTweets }}
-                                {{ template "tweet" $tweet }}                                
+                            <div role="tabpanel" class="tab-pane fade show" id="sports" style="margin-top: 15px;">
+                                {{range $tweet3 := .SportsTweets }}
+                                {{ template "tweet" $tweet3 }}                                
                                 {{end}}
                             </div>
 
 
-                            <div role="tabpanel" class="tab-pane fade show active" id="travel" style="margin-top: 15px;">
-                                {{range $tweet := .TravelTweets }}
-                                {{ template "tweet" $tweet }}                                
+                            <div role="tabpanel" class="tab-pane fade show" id="travel" style="margin-top: 15px;">
+                                {{range $tweet4 := .TravelTweets }}
+                                {{ template "tweet" $tweet4 }}                                
                                 {{end}}
                             </div>
 
-                            <div role="tabpanel" class="tab-pane fade show active" id="others" style="margin-top: 15px;">
-                                {{range $tweet := .OtherTweets }}
-                                {{ template "tweet" $tweet }}                                
+                            <div role="tabpanel" class="tab-pane fade show" id="others" style="margin-top: 15px;">
+                                {{range $tweet5 := .OtherTweets }}
+                                {{ template "tweet" $tweet5 }}                                
                                 {{end}}
 
                             </div>
