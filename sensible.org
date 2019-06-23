@@ -15,7 +15,7 @@
 *** DONE Better representation of tweets - beautify
 *** DONE Write keywords per user. Use db?
 *** DONE land back on same tweet after categorisation
-*** TODO Allow interactions
+*** DONE Allow interactions
 *** TODO Allow adding tweet
 *** TODO HTTPs
 ** TODO MVP Launch

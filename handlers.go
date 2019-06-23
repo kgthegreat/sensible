@@ -116,7 +116,7 @@ func categoriseHandler(w http.ResponseWriter, r *http.Request) {
 	log.Print("Printing test: ", s.Values["test"])
 	log.Print("Keyword filename from cookie just after getting session: ", s.Values[screenName])
 	log.Print("a new variable from cookie just after getting session: ", s.Values["some"])
-	//	s := getSession(sessionName, r)
+
 	if r.Method == "POST" {
 		body, err := ioutil.ReadAll(r.Body)
 		if err != nil {
@@ -124,10 +124,6 @@ func categoriseHandler(w http.ResponseWriter, r *http.Request) {
 				http.StatusInternalServerError)
 		}
 		log.Print(string(body))
-		//		results = append(results, string(body))
-
-		//		w.Header().Set("Content-Type", "application/json; charset=UTF-8")
-		//		w.WriteHeader(http.StatusOK)
 
 		var keywordFile string
 
@@ -135,20 +131,7 @@ func categoriseHandler(w http.ResponseWriter, r *http.Request) {
 
 		// what happens if a person does not allow cookie? then twitter sign in wont work as well
 		keywordFile = s.Values[userKeywordPresent].(string)
-		/*
-			if s.Values[userKeywordPresent] == templateKeywordFilename {
-				keywordFile = templateKeywordFilename
-
-				//			keywordFile = keywordPrefix + s.Values[screenName].([]string)[0] + dotJson
-			} else {
-				//			keywordFile =
-				keywordFile = s.Values[userKeywordPresent].(string)
-			}*/
 		keywordStore := populateKeywordStore(keywordFile)
-
-		//		fmt.Fprint(w, "POST done")
-
-		//		b, error = Json.Unmarshal()
 		var keywordToAdd KeywordToAdd
 		err = json.Unmarshal(body, &keywordToAdd)
 
@@ -157,7 +140,7 @@ func categoriseHandler(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 
-		//reflection or metaprogramming in golang
+		//reflection or metaprogramming in golang?
 		if keywordToAdd.Category == "politics" {
 			keywordStore.PoliticsKeywords = append(keywordStore.PoliticsKeywords, keywordToAdd.Phrase)
 
@@ -195,3 +178,44 @@ func categoriseHandler(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "Invalid request method", http.StatusMethodNotAllowed)
 	}
 }
+
+func retweetHandler(w http.ResponseWriter, r *http.Request) {
+	log.Print("Entering retweet handler")
+	if r.Method == "POST" {
+
+		s := getSession(r, sessionName)
+		api1 := getAuthenticatedTwitterApi(s)
+
+		twitterId := recieveTwitterId(w, r)
+		rt, err := api1.Retweet(twitterId, false)
+
+		if err != nil {
+			log.Print(err)
+			log.Print(rt)
+		}
+
+	}
+
+}
+
+func favHandler(w http.ResponseWriter, r *http.Request) {
+	log.Print("Entering favourite handler")
+	if r.Method == "POST" {
+
+		s := getSession(r, sessionName)
+		api1 := getAuthenticatedTwitterApi(s)
+
+		twitterId := recieveTwitterId(w, r)
+		rt, err := api1.Favorite(twitterId)
+
+		if err != nil {
+			log.Print(err)
+			log.Print(rt)
+		}
+
+	}
+
+}
+
+/*func loadRepliesHandler(w http.ResponseWriter, r *http.Request) {
+}*/

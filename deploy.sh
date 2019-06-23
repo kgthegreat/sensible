@@ -7,4 +7,6 @@ rsync -av static kgthegreat@46.101.51.200:/home/kgthegreat/sensible
 echo "Statics copied to server ..."
 rsync -av templates kgthegreat@46.101.51.200:/home/kgthegreat/sensible
 echo "templates copied to server ..."
+scp token.json kgthegreat@46.101.51.200:/home/kgthegreat/sensible
+echo "Token copied to server ..."
 echo "Deployment complete."

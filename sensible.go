@@ -68,6 +68,8 @@ func main() {
 	http.HandleFunc("/dump", dumpHandler)
 	http.HandleFunc("/classify", classifyHandler)
 	http.HandleFunc("/categorise", categoriseHandler)
+	http.HandleFunc("/retweet", retweetHandler)
+	http.HandleFunc("/fav", favHandler)
 	http.Handle("/static/", http.StripPrefix("/static/", staticHandler))
 
 	log.Fatal(http.ListenAndServe(":"+*portPtr, nil))

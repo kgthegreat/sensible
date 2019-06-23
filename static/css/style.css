@@ -118,3 +118,6 @@ a:hover { color: #333; text-decoration: none; }
   -webkit-transform: rotate(135deg);
 }
 
+.interactions {
+    padding-bottom: 15px;
+}

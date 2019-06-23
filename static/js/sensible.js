@@ -1,9 +1,11 @@
 
 $(function () {
-    $('#myTab a:first').tab('show')
+  $('#myTab a:first').tab('show')
+
 })
 $( document ).ready(function() {
-    console.log( "ready!" );
+  console.log( "ready!" );
+    $('[data-toggle="tooltip"]').tooltip()
     var a = $('.tab-content .tweet-block')
     console.log(a)
     for (var i = 0; i < a.length; i++) {
@@ -43,6 +45,11 @@ $( document ).ready(function() {
       }
     })
   });
+
+  callTwitterInteraction(".tweet-retweet", "data-tweet-id", "/retweet")
+  callTwitterInteraction(".tweet-fav", "data-tweet-id", "/fav")
+
+  
   $('.nav-tabs').scrollingTabs({
     bootstrapVersion: 4,
     cssClassLeftArrow: 'arrow left i',
@@ -55,6 +62,31 @@ $( document ).ready(function() {
     
   });
 });
+
+function callTwitterInteraction(clickedEl, dataEl, remoteApi) {
+  $(clickedEl).click(function(e){
+    e.preventDefault()
+    console.log("Clicked on " + clickedEl)
+    var linkEl = $(this)
+//    console.log(linkEl[0])
+    console.log(linkEl)
+    var tweetId = linkEl.attr('data-tweet-id')
+    console.log(tweetId)
+    $.ajax({
+      url: remoteApi,
+      data: JSON.stringify({
+        "id_str": tweetId
+      }),
+      type: 'POST',
+      success: function(res) {
+        console.log("success " + remoteApi)
+      },
+      error: function(error) {
+        console.log(error);
+      }
+    })
+  });
+}
 
 function openModal(selection) {
 
