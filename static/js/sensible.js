@@ -1,11 +1,11 @@
 
 $(function () {
   $('#myTab a:first').tab('show')
-
+//  $('[data-toggle="tooltip"]').tooltip() 
 })
 $( document ).ready(function() {
   console.log( "ready!" );
-    $('[data-toggle="tooltip"]').tooltip()
+
     var a = $('.tab-content .tweet-block')
     console.log(a)
     for (var i = 0; i < a.length; i++) {
@@ -61,6 +61,7 @@ $( document ).ready(function() {
 
     
   });
+
 });
 
 function callTwitterInteraction(clickedEl, dataEl, remoteApi) {

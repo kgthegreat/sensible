@@ -9,8 +9,10 @@
         <link rel="stylesheet" type="text/css" href="/static/css/jquery.scrolling-tabs.min.css">
 
         <script src="/static/js/jquery-2.1.4.min.js"></script>
-        <!--script src="/static/js/bootstrap4.min.js"></script-->
-        <script src="/static/js/bootstrap.bundle.min.js"></script>
+
+        <script src="/static/js/bootstrap4.min.js"></script>
+        <!--script src="/static/js/bootstrap.bundle.min.js"></script-->
+
         <script src="/static/js/sensible.js"></script>
         <script src="/static/js/jquery.scrolling-tabs.min.js"></script>
         <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -41,109 +43,72 @@
                             <li role="presentation" class="nav-item"><a class="nav-link" href="#others" aria-controls="others" role="tab" data-toggle="tab">Others</a></li>
                         </ul>
                         <div class="tab-content">
-                            <div role="tabpanel" class="tab-pane fade show active" id="tech" style="margin-top: 15px;">
+                            <div role="tabpanel" class="tab-pane fade show" id="tech" style="margin-top: 15px;">
                                 {{range $tweet := .TechTweets }}
-                                <div class="row tweet-content">
-                                    <div class="col-md-1"><img class="avatar" src="{{$tweet.User.ProfileImageURL}}"></div>
-                                    <div class="col-md-11"><div><b>{{$tweet.User.Name}}</b> <a href="http://twitter.com/{{$tweet.User.ScreenName}}">@{{$tweet.User.ScreenName}}</a></br><div class="tweet-block">{{$tweet.FullText}}</div></div></div>
-                                    <br></br>
-
-                                </div>
-                                <div class="row interactions" >
-                                    <div class="col-sm-1"></div>
-                                    <div class="col-sm-1"><div class="chat icon coming-soon" title="coming soon" data-toggle="tooltip" data-placement="bottom"></div></div>
-                                    <div class="col-sm-1"><a href="#" class="tweet-retweet" data-tweet-id="{{$tweet.Id}}" ><div class="retweet icon" title="Retweet" data-toggle="tooltip" data-placement="top"></div></a></div>
-                                    <div class="col-sm-1"><a href="#" class="tweet-fav" data-tweet-id="{{$tweet.Id}}"><div class="heart icon"  title="Like" data-toggle="tooltip" data-placement="top"></div></a></div>
-                                    <!--div class="col-sm-2 tweet-reply">DM icon</div-->
-                                    <div class="col-sm-1"><div class="mail icon" title="coming soon" data-toggle="tooltip" data-placement="top"></div></div>
-                                </div>
-
-                                <hr>
+                                {{ template "tweet" $tweet }}
                                 {{end}}
                             </div>
                             
-                            <div role="tabpanel" class="tab-pane fade show" id="business" style="margin-top: 15px;">
+                            <div role="tabpanel" class="tab-pane fade show active" id="business" style="margin-top: 15px;">
                                 {{range $tweet := .BusinessTweets }}
-                                <div class="row tweet-content">
-                                    <div class="col-md-1"><img class="avatar" src="{{$tweet.User.ProfileImageURL}}"></div>
-                                    <div class="col-md-11"><div><b>{{$tweet.User.Name}}</b> <a href="http://twitter.com/{{$tweet.User.ScreenName}}">@{{$tweet.User.ScreenName}}</a></br><div class="tweet-block">{{$tweet.FullText}}</div></div></div>
-                                </div>
-                                <hr>
+                                {{ template "tweet" $tweet }}
                                 {{end}}
                             </div>
 
 
-                            <div role="tabpanel" class="tab-pane fade show" id="politics" style="margin-top: 15px;">
+                            <div role="tabpanel" class="tab-pane fade show active" id="politics" style="margin-top: 15px;">
                                 {{range $tweet := .PoliticsTweets }}
-                                <div class="row tweet-content">
-                                    <div class="col-md-1"><img class="avatar" src="{{$tweet.User.ProfileImageURL}}"></div>
-                                    <div class="col-md-11"><div><b>{{$tweet.User.Name}}</b> <a href="http://twitter.com/{{$tweet.User.ScreenName}}">@{{$tweet.User.ScreenName}}</a></br><div class="tweet-block">{{$tweet.FullText}}</div></div></div>
-                                </div>
-                                <hr>
+                                {{ template "tweet" $tweet }}                                
                                 {{end}}
                             </div>
 
-                            <div role="tabpanel" class="tab-pane fade show" id="sports" style="margin-top: 15px;">
+                            <div role="tabpanel" class="tab-pane fade show active" id="sports" style="margin-top: 15px;">
                                 {{range $tweet := .SportsTweets }}
-                                <div class="row tweet-content">
-                                    <div class="col-md-1"><img class="avatar" src="{{$tweet.User.ProfileImageURL}}"></div>
-                                    <div class="col-md-11"><div><b>{{$tweet.User.Name}}</b> <a href="http://twitter.com/{{$tweet.User.ScreenName}}">@{{$tweet.User.ScreenName}}</a></br><div class="tweet-block">{{$tweet.FullText}}</div></div></div>
-                                </div>
-                                <hr>
+                                {{ template "tweet" $tweet }}                                
                                 {{end}}
                             </div>
 
 
-                            <div role="tabpanel" class="tab-pane fade show" id="travel" style="margin-top: 15px;">
+                            <div role="tabpanel" class="tab-pane fade show active" id="travel" style="margin-top: 15px;">
                                 {{range $tweet := .TravelTweets }}
-                                <div class="row tweet-content">
-                                    <div class="col-md-1"><img class="avatar" src="{{$tweet.User.ProfileImageURL}}"></div>
-                                    <div class="col-md-11"><div><b>{{$tweet.User.Name}}</b> <a href="http://twitter.com/{{$tweet.User.ScreenName}}">@{{$tweet.User.ScreenName}}</a></br><div class="tweet-block">{{$tweet.FullText}}</div></div></div>
-                                </div>
-                                <hr>
+                                {{ template "tweet" $tweet }}                                
                                 {{end}}
                             </div>
 
-                            <div role="tabpanel" class="tab-pane fade show" id="others" style="margin-top: 15px;">
+                            <div role="tabpanel" class="tab-pane fade show active" id="others" style="margin-top: 15px;">
                                 {{range $tweet := .OtherTweets }}
-                                <div class="row tweet-content">
-                                    <div class="col-md-1"><img class="avatar" src="{{$tweet.User.ProfileImageURL}}"></div>
-                                    <div class="col-md-11"><div><b>{{$tweet.User.Name}}</b> <a href="http://twitter.com/{{$tweet.User.ScreenName}}">@{{$tweet.User.ScreenName}}</a></br><div class="tweet-block">{{$tweet.FullText}}</div></div></div>
-
-                                </div>
-
-                                <hr>
+                                {{ template "tweet" $tweet }}                                
                                 {{end}}
 
                             </div>
 
 
-<!-- Modal -->
-<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-          <div class="container">
-              <div class="row">
-                  <div class="col-sm"><a href="#" class="btn btn-sm btn-outline-primary categorise" type="tech">tech</a></div>
-                  <!--div class="col-sm"><a href="#" class="btn btn-sm btn-outline-primary categorise" type="sports">sports</a></div-->
-                  <div class="col-sm"><a href="#" class="btn btn-sm btn-outline-primary categorise" type="business">business</a></div>
-                  <div class="col-sm"><a href="#" class="btn btn-sm btn-outline-primary categorise" type="politics">politics</a></div>
-                  <div class="col-sm"><a href="#" class="btn btn-sm btn-outline-primary categorise" type="sports">sports</a></div>
+                            <!-- Modal -->
+                            <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                <div class="modal-dialog" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <div class="container">
+                                                <div class="row">
+                                                    <div class="col-sm"><a href="#" class="btn btn-sm btn-outline-primary categorise" type="tech">tech</a></div>
+                                                    <!--div class="col-sm"><a href="#" class="btn btn-sm btn-outline-primary categorise" type="sports">sports</a></div-->
+                                                    <div class="col-sm"><a href="#" class="btn btn-sm btn-outline-primary categorise" type="business">business</a></div>
+                                                    <div class="col-sm"><a href="#" class="btn btn-sm btn-outline-primary categorise" type="politics">politics</a></div>
+                                                    <div class="col-sm"><a href="#" class="btn btn-sm btn-outline-primary categorise" type="sports">sports</a></div>
 
-                  <div class="col-sm"><a href="#" class="btn btn-sm btn-outline-primary categorise" type="travel">travel</a></div>
-              </div>
-          </div>
-      </div>
-    </div>
-  </div>
-</div>
+                                                    <div class="col-sm"><a href="#" class="btn btn-sm btn-outline-primary categorise" type="travel">travel</a></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
 
                         </div>
                     </div>

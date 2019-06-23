@@ -59,3 +59,5 @@
 ** TODO Write tests
 ** TODO Templates and layouts and partials
 ** TODO Add decent logging
+* Performance
+** Introducing bootstrap.bundle js for tooltip instead of bootstrap.min.js has resulted in visible tab delayed loading. Actually the problem is with enabling data tooltip for all elements. It introduces a significant lag in displaying active tab. and then fetching images. rather not have tool tip
