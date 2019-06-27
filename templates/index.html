@@ -76,6 +76,10 @@
                             </div>
 
                             <div role="tabpanel" class="tab-pane fade show" id="others" style="margin-top: 15px;">
+                                <div>
+      
+                                <div class="alert alert-primary" role="alert">
+                              Classify tweets by clicking or selecting words or phrases </div>
                                 {{range $tweet5 := .OtherTweets }}
                                 {{ template "tweet" $tweet5 }}                                
                                 {{end}}

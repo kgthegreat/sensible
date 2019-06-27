@@ -16,6 +16,8 @@
 *** DONE Write keywords per user. Use db?
 *** DONE land back on same tweet after categorisation
 *** DONE Allow interactions
+*** TODO Counts
+*** TODO A pop up before signing in explaining why we need all of these permissions
 *** TODO Allow adding tweet
 *** TODO HTTPs
 ** TODO MVP Launch
@@ -58,8 +60,9 @@
 ** TODO Separate out keywords/storage files from deployment folder
 ** TODO Take precautions against deleting storage files
 * Framework
+** DONE Templates and layouts and partials
 ** TODO Write tests
-** TODO Templates and layouts and partials
-** TODO Add decent logging
+** TODO Add decent logging 
+** TODO Logging as analytics?
 * Performance
 ** Introducing bootstrap.bundle js for tooltip instead of bootstrap.min.js has resulted in visible tab delayed loading. Actually the problem is with enabling data tooltip for all elements. It introduces a significant lag in displaying active tab. and then fetching images. rather not have tool tip

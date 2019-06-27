@@ -46,8 +46,8 @@ $( document ).ready(function() {
     })
   });
 
-  callTwitterInteraction(".tweet-retweet", "data-tweet-id", "/retweet")
-  callTwitterInteraction(".tweet-fav", "data-tweet-id", "/fav")
+  callTwitterInteraction(".tweet-retweet", "data-tweet-id", "/retweet", "green")
+  callTwitterInteraction(".tweet-fav", "data-tweet-id", "/fav", "red")
 
   
   $('.nav-tabs').scrollingTabs({
@@ -64,13 +64,14 @@ $( document ).ready(function() {
 
 });
 
-function callTwitterInteraction(clickedEl, dataEl, remoteApi) {
+function callTwitterInteraction(clickedEl, dataEl, remoteApi, color) {
   $(clickedEl).click(function(e){
     e.preventDefault()
     console.log("Clicked on " + clickedEl)
     var linkEl = $(this)
 //    console.log(linkEl[0])
     console.log(linkEl)
+
     var tweetId = linkEl.attr('data-tweet-id')
     console.log(tweetId)
     $.ajax({
@@ -81,6 +82,10 @@ function callTwitterInteraction(clickedEl, dataEl, remoteApi) {
       type: 'POST',
       success: function(res) {
         console.log("success " + remoteApi)
+        $(linkEl.children()[0]).prop("style", "color: " + color)
+        var cnt = linkEl.contents();
+        linkEl.replaceWith(cnt);
+
       },
       error: function(error) {
         console.log(error);

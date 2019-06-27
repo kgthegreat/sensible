@@ -119,5 +119,11 @@ a:hover { color: #333; text-decoration: none; }
 }
 
 .interactions {
-    padding-bottom: 15px;
+    //    padding-bottom: 15px;
+    padding-top: 15px;
+}
+
+.count {
+    margin-left: -50px;
+    margin-top: -2px;
 }
