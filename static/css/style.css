@@ -127,3 +127,7 @@ a:hover { color: #333; text-decoration: none; }
     margin-left: -50px;
     margin-top: -2px;
 }
+
+.content {
+    padding-left: 20px;
+}

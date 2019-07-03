@@ -1,7 +1,7 @@
 * Feature
 ** DONE Add a beautiful login page
 ** DONE Deploy
-** TODO Self launch
+** DONE Self launch
 *** DONE Write keywords into file
 *** DONE Write keywords into different files for different users
 *** DONE Write keywords into file only for kgthegreat user
@@ -10,13 +10,16 @@
 *** DONE Add more categories to the UI and backend
 *** DONE Deploy
 *** DONE Categorise frequently - dog food
-*** TODO Don't be open source for now
+*** DONE Better logout
 ** TODO 5 people launch
 *** DONE Better representation of tweets - beautify
 *** DONE Write keywords per user. Use db?
 *** DONE land back on same tweet after categorisation
 *** DONE Allow interactions
-*** TODO Counts
+*** DONE Counts
+*** DONE Disable retweet/fav after once
+*** TODO Add ability to unretweet/unfav
+*** TODO Don't be open source for now
 *** TODO A pop up before signing in explaining why we need all of these permissions
 *** TODO Allow adding tweet
 *** TODO HTTPs
@@ -24,7 +27,7 @@
 *** TODO Public roadmap with ability for people to give feedback and vote
 *** TODO Proper Error page on offline
 *** TODO Machine learning model? Don't actually use but save keywords as an ML model. You can then use that as an USP
-*** TODO Add academic as category
+*** TODO Ability to add category
 *** TODO Security?
 *** TODO Authentication
 *** TODO Machine learning model?
@@ -32,7 +35,6 @@
 *** TODO Refactor?
 *** TODO SSL
 *** TODO Better font
-*** DONE Better logout
 *** TODO Multiple words in the same sentence should trigger a category. They need not be together. For e.g. "When you call cow your mother and drink its urine, the world for you becomes an animal kingdom". Here cow and mother forms a context but are not together. In the present model of classification, it will be difficult to classify
 ** TODO Start with human trained classification
 *** TODO HTML Layout
