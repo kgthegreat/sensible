@@ -36,9 +36,10 @@ func classifyTweets(timelineTweets []anaconda.Tweet, keywordStore map[string][]s
 	return classifiedTweets
 }
 
-func mergeKeywords(keyword1 map[string][]string, keyword2 map[string][]string) map[string][]string {
+func mergeKeywords(categories1 []Category, categories2 []Category) []Category {
 
-	for _, category := range categories {
+	for _, category := range categories1 {
+		category.Keywords = append(category.Keywords, category.Keywords)
 		keyword1[category] = append(keyword1[category], keyword2[category]...)
 	}
 	return keyword1
@@ -59,17 +60,18 @@ func itIs(keywords []string, tweet anaconda.Tweet) bool {
 
 func populateKeywordStore(filename string) map[string][]string {
 	log.Print(" populating keyword from this file : ", filename)
-	var store1 map[string][]string
+	var categories []Category
+	//	var store1 map[string][]string
 	keyword_bytes, err := ioutil.ReadFile(filename)
 	if err != nil {
 		fmt.Println("error", err)
 	}
 
-	err = json.Unmarshal(keyword_bytes, &store1)
+	err = json.Unmarshal(keyword_bytes, &categories)
 	if err != nil {
 		log.Print("Error reading keyword file: ", err)
 	}
-	return store1
+	return categories
 }
 
 func getTimelineTweets(ap *anaconda.TwitterApi) []anaconda.Tweet {

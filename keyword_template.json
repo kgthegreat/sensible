@@ -1,1 +1,9 @@
-{"tech":[], "politics":[], "business":[], "travel":[], "sports":[]}
+{"tech":["what", "not"], "politics":[], "business":[], "travel":[], "sports":[]}
+
+{
+  "tech": {
+    "shown": true,
+    "order": 2,
+    "keywords": ["what", "not"]
+  }
+}
