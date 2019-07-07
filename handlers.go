@@ -142,7 +142,6 @@ func categoriseHandler(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 
-		//reflection or metaprogramming in golang?
 		for _, category := range categories {
 			if keywordToAdd.Category == category {
 				keywordStore[category] = append(keywordStore[category], keywordToAdd.Phrase)
@@ -151,7 +150,7 @@ func categoriseHandler(w http.ResponseWriter, r *http.Request) {
 
 		log.Print("keywordstore has been appended: ", keywordStore)
 		b, err := json.Marshal(keywordStore)
-		//			filename := "keyword.json"
+
 		log.Print("what are we getting", s.Values[screenName].([]string)[0])
 		filename := "keyword_" + s.Values[screenName].([]string)[0] + dotJson
 		ioutil.WriteFile(filename, b, 0600)
@@ -165,9 +164,6 @@ func categoriseHandler(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 		log.Print("Fetching from cookie after saving: ", s.Values[userKeywordPresent])
-		//		http.Redirect(w, r, "/", 302)
-		//		w.Header().Set("Content-Type", "application/json; charset=UTF-8")
-		//		w.WriteHeader(http.StatusOK)
 
 	} else {
 		http.Error(w, "Invalid request method", http.StatusMethodNotAllowed)

@@ -12,7 +12,6 @@ import (
 )
 
 func classifyTweets(timelineTweets []anaconda.Tweet, keywordStore map[string][]string) map[string][]anaconda.Tweet {
-	// TODO change the below to use Page model
 	log.Print("This is the keyword store: ", keywordStore)
 	classifiedTweets := make(map[string][]anaconda.Tweet)
 
