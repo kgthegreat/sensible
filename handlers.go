@@ -38,27 +38,29 @@ func indexHandler(w http.ResponseWriter, r *http.Request) {
 
 		timelineTweets := getTimelineTweets(api1)
 		keywordStore := populateKeywordStore(rootKeywordFilename)
-
+		log.Print("Root keyword store : ", keywordStore)
 		adminKeywordStore := populateKeywordStore(adminKeywordFile)
-
+		log.Print("Admin keyword store : ", adminKeywordStore)
 		keywordStore = mergeKeywords(keywordStore, adminKeywordStore)
-
+		log.Print("Merged root and admin keyword store : ", keywordStore)
 		userKeywordFilename := s.Values[userKeywordPresent].(string)
 
 		if userKeywordFilename != templateKeywordFilename {
 			keywordStore = mergeKeywords(keywordStore, populateKeywordStore(userKeywordFilename))
 
 		}
-		//		userKeywordStore := populateKeywordStore("keyword_" + s.Values[screenName].([]string)[0] + dotJson)
+		log.Print("Total keyword store  : ", keywordStore)
+
 		classifiedTweets := classifyTweets(timelineTweets, keywordStore)
-		p := &Page{Title: "Tech Tweets", TechTweets: classifiedTweets["tech"], BusinessTweets: classifiedTweets["business"], PoliticsTweets: classifiedTweets["politics"], SportsTweets: classifiedTweets["sports"], TravelTweets: classifiedTweets["travel"], OtherTweets: classifiedTweets["other"]}
+
+		p1 := &Page1{Tweets: classifiedTweets}
 
 		if err := s.Save(r, w); err != nil {
 			http.Error(w, "Error saving session, "+err.Error(), 500)
 			return
 		}
 
-		renderTemplate(w, "index", p)
+		renderTemplate(w, "index", p1)
 
 	} else {
 		e := &Page{}
@@ -141,17 +143,10 @@ func categoriseHandler(w http.ResponseWriter, r *http.Request) {
 		}
 
 		//reflection or metaprogramming in golang?
-		if keywordToAdd.Category == "politics" {
-			keywordStore.PoliticsKeywords = append(keywordStore.PoliticsKeywords, keywordToAdd.Phrase)
-
-		} else if keywordToAdd.Category == "travel" {
-			keywordStore.TravelKeywords = append(keywordStore.TravelKeywords, keywordToAdd.Phrase)
-		} else if keywordToAdd.Category == "tech" {
-			keywordStore.TechKeywords = append(keywordStore.TechKeywords, keywordToAdd.Phrase)
-		} else if keywordToAdd.Category == "sports" {
-			keywordStore.SportsKeywords = append(keywordStore.SportsKeywords, keywordToAdd.Phrase)
-		} else if keywordToAdd.Category == "business" {
-			keywordStore.BusinessKeywords = append(keywordStore.BusinessKeywords, keywordToAdd.Phrase)
+		for _, category := range categories {
+			if keywordToAdd.Category == category {
+				keywordStore[category] = append(keywordStore[category], keywordToAdd.Phrase)
+			}
 		}
 
 		log.Print("keywordstore has been appended: ", keywordStore)
@@ -216,6 +211,3 @@ func favHandler(w http.ResponseWriter, r *http.Request) {
 	}
 
 }
-
-/*func loadRepliesHandler(w http.ResponseWriter, r *http.Request) {
-}*/

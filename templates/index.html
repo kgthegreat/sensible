@@ -35,56 +35,20 @@
                     <div role="tabpanel">
                         <!-- Nav tabs -->
                         <ul class="nav nav-tabs" role="tablist" id="myTab">
-                            <li role="presentation" class="nav-item"><a class="nav-link" href="#tech" aria-controls="tech" role="tab" data-toggle="tab">Tech</a></li>
-                            <li role="presentation" class="nav-item"><a class="nav-link" href="#business" aria-controls="business" role="tab" data-toggle="tab">Business</a></li>
-                            <li role="presentation" class="nav-item"><a class="nav-link" href="#politics" aria-controls="politics" role="tab" data-toggle="tab">Politics</a></li>
-                            <li role="presentation" class="nav-item"><a class="nav-link" href="#sports" aria-controls="sports" role="tab" data-toggle="tab">Sports</a></li>
-                            <li role="presentation" class="nav-item"><a class="nav-link" href="#travel" aria-controls="travel" role="tab" data-toggle="tab">Travel</a></li>
-                            <li role="presentation" class="nav-item"><a class="nav-link" href="#others" aria-controls="others" role="tab" data-toggle="tab">Others</a></li>
+
+                            {{range $k, $v := .Tweets}}
+                            <li role="presentation" class="nav-item"><a class="nav-link" href="#{{$k}}" aria-controls="{{$k}}" role="tab" data-toggle="tab">{{$k}}</a></li>
+                            {{ end }}
                         </ul>
                         <div class="tab-content">
-                            <div role="tabpanel" class="tab-pane fade show" id="tech" style="margin-top: 15px;">
-                                {{range $tweet := .TechTweets }}
+                            {{range $k, $v := .Tweets}}
+                            <div role="tabpanel" class="tab-pane fade show" id="{{$k}}" style="margin-top: 15px;">
+                                {{range $tweet := $v }}
                                 {{ template "tweet" $tweet }}
                                 {{end}}
                             </div>
+                            {{ end }}
                             
-                            <div role="tabpanel" class="tab-pane fade show active" id="business" style="margin-top: 15px;">
-                                {{range $tweet1 := .BusinessTweets }}
-                                {{ template "tweet" $tweet1 }}
-                                {{end}}
-                            </div>
-
-
-                            <div role="tabpanel" class="tab-pane fade show" id="politics" style="margin-top: 15px;">
-                                {{range $tweet2 := .PoliticsTweets }}
-                                {{ template "tweet" $tweet2 }}                                
-                                {{end}}
-                            </div>
-
-                            <div role="tabpanel" class="tab-pane fade show" id="sports" style="margin-top: 15px;">
-                                {{range $tweet3 := .SportsTweets }}
-                                {{ template "tweet" $tweet3 }}                                
-                                {{end}}
-                            </div>
-
-
-                            <div role="tabpanel" class="tab-pane fade show" id="travel" style="margin-top: 15px;">
-                                {{range $tweet4 := .TravelTweets }}
-                                {{ template "tweet" $tweet4 }}                                
-                                {{end}}
-                            </div>
-
-                            <div role="tabpanel" class="tab-pane fade show" id="others" style="margin-top: 15px;">
-                                <div>
-      
-                                <div class="alert alert-primary" role="alert">
-                              Classify tweets by clicking or selecting words or phrases </div>
-                                {{range $tweet5 := .OtherTweets }}
-                                {{ template "tweet" $tweet5 }}                                
-                                {{end}}
-
-                            </div>
 
 
                             <!-- Modal -->
@@ -100,13 +64,11 @@
                                         <div class="modal-body">
                                             <div class="container">
                                                 <div class="row">
-                                                    <div class="col-sm"><a href="#" class="btn btn-sm btn-outline-primary categorise" type="tech">tech</a></div>
-                                                    <!--div class="col-sm"><a href="#" class="btn btn-sm btn-outline-primary categorise" type="sports">sports</a></div-->
-                                                    <div class="col-sm"><a href="#" class="btn btn-sm btn-outline-primary categorise" type="business">business</a></div>
-                                                    <div class="col-sm"><a href="#" class="btn btn-sm btn-outline-primary categorise" type="politics">politics</a></div>
-                                                    <div class="col-sm"><a href="#" class="btn btn-sm btn-outline-primary categorise" type="sports">sports</a></div>
-
-                                                    <div class="col-sm"><a href="#" class="btn btn-sm btn-outline-primary categorise" type="travel">travel</a></div>
+                                                    {{range $k, $v := .Tweets}}
+                                                    {{ if not (eq $k "other") }}
+                                                    <div class="col-sm"><a href="#" class="btn btn-sm btn-outline-primary categorise" type="{{$k}}">{{$k}}</a></div>
+                                                    {{ end }}
+                                                    {{ end }}
                                                 </div>
                                             </div>
                                         </div>

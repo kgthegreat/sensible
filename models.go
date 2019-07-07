@@ -18,7 +18,6 @@ type Keyword struct {
 }
 
 type Page struct {
-	Title          string
 	TechTweets     []anaconda.Tweet
 	PoliticsTweets []anaconda.Tweet
 	TravelTweets   []anaconda.Tweet
@@ -36,4 +35,8 @@ type TweetToClassify struct {
 type KeywordToAdd struct {
 	Phrase   string
 	Category string
+}
+
+type Page1 struct {
+	Tweets map[string][]anaconda.Tweet
 }
