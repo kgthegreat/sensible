@@ -46,6 +46,32 @@ $( document ).ready(function() {
     })
   });
 
+  $("#submit-categories1").click(function(e){
+    e.preventDefault()
+    console.log("Clicked on submit")
+    var buttonEl = $(this)
+    var category = buttonEl.attr('type')
+    console.log(selection)
+    console.log(category)
+    $.ajax({
+      url: '/categorise',
+      data: JSON.stringify({
+        "phrase": selection,
+        "category": category
+      }),
+      type: 'POST',
+      success: function(res) {
+        console.log("success1")
+        $('#myModal').modal('hide');
+      },
+      error: function(error) {
+        $('#myModal').modal('hide');
+        console.log(error);
+      }
+    })
+  });
+
+
   callTwitterInteraction(".tweet-retweet", "data-tweet-id", "/retweet", "green")
   callTwitterInteraction(".tweet-fav", "data-tweet-id", "/fav", "red")
 

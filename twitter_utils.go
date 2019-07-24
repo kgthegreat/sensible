@@ -11,19 +11,20 @@ import (
 	"github.com/ChimeraCoder/anaconda"
 )
 
-func classifyTweets(timelineTweets []anaconda.Tweet, keywordStore map[string][]string) map[string][]anaconda.Tweet {
-	log.Print("This is the keyword store: ", keywordStore)
+func classifyTweets(timelineTweets []anaconda.Tweet, categories map[string]*Category) map[string][]anaconda.Tweet {
+	log.Print("This is the keyword store: ", categories)
 	classifiedTweets := make(map[string][]anaconda.Tweet)
 
 	for _, tweet := range timelineTweets {
 
 		flag := false
-		for _, category := range categories {
-
-			if itIs(keywordStore[category], tweet) {
+		for categoryIndex, _ := range categories {
+			//log.Print("for category, ", categoryIndex)
+			//log.Print("The show attribute is ", categories[categoryIndex].Show)
+			if itIs(categories[categoryIndex].Keywords, tweet) {
 
 				flag = true
-				classifiedTweets[category] = append(classifiedTweets[category], tweet)
+				classifiedTweets[categoryIndex] = append(classifiedTweets[categoryIndex], tweet)
 			}
 
 		}
@@ -36,13 +37,18 @@ func classifyTweets(timelineTweets []anaconda.Tweet, keywordStore map[string][]s
 	return classifiedTweets
 }
 
-func mergeKeywords(categories1 []Category, categories2 []Category) []Category {
+func mergeKeywords(categories1 map[string]*Category, categories2 map[string]*Category) map[string]*Category {
 
-	for _, category := range categories1 {
-		category.Keywords = append(category.Keywords, category.Keywords)
-		keyword1[category] = append(keyword1[category], keyword2[category]...)
+	for category, _ := range categories2 {
+		//		log.Print
+		if categories2[category].Show {
+			categories2[category].Keywords = append(categories2[category].Keywords, categories1[category].Keywords...)
+			log.Print("cat1 show: ", categories2[category].Show)
+		} else {
+			delete(categories2, category)
+		}
 	}
-	return keyword1
+	return categories2
 
 }
 
@@ -58,9 +64,9 @@ func itIs(keywords []string, tweet anaconda.Tweet) bool {
 	return false
 }
 
-func populateKeywordStore(filename string) map[string][]string {
+func populateCategories(filename string) map[string]*Category {
 	log.Print(" populating keyword from this file : ", filename)
-	var categories []Category
+	var categories map[string]*Category
 	//	var store1 map[string][]string
 	keyword_bytes, err := ioutil.ReadFile(filename)
 	if err != nil {

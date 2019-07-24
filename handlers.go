@@ -7,6 +7,8 @@ import (
 	"log"
 	"net/http"
 	"net/url"
+	"strconv"
+	"strings"
 
 	"github.com/ChimeraCoder/anaconda"
 	"github.com/garyburd/go-oauth/oauth"
@@ -37,23 +39,29 @@ func indexHandler(w http.ResponseWriter, r *http.Request) {
 		api1 := anaconda.NewTwitterApiWithCredentials(tokenCred.Token, tokenCred.Secret, token1.ConsumerKey, token1.ConsumerSecret)
 
 		timelineTweets := getTimelineTweets(api1)
-		keywordStore := populateKeywordStore(rootKeywordFilename)
-		log.Print("Root keyword store : ", keywordStore)
-		adminKeywordStore := populateKeywordStore(adminKeywordFile)
-		log.Print("Admin keyword store : ", adminKeywordStore)
-		keywordStore = mergeKeywords(keywordStore, adminKeywordStore)
-		log.Print("Merged root and admin keyword store : ", keywordStore)
+		rootCategories := populateCategories(rootKeywordFilename)
+		log.Print("Root categories : ", rootCategories)
+		adminCategories := populateCategories(adminKeywordFile)
+		log.Print("Admin categories : ", adminCategories)
+		seedCategories := mergeKeywords(rootCategories, adminCategories)
+		log.Print("Merged root and admin keyword store : ", seedCategories)
+
 		userKeywordFilename := s.Values[userKeywordPresent].(string)
-
+		userCategories := populateCategories(userKeywordFilename)
 		if userKeywordFilename != templateKeywordFilename {
-			keywordStore = mergeKeywords(keywordStore, populateKeywordStore(userKeywordFilename))
-
+			seedCategories = mergeKeywords(seedCategories, userCategories)
 		}
-		log.Print("Total keyword store  : ", keywordStore)
+		log.Print("Total keyword store  : ", seedCategories)
 
-		classifiedTweets := classifyTweets(timelineTweets, keywordStore)
+		for categoryIndex, category := range userCategories {
+			log.Print(categoryIndex)
+			log.Print(category.Show)
+		}
+		classifiedTweets := classifyTweets(timelineTweets, seedCategories)
 
-		p1 := &Page1{Tweets: classifiedTweets}
+		log.Print("User Categories: ", userCategories)
+
+		p1 := &Page1{Tweets: classifiedTweets, Categories: populateCategories(userKeywordFilename)}
 
 		if err := s.Save(r, w); err != nil {
 			http.Error(w, "Error saving session, "+err.Error(), 500)
@@ -133,7 +141,7 @@ func categoriseHandler(w http.ResponseWriter, r *http.Request) {
 
 		// what happens if a person does not allow cookie? then twitter sign in wont work as well
 		keywordFile = s.Values[userKeywordPresent].(string)
-		keywordStore := populateKeywordStore(keywordFile)
+		categories := populateCategories(keywordFile)
 		var keywordToAdd KeywordToAdd
 		err = json.Unmarshal(body, &keywordToAdd)
 
@@ -142,14 +150,10 @@ func categoriseHandler(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 
-		for _, category := range categories {
-			if keywordToAdd.Category == category {
-				keywordStore[category] = append(keywordStore[category], keywordToAdd.Phrase)
-			}
-		}
+		categories[keywordToAdd.Category].Keywords = append(categories[keywordToAdd.Category].Keywords, keywordToAdd.Phrase)
 
-		log.Print("keywordstore has been appended: ", keywordStore)
-		b, err := json.Marshal(keywordStore)
+		log.Print("keywordstore has been appended: ", categories)
+		b, err := json.Marshal(categories)
 
 		log.Print("what are we getting", s.Values[screenName].([]string)[0])
 		filename := "keyword_" + s.Values[screenName].([]string)[0] + dotJson
@@ -206,4 +210,48 @@ func favHandler(w http.ResponseWriter, r *http.Request) {
 
 	}
 
+}
+
+func saveCategoriesHandler(w http.ResponseWriter, r *http.Request) {
+	log.Print("entering saveCategories handler")
+	if r.Method == "POST" {
+		log.Print("%+v\n", r.Form)
+		if err := r.ParseForm(); err != nil {
+			fmt.Fprintf(w, "ParseForm() err: %v", err)
+			return
+		}
+		//		fmt.Fprintf(w, "Post from website! r.PostForm = %v\n", r.PostForm)
+
+		//	m := make(map[string]*Category)
+		log.Print(">>>>>>>>> PostForm", r.Form)
+		log.Print(r.Form["product"])
+		categories := populateCategories("keyword_kgthegreat.json")
+		for categoryIndex, keywords := range r.PostForm {
+			log.Print(categoryIndex)
+			// due to how checkbox and html form post works
+			if len(keywords) == 2 {
+				log.Print("This is the value of show: ", keywords[0])
+				log.Print("This is the value of keywords: ", keywords[1])
+				categories[categoryIndex].Show, _ = strconv.ParseBool(keywords[0])   //convert to bool
+				categories[categoryIndex].Keywords = strings.Split(keywords[1], ",") //convert to array
+			} else {
+				log.Print("This is the value of show: ", "false")
+				log.Print("This is the value of keywords: ", keywords[0])
+				categories[categoryIndex].Show = false
+				categories[categoryIndex].Keywords = strings.Split(keywords[0], ",")
+			}
+			b, _ := json.Marshal(categories)
+
+			filename := "keyword_kgthegreat.json" //" + s.Values[screenName].([]string)[0] + dotJson
+			ioutil.WriteFile(filename, b, 0600)
+
+			//			m[categoryIndex].Keywords = keywords
+		}
+		log.Print(">>>>Printing ", categories)
+		//		log.Print(r.Form)
+		//a := r.FormValue("tech")
+		//log.Print(a)
+		//		log.Print("It's a post")
+
+	}
 }

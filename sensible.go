@@ -19,7 +19,7 @@ import (
 var api *anaconda.TwitterApi
 var mode string
 
-var categories = []string{"tech", "politics", "travel", "sports", "business", "other"}
+//var categories = []string{"tech", "politics", "travel", "sports", "business", "other"}
 var store = sessions.NewCookieStore([]byte("asdaskdhasdhgsajdgasdsadksakdhasidoajsdousdasf"))
 
 //var store = sessions.NewCookieStore([]byte(storeGUID))
@@ -74,6 +74,7 @@ func main() {
 	http.HandleFunc("/categorise", categoriseHandler)
 	http.HandleFunc("/retweet", retweetHandler)
 	http.HandleFunc("/fav", favHandler)
+	http.HandleFunc("/saveCategories", saveCategoriesHandler)
 	http.Handle("/static/", http.StripPrefix("/static/", staticHandler))
 
 	if os.Getenv("LISTEN_PID") == strconv.Itoa(os.Getpid()) {

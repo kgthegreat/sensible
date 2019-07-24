@@ -38,12 +38,12 @@ type KeywordToAdd struct {
 }
 
 type Page1 struct {
-	Tweets map[string][]anaconda.Tweet
+	Tweets     map[string][]anaconda.Tweet
+	Categories map[string]*Category
 }
 
 type Category struct {
 	Name     string
-	Shown    boolean
-	Order    int
+	Show     bool
 	Keywords []string
 }
