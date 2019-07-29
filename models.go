@@ -47,3 +47,8 @@ type Category struct {
 	Show     bool
 	Keywords []string
 }
+
+type CategorisedTweets struct {
+	Name   string
+	Tweets []anaconda.Tweet
+}

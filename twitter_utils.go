@@ -12,24 +12,24 @@ import (
 )
 
 func classifyTweets(timelineTweets []anaconda.Tweet, categories map[string]*Category) map[string][]anaconda.Tweet {
-	log.Print("This is the keyword store: ", categories)
+
 	classifiedTweets := make(map[string][]anaconda.Tweet)
 
 	for _, tweet := range timelineTweets {
 
 		flag := false
 		for categoryIndex, _ := range categories {
+
 			//log.Print("for category, ", categoryIndex)
 			//log.Print("The show attribute is ", categories[categoryIndex].Show)
 			if itIs(categories[categoryIndex].Keywords, tweet) {
-
 				flag = true
 				classifiedTweets[categoryIndex] = append(classifiedTweets[categoryIndex], tweet)
 			}
 
 		}
 		if !flag {
-			classifiedTweets["others"] = append(classifiedTweets["others"], tweet)
+			classifiedTweets["zothers"] = append(classifiedTweets["others"], tweet)
 		}
 
 	}
@@ -43,7 +43,6 @@ func mergeKeywords(categories1 map[string]*Category, categories2 map[string]*Cat
 		//		log.Print
 		if categories2[category].Show {
 			categories2[category].Keywords = append(categories2[category].Keywords, categories1[category].Keywords...)
-			log.Print("cat1 show: ", categories2[category].Show)
 		} else {
 			delete(categories2, category)
 		}
@@ -53,9 +52,8 @@ func mergeKeywords(categories1 map[string]*Category, categories2 map[string]*Cat
 }
 
 func itIs(keywords []string, tweet anaconda.Tweet) bool {
-
 	for _, keyword := range keywords {
-
+		//check for string empty before getting into if
 		if strings.Contains(strings.ToLower(tweet.FullText), strings.ToLower(keyword)) {
 			//		if strings.ToLower(tweet.FullText) == strings.ToLower(keyword) {
 			return true
@@ -82,7 +80,7 @@ func populateCategories(filename string) map[string]*Category {
 
 func getTimelineTweets(ap *anaconda.TwitterApi) []anaconda.Tweet {
 	v := url.Values{}
-	v.Set("count", "200")
+	v.Set("count", "5")
 	v.Set("tweet_mode", "extended")
 	if mode == "dev" {
 		timelineTweets := getDummyTimeline()

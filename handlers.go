@@ -49,17 +49,17 @@ func indexHandler(w http.ResponseWriter, r *http.Request) {
 		userKeywordFilename := s.Values[userKeywordPresent].(string)
 		userCategories := populateCategories(userKeywordFilename)
 		if userKeywordFilename != templateKeywordFilename {
+			log.Print("Merging seed and user keywords>>>>>>>>>>>>>>>")
 			seedCategories = mergeKeywords(seedCategories, userCategories)
 		}
-		log.Print("Total keyword store  : ", seedCategories)
 
-		for categoryIndex, category := range userCategories {
+		for categoryIndex, category := range seedCategories {
 			log.Print(categoryIndex)
 			log.Print(category.Show)
 		}
 		classifiedTweets := classifyTweets(timelineTweets, seedCategories)
 
-		log.Print("User Categories: ", userCategories)
+		log.Print(len(classifiedTweets["others"]))
 
 		p1 := &Page1{Tweets: classifiedTweets, Categories: populateCategories(userKeywordFilename)}
 
@@ -232,8 +232,21 @@ func saveCategoriesHandler(w http.ResponseWriter, r *http.Request) {
 			if len(keywords) == 2 {
 				log.Print("This is the value of show: ", keywords[0])
 				log.Print("This is the value of keywords: ", keywords[1])
-				categories[categoryIndex].Show, _ = strconv.ParseBool(keywords[0])   //convert to bool
-				categories[categoryIndex].Keywords = strings.Split(keywords[1], ",") //convert to array
+				categories[categoryIndex].Show, _ = strconv.ParseBool(keywords[0]) //convert to bool
+				//before saving, weed out empty strings. try to use map reduce if available
+				splitFn := func(c rune) bool {
+					return c == ','
+				}
+				//				keywords := strings.Split(keywords[1], ",") //convert to array
+				keywords := strings.FieldsFunc(keywords[1], splitFn) //convert to array
+				/*				for _, kwd := range keywords {
+								if kwd == "" {
+									//delete from array
+									//delete(keywords, kwd)
+								}
+							}*/
+				log.Print("Printing keywords after weeding >>>>>>>>>>>", keywords)
+				categories[categoryIndex].Keywords = keywords
 			} else {
 				log.Print("This is the value of show: ", "false")
 				log.Print("This is the value of keywords: ", keywords[0])
