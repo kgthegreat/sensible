@@ -29,7 +29,7 @@ func classifyTweets(timelineTweets []anaconda.Tweet, categories map[string]*Cate
 
 		}
 		if !flag {
-			classifiedTweets["zothers"] = append(classifiedTweets["others"], tweet)
+			classifiedTweets["others"] = append(classifiedTweets["others"], tweet)
 		}
 
 	}
@@ -80,7 +80,7 @@ func populateCategories(filename string) map[string]*Category {
 
 func getTimelineTweets(ap *anaconda.TwitterApi) []anaconda.Tweet {
 	v := url.Values{}
-	v.Set("count", "5")
+	v.Set("count", "200")
 	v.Set("tweet_mode", "extended")
 	if mode == "dev" {
 		timelineTweets := getDummyTimeline()
