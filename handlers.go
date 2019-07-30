@@ -240,11 +240,11 @@ func saveCategoriesHandler(w http.ResponseWriter, r *http.Request) {
 				//				keywords := strings.Split(keywords[1], ",") //convert to array
 				keywords := strings.FieldsFunc(keywords[1], splitFn) //convert to array
 				/*				for _, kwd := range keywords {
-								if kwd == "" {
-									//delete from array
-									//delete(keywords, kwd)
-								}
-							}*/
+											if kwd == "" {
+												//delete from array
+								`				//delete(keywords, kwd)
+											}
+										}*/
 				log.Print("Printing keywords after weeding >>>>>>>>>>>", keywords)
 				categories[categoryIndex].Keywords = keywords
 			} else {
@@ -267,4 +267,13 @@ func saveCategoriesHandler(w http.ResponseWriter, r *http.Request) {
 		//		log.Print("It's a post")
 
 	}
+}
+
+func manageHandler(w http.ResponseWriter, r *http.Request) {
+	s := getSession(r, sessionName)
+	userKeywordFilename := s.Values[userKeywordPresent].(string)
+	p1 := &Page1{Categories: populateCategories(userKeywordFilename)}
+
+	renderTemplate(w, "manage", p1)
+
 }

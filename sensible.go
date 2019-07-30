@@ -75,6 +75,7 @@ func main() {
 	http.HandleFunc("/retweet", retweetHandler)
 	http.HandleFunc("/fav", favHandler)
 	http.HandleFunc("/saveCategories", saveCategoriesHandler)
+	http.HandleFunc("/manage", manageHandler)
 	http.Handle("/static/", http.StripPrefix("/static/", staticHandler))
 
 	if os.Getenv("LISTEN_PID") == strconv.Itoa(os.Getpid()) {
