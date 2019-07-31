@@ -38,7 +38,7 @@
                         </div>
                     </div>
 
-                                                    <form action="/saveCategories" method="post">
+                                 <form action="/saveCategories" method="post">
                                     {{ range $categoryIndex, $category := .Categories }}
                                     <div class="form-group row">
                                         <div class="col-sm-2"><h5>{{ $category.Name }}</h5></div>
@@ -58,11 +58,8 @@
                                     </div>
                                     <div class="form-group">
                                         <label for="save-categories">Keywords</label>
-                                        <!-- add tag lib -->
                                         <textarea class="form-control" rows="3" name="{{$categoryIndex}}" >{{ range $kw := $category.Keywords}}{{ $kw}},{{ end }}</textarea>
-
                                     </div>
-
                                     <hr></hr>
                                     {{ end }}
                                     <button type="submit" id="submit-categories" class="btn btn-primary">Submit</button>

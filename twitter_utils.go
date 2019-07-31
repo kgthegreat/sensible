@@ -29,7 +29,7 @@ func classifyTweets(timelineTweets []anaconda.Tweet, categories map[string]*Cate
 
 		}
 		if !flag {
-			classifiedTweets["others"] = append(classifiedTweets["others"], tweet)
+			classifiedTweets["xOthers"] = append(classifiedTweets["xOthers"], tweet)
 		}
 
 	}
