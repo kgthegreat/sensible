@@ -206,6 +206,7 @@ func favHandler(w http.ResponseWriter, r *http.Request) {
 		if err != nil {
 			log.Print(err)
 			log.Print(rt)
+			// send back not success
 		}
 
 	}

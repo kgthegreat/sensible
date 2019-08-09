@@ -18,30 +18,23 @@
         <script src="/static/js/jquery.scrolling-tabs.min.js"></script>
         <script src="/static/js/jquery.caret.min.js"></script>
         <script src="/static/js/jquery.tag-editor.min.js"></script>
+        <script src="/static/js/jquery.sticky.bootstrap.tabs.js"></script>
         <meta name="viewport" content="width=device-width, initial-scale=1">
     </head>
-    <body class="bg-grey">
-        <div class="container container-small bg-white">
+    <body class="bg-grey" style='background-color: #e3e3e3;'>
+
+        {{ template "navbar" "home"}}
+
+
+        <div class="container container-small main-content" style='background-color: #fbfbff;'>
             <div class="row">
                 
                 <div class="col">
-                    <div class="row">
-                        <div class="logo col">
-                            Sensible
-                        </div>
-                        <div class="logout">
-                            <a class="btn btn-default btn-outline-secondary btn-sm" href="/manage">Manage</a>
-                        </div>
-
-                        <div class="logout">
-                            <a class="btn btn-default btn-outline-secondary btn-sm" href="/logout">Logout</a>
-                        </div>
-                    </div>
 
 
                     <div role="tabpanel">
                         <!-- Nav tabs -->
-                        <ul class="nav nav-tabs" role="tablist" id="myTab">
+                        <ul class="nav nav-tabs sticky-top" role="tablist" id="myTab">
 
                             {{range $k, $v := .Tweets}}
                             <li role="presentation" class="nav-item"><a class="nav-link" href="#{{$k}}" aria-controls="{{$k}}" role="tab" data-toggle="tab">{{$k}}</a></li>
@@ -60,30 +53,7 @@
 
 
                             <!-- Modal -->
-                            <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                <div class="modal-dialog" role="document">
-                                    <div class="modal-content">
-                                        <div class="modal-header">
-                                            <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
-                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                <span aria-hidden="true">&times;</span>
-                                            </button>
-                                        </div>
-                                        <div class="modal-body">
-                                            <div class="container">
-                                                <div class="row">
-                                                    {{range $k, $v := .Tweets}}
-                                                    {{ if not (eq $k "other") }}
-                                                    <div class="col-sm"><a href="#" class="btn btn-sm btn-outline-primary categorise" type="{{$k}}">{{$k}}</a></div>
-                                                    {{ end }}
-                                                    {{ end }}
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
+                            {{ template "category-modal" .Tweets}}
                         </div>
                     </div>
                 </div>

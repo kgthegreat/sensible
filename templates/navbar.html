@@ -1,0 +1,19 @@
+{{ define "navbar" }}
+<nav class="navbar navbar-dark bg-primary sticky-top" style='background-color: #a2c2fb;'>
+    <div class="container">
+        <a class="navbar-brand mb-0 h1" href="/">
+            Sensible
+        </a>
+        
+        <span class="navbar-text">
+            {{ if eq . "home"}}
+            <a class="btn btn-default btn-outline-dark btn-sm" href="/manage">Manage</a>
+            {{ else }}
+            <a class="btn btn-default btn-outline-dark btn-sm" href="/">Tweets</a>
+            {{ end }}
+            <a class="btn btn-default btn-outline-dark btn-sm" href="/logout">Logout</a>
+
+        </span>
+    </div>
+</nav>
+{{ end }}
