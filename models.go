@@ -9,23 +9,6 @@ type Token struct {
 	AccessTokenSecret string
 }
 
-type Keyword struct {
-	TechKeywords     []string
-	PoliticsKeywords []string
-	TravelKeywords   []string
-	SportsKeywords   []string
-	BusinessKeywords []string
-}
-
-type Page struct {
-	TechTweets     []anaconda.Tweet
-	PoliticsTweets []anaconda.Tweet
-	TravelTweets   []anaconda.Tweet
-	SportsTweets   []anaconda.Tweet
-	BusinessTweets []anaconda.Tweet
-	OtherTweets    []anaconda.Tweet
-}
-
 type TweetToClassify struct {
 	Text         string
 	Type         string
@@ -46,9 +29,4 @@ type Category struct {
 	Name     string
 	Show     bool
 	Keywords []string
-}
-
-type CategorisedTweets struct {
-	Name   string
-	Tweets []anaconda.Tweet
 }

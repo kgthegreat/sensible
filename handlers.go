@@ -12,7 +12,6 @@ import (
 
 	"github.com/ChimeraCoder/anaconda"
 	"github.com/garyburd/go-oauth/oauth"
-	"gopkg.in/jdkato/prose.v2"
 )
 
 func indexHandler(w http.ResponseWriter, r *http.Request) {
@@ -29,7 +28,7 @@ func indexHandler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	if tokenCred.Token != "" || mode == "dev" {
-		if s.Values[userKeywordPresent] == nil {
+		if s.Values[userKeywordPresent] == nil && s.Values[screenName] != adminUsername {
 			log.Print("Copying template file")
 			userFilename := keywordPrefix + s.Values[screenName].([]string)[0] + dotJson
 			copyFile(templateKeywordFilename, userFilename)
@@ -66,7 +65,7 @@ func indexHandler(w http.ResponseWriter, r *http.Request) {
 		renderTemplate(w, "index", p1)
 
 	} else {
-		e := &Page{}
+		e := &Page1{}
 		renderTemplate(w, "login", e)
 	}
 
@@ -85,35 +84,6 @@ func dumpHandler(w http.ResponseWriter, r *http.Request) {
 	}
 	filename := "timeline.json"
 	ioutil.WriteFile(filename, b, 0600)
-}
-
-func classifyHandler(w http.ResponseWriter, r *http.Request) {
-	keys, ok := r.URL.Query()["tweet"]
-	cat, ok := r.URL.Query()["type"]
-
-	if !ok || len(keys[0]) < 1 || len(cat[0]) < 1 {
-		log.Println("Url Param 'tweet' or 'type' is missing")
-		return
-	}
-	//	tweetText := "Narendra Modi is astonishing. Virat Kohli is a good batsman. Madhya Pradesh polls are going to be exciting. Hum logon ko kuch nahi pata. (How), do we know this?"
-	//	tweetText := "@jdkato, go to http://example.com thanks :)."
-	doc, err := prose.NewDocument(keys[0])
-	if err != nil {
-		log.Fatal(err)
-	}
-	var selectedTags []string
-	for _, ent := range doc.Tokens() {
-		tag := ent.Tag
-		text := ent.Text
-		log.Print(text + " " + tag)
-		if tag == "NNP" || tag == "NN" || tag == "JJ" {
-			selectedTags = append(selectedTags, text+" "+tag)
-		}
-		// Go GPE
-		// Google GPE
-	}
-	e := &TweetToClassify{Text: keys[0], Type: cat[0], SelectedTags: selectedTags}
-	renderTemplate(w, "classify", e)
 }
 
 func categoriseHandler(w http.ResponseWriter, r *http.Request) {

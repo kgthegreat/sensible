@@ -1,1 +1,73 @@
-{"Art":{"Name":"Art","Show":true,"Keywords":["art"]},"Plant":{"Name":"Plant","Show":true,"Keywords":["plant","leaf"]},"TV":{"Name":"TV","Show":false,"Keywords":["episode"]},"academic":{"Name":"Academic","Show":false,"Keywords":["academic","university","stanford","harvard"]},"business":{"Name":"Business","Show":true,"Keywords":["olacabs","#oyo","turbohire","consumers"]},"games":{"Name":"Games","Show":false,"Keywords":["game","tokyosandbox"]},"politics":{"Name":"Politics","Show":true,"Keywords":["libdem","biden","kim jong-un","far-right","dalit","discrimination","media","responsible","blocked","hd_kumaraswamy","agitating workers","islamicstate","nationalism","ballotshakti"]},"sports":{"Name":"Sports","Show":true,"Keywords":["world cup","indvsl","wimbledon","serena","olympic"]},"tech":{"Name":"Tech","Show":true,"Keywords":["full stack","engineer","rfc","websphere","ibm","github","thelinuxdev"]},"travel":{"Name":"Travel","Show":true,"Keywords":["catalyst"]}}
+{
+  "Business": {
+    "Name": "Business",
+    "Show": true,
+    "Keywords": [
+      "Zomato"
+    ]
+  },
+  "Politics": {
+    "Name": "Politics",
+    "Show": true,
+    "Keywords": [
+      "hd_kumaraswamy",
+      "agitating workers",
+      "islamicstate",
+      "nationalism",
+      "ballotshakti",
+      "LibDem",
+      "Biden",
+      "Kim Jong-Un",
+      "Mob lynching",
+      "civil service",
+      "sanjivbhatt",
+      "VoiceofmyBharat",
+      "Lok Sabha",
+      "CPI",
+      "Aadhaar",
+      "Mike Pompeo",
+      "military"
+    ]
+  },
+  "Sports": {
+    "Name": "Sports",
+    "Show": true,
+    "Keywords": [
+      "world cup",
+      "indvsl",
+      "wimbledon",
+      "serena",
+      "olympic"
+    ]
+  },
+  "Tech": {
+    "Name": "Tech",
+    "Show": true,
+    "Keywords": [
+      "full stack",
+      "engineer",
+      "rfc",
+      "websphere",
+      "ibm",
+      "github",
+      "thelinuxdev",
+      "Code Golf",
+      "crypto",
+      "Cape Canaveral",
+      "tech policy",
+      "NASA",
+      "AngularJS",
+      "C++",
+      "DEVCommunity",
+      "front-end",
+      "motherboards"
+    ]
+  },
+  "Travel": {
+    "Name": "Travel",
+    "Show": true,
+    "Keywords": [
+      "catalyst"
+    ]
+  }
+}

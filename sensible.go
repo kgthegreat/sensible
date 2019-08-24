@@ -36,6 +36,7 @@ const (
 	dotJson                 = ".json"
 	userKeywordPresent      = "filePresent"
 	adminKeywordFile        = "keyword_kgthegreat.json"
+	adminUsername           = "kgthegreat"
 )
 
 var oauthClient = oauth.Client{
@@ -70,7 +71,6 @@ func main() {
 	http.HandleFunc("/callback", twitterCallbackHandler)
 	http.HandleFunc("/logout", twitterLogoutHandler)
 	http.HandleFunc("/dump", dumpHandler)
-	http.HandleFunc("/classify", classifyHandler)
 	http.HandleFunc("/categorise", categoriseHandler)
 	http.HandleFunc("/retweet", retweetHandler)
 	http.HandleFunc("/fav", favHandler)

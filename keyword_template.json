@@ -1,25 +1,25 @@
 {
-  "tech": {
+  "Tech": {
     "Name": "Tech",
     "Show": true,
     "Keywords": []
   },
-  "politics": {
+  "Politics": {
     "Name": "Politics",
     "Show": true,
     "Keywords": []
   },
-  "business": {
+  "Business": {
     "Name": "Business",
     "Show": true,
     "Keywords": []
   },
-  "travel": {
+  "Travel": {
     "Name": "Travel",
     "Show": true,
     "Keywords": []
   },
-  "sports": {
+  "Sports": {
     "Name": "Sports",
     "Show": true,
     "Keywords": []
