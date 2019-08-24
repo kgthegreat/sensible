@@ -12,7 +12,7 @@
                                             <div class="container">
                                                 <div class="row">
                                                     {{range $k, $v := .}}
-                                                    {{ if not (eq $k "xOthers") }}
+                                                    {{ if not (eq $v.Show false) }}
                                                     <div class="category-cloud"><a href="#" class="btn btn-sm btn-outline-primary categorise" type="{{$k}}">{{$k}}</a></div>
                                                     {{ end }}
                                                     {{ end }}

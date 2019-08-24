@@ -1,23 +1,28 @@
 {
   "tech": {
-    "name": "Tech",
-    "keywords": []
+    "Name": "Tech",
+    "Show": true,
+    "Keywords": []
   },
   "politics": {
-    "name": "Politics",
-    "keywords": []
+    "Name": "Politics",
+    "Show": true,
+    "Keywords": []
   },
   "business": {
-    "name": "Business",
-    "keywords": []
+    "Name": "Business",
+    "Show": true,
+    "Keywords": []
   },
   "travel": {
-    "name": "Travel",
-    "keywords": []
+    "Name": "Travel",
+    "Show": true,
+    "Keywords": []
   },
   "sports": {
-    "name": "Sports",
-    "keywords": []
+    "Name": "Sports",
+    "Show": true,
+    "Keywords": []
   }
 
 }

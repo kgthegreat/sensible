@@ -30,7 +30,10 @@ func indexHandler(w http.ResponseWriter, r *http.Request) {
 
 	if tokenCred.Token != "" || mode == "dev" {
 		if s.Values[userKeywordPresent] == nil {
-			s.Values[userKeywordPresent] = templateKeywordFilename
+			log.Print("Copying template file")
+			userFilename := keywordPrefix + s.Values[screenName].([]string)[0] + dotJson
+			copyFile(templateKeywordFilename, userFilename)
+			s.Values[userKeywordPresent] = userFilename
 		}
 
 		log.Print("Printing tokenCred:", tokenCred)
@@ -49,9 +52,7 @@ func indexHandler(w http.ResponseWriter, r *http.Request) {
 		userKeywordFilename := s.Values[userKeywordPresent].(string)
 		log.Print(">>>>>>>^^^^^^^^ ", userKeywordFilename)
 		userCategories := populateCategories(userKeywordFilename)
-		if userKeywordFilename != templateKeywordFilename {
-			seedCategories = mergeKeywords(seedCategories, userCategories)
-		}
+		seedCategories = mergeKeywords(seedCategories, userCategories)
 
 		classifiedTweets := classifyTweets(timelineTweets, seedCategories)
 
@@ -150,18 +151,13 @@ func categoriseHandler(w http.ResponseWriter, r *http.Request) {
 		b, err := json.Marshal(categories)
 
 		log.Print("what are we getting", s.Values[screenName].([]string)[0])
-		filename := "keyword_" + s.Values[screenName].([]string)[0] + dotJson
+		filename := s.Values[userKeywordPresent].(string)
 		ioutil.WriteFile(filename, b, 0600)
-		s.Values[userKeywordPresent] = filename
-		s.Values["test"] = "Hi this is test 2"
-		s.Values["some"] = "else"
-		log.Print("Fetching from cookie before saving: ", s.Values[userKeywordPresent])
 
 		if e := s.Save(r, w); e != nil {
 			http.Error(w, "Error saving session, "+e.Error(), 500)
 			return
 		}
-		log.Print("Fetching from cookie after saving: ", s.Values[userKeywordPresent])
 
 	} else {
 		http.Error(w, "Invalid request method", http.StatusMethodNotAllowed)
@@ -244,12 +240,13 @@ func saveCategoriesHandler(w http.ResponseWriter, r *http.Request) {
 				categories[categoryIndex].Show = false
 				categories[categoryIndex].Keywords = strings.Split(keywords[0], ",")
 			}
-			b, _ := json.Marshal(categories)
-
-			ioutil.WriteFile(filename, b, 0600)
-
 			//			m[categoryIndex].Keywords = keywords
 		}
+		b, _ := json.Marshal(categories)
+
+		ioutil.WriteFile(filename, b, 0600)
+		http.Redirect(w, r, "/", http.StatusSeeOther)
+
 		log.Print(">>>>Printing ", categories)
 		//		log.Print(r.Form)
 		//a := r.FormValue("tech")
@@ -269,6 +266,7 @@ func manageHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func addCategoryHandler(w http.ResponseWriter, r *http.Request) {
+	s := getSession(r, sessionName)
 	if r.Method == "POST" {
 		log.Print("%+v\n", r.Form)
 		if err := r.ParseForm(); err != nil {
@@ -276,17 +274,18 @@ func addCategoryHandler(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 		log.Print(">>>>>>>>> PostForm ", r.PostForm)
-		// TODO remove hardcoding
-		categories := populateCategories("keyword_kgthegreat.json")
+
+		filename := s.Values[userKeywordPresent].(string)
+		categories := populateCategories(filename)
 
 		newCategoryName := r.PostForm["add-category-name"][0]
 		newCategoryKeywords := r.PostForm["add-category-keywords"]
 		categories[newCategoryName] = &Category{Name: newCategoryName, Show: true, Keywords: newCategoryKeywords}
 
 		b, _ := json.Marshal(categories)
-		// TODO remove hardcoding
-		filename := "keyword_kgthegreat.json" //" + s.Values[screenName].([]string)[0] + dotJson
+
 		ioutil.WriteFile(filename, b, 0600)
 
+		http.Redirect(w, r, "/", http.StatusSeeOther)
 	}
 }

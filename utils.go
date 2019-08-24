@@ -3,9 +3,11 @@ package main
 import (
 	"encoding/json"
 	"html/template"
+	"io"
 	"io/ioutil"
 	"log"
 	"net/http"
+	"os"
 	"strconv"
 
 	"github.com/ChimeraCoder/anaconda"
@@ -73,5 +75,24 @@ func renderTemplate(w http.ResponseWriter, tmpl string, p interface{}) {
 	//	err = t.Execute(w, p)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
+	}
+}
+
+func copyFile(src string, dest string) {
+	from, err := os.Open(src)
+	if err != nil {
+		log.Fatal(err)
+	}
+	defer from.Close()
+
+	to, err := os.OpenFile(dest, os.O_RDWR|os.O_CREATE, 0666)
+	if err != nil {
+		log.Fatal(err)
+	}
+	defer to.Close()
+
+	_, err = io.Copy(to, from)
+	if err != nil {
+		log.Fatal(err)
 	}
 }
