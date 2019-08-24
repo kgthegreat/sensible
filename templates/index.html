@@ -12,7 +12,6 @@
         <script src="/static/js/jquery-2.1.4.min.js"></script>
 
         <script src="/static/js/bootstrap4.min.js"></script>
-        <!--script src="/static/js/bootstrap.bundle.min.js"></script-->
 
         <script src="/static/js/sensible.js"></script>
         <script src="/static/js/jquery.scrolling-tabs.min.js"></script>
@@ -25,40 +24,30 @@
 
         {{ template "navbar" "home"}}
 
-
         <div class="container container-small main-content" style='background-color: #fbfbff;'>
-            <div class="row">
-                
-                <div class="col">
 
+            <!-- Nav tabs -->
+            <ul class="nav nav-tabs" id="myTab">
 
-                    <div role="tabpanel">
-                        <!-- Nav tabs -->
-                        <ul class="nav nav-tabs" role="tablist" id="myTab">
+                {{range $k, $v := .Tweets}}
+                <li role="presentation" class="nav-item"><a class="nav-link" href="#{{$k}}" aria-controls="{{$k}}" role="tab" data-toggle="tab">{{$k}}</a></li>
+                {{ end }}
+            </ul>
 
-                            {{range $k, $v := .Tweets}}
-                            <li role="presentation" class="nav-item"><a class="nav-link" href="#{{$k}}" aria-controls="{{$k}}" role="tab" data-toggle="tab">{{$k}}</a></li>
-                            {{ end }}
-                        </ul>
-                        <div class="tab-content">
-                            {{range $k, $v := .Tweets}}
-                            <div role="tabpanel" class="tab-pane fade show" id="{{$k}}" style="margin-top: 15px;">
-                                {{range $tweet := $v }}
-                                {{ template "tweet" $tweet }}
-                                {{end}}
-                            </div>
-                            {{ end }}
-                            <div role="tabpanel" class="tab-pane fade show" id="add" style="margin-top: 15px;">
-                            </div>                            
-
-
-                            <!-- Modal -->
-                            {{ template "category-modal" .Tweets}}
-                        </div>
-                    </div>
+            <div class="tab-content">
+                {{range $k, $v := .Tweets}}
+                <div role="tabpanel" class="tab-pane fade show" id="{{$k}}" style="margin-top: 15px;">
+                    {{range $tweet := $v }}
+                    {{ template "tweet" $tweet }}
+                    {{end}}
                 </div>
+                {{ end }}
             </div>
         </div>
+        <!-- Modal -->
+        {{ template "category-modal" .Tweets}}
+
+
     </body>
 </html>
 

@@ -76,6 +76,7 @@ func main() {
 	http.HandleFunc("/fav", favHandler)
 	http.HandleFunc("/saveCategories", saveCategoriesHandler)
 	http.HandleFunc("/manage", manageHandler)
+	http.HandleFunc("/addCategory", addCategoryHandler)
 	http.Handle("/static/", http.StripPrefix("/static/", staticHandler))
 
 	if os.Getenv("LISTEN_PID") == strconv.Itoa(os.Getpid()) {

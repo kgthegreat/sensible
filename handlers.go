@@ -47,19 +47,13 @@ func indexHandler(w http.ResponseWriter, r *http.Request) {
 		log.Print("Merged root and admin keyword store : ", seedCategories)
 
 		userKeywordFilename := s.Values[userKeywordPresent].(string)
+		log.Print(">>>>>>>^^^^^^^^ ", userKeywordFilename)
 		userCategories := populateCategories(userKeywordFilename)
 		if userKeywordFilename != templateKeywordFilename {
-			log.Print("Merging seed and user keywords>>>>>>>>>>>>>>>")
 			seedCategories = mergeKeywords(seedCategories, userCategories)
 		}
 
-		for categoryIndex, category := range seedCategories {
-			log.Print(categoryIndex)
-			log.Print(category.Show)
-		}
 		classifiedTweets := classifyTweets(timelineTweets, seedCategories)
-
-		log.Print(len(classifiedTweets["others"]))
 
 		p1 := &Page1{Tweets: classifiedTweets, Categories: populateCategories(userKeywordFilename)}
 
@@ -215,6 +209,7 @@ func favHandler(w http.ResponseWriter, r *http.Request) {
 
 func saveCategoriesHandler(w http.ResponseWriter, r *http.Request) {
 	log.Print("entering saveCategories handler")
+	s := getSession(r, sessionName)
 	if r.Method == "POST" {
 		log.Print("%+v\n", r.Form)
 		if err := r.ParseForm(); err != nil {
@@ -225,8 +220,9 @@ func saveCategoriesHandler(w http.ResponseWriter, r *http.Request) {
 
 		//	m := make(map[string]*Category)
 		log.Print(">>>>>>>>> PostForm", r.Form)
-		log.Print(r.Form["product"])
-		categories := populateCategories("keyword_kgthegreat.json")
+		// TODO remove hardcoding
+		filename := "keyword_" + s.Values[screenName].([]string)[0] + dotJson
+		categories := populateCategories(filename)
 		for categoryIndex, keywords := range r.PostForm {
 			log.Print(categoryIndex)
 			// due to how checkbox and html form post works
@@ -240,12 +236,6 @@ func saveCategoriesHandler(w http.ResponseWriter, r *http.Request) {
 				}
 				//				keywords := strings.Split(keywords[1], ",") //convert to array
 				keywords := strings.FieldsFunc(keywords[1], splitFn) //convert to array
-				/*				for _, kwd := range keywords {
-											if kwd == "" {
-												//delete from array
-								`				//delete(keywords, kwd)
-											}
-										}*/
 				log.Print("Printing keywords after weeding >>>>>>>>>>>", keywords)
 				categories[categoryIndex].Keywords = keywords
 			} else {
@@ -256,7 +246,6 @@ func saveCategoriesHandler(w http.ResponseWriter, r *http.Request) {
 			}
 			b, _ := json.Marshal(categories)
 
-			filename := "keyword_kgthegreat.json" //" + s.Values[screenName].([]string)[0] + dotJson
 			ioutil.WriteFile(filename, b, 0600)
 
 			//			m[categoryIndex].Keywords = keywords
@@ -277,4 +266,27 @@ func manageHandler(w http.ResponseWriter, r *http.Request) {
 
 	renderTemplate(w, "manage", p1)
 
+}
+
+func addCategoryHandler(w http.ResponseWriter, r *http.Request) {
+	if r.Method == "POST" {
+		log.Print("%+v\n", r.Form)
+		if err := r.ParseForm(); err != nil {
+			fmt.Fprintf(w, "ParseForm() err: %v", err)
+			return
+		}
+		log.Print(">>>>>>>>> PostForm ", r.PostForm)
+		// TODO remove hardcoding
+		categories := populateCategories("keyword_kgthegreat.json")
+
+		newCategoryName := r.PostForm["add-category-name"][0]
+		newCategoryKeywords := r.PostForm["add-category-keywords"]
+		categories[newCategoryName] = &Category{Name: newCategoryName, Show: true, Keywords: newCategoryKeywords}
+
+		b, _ := json.Marshal(categories)
+		// TODO remove hardcoding
+		filename := "keyword_kgthegreat.json" //" + s.Values[screenName].([]string)[0] + dotJson
+		ioutil.WriteFile(filename, b, 0600)
+
+	}
 }

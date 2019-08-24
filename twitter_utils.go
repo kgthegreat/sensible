@@ -6,7 +6,7 @@ import (
 	"io/ioutil"
 	"log"
 	"net/url"
-	"strings"
+	"regexp"
 
 	"github.com/ChimeraCoder/anaconda"
 )
@@ -41,8 +41,11 @@ func mergeKeywords(categories1 map[string]*Category, categories2 map[string]*Cat
 
 	for category, _ := range categories2 {
 		//		log.Print
+		log.Print("Tryong to print somthhiong:  >>>>> ", categories1[category])
 		if categories2[category].Show {
-			categories2[category].Keywords = append(categories2[category].Keywords, categories1[category].Keywords...)
+			if categories1[category] != nil {
+				categories2[category].Keywords = append(categories2[category].Keywords, categories1[category].Keywords...)
+			}
 		} else {
 			delete(categories2, category)
 		}
@@ -54,7 +57,9 @@ func mergeKeywords(categories1 map[string]*Category, categories2 map[string]*Cat
 func itIs(keywords []string, tweet anaconda.Tweet) bool {
 	for _, keyword := range keywords {
 		//check for string empty before getting into if
-		if strings.Contains(strings.ToLower(tweet.FullText), strings.ToLower(keyword)) {
+		//	if strings.Contains(strings.ToLower(tweet.FullText), strings.ToLower(keyword)) {
+		contains, _ := regexp.MatchString("(?i)\\b"+keyword+"\\b", tweet.FullText)
+		if contains {
 			//		if strings.ToLower(tweet.FullText) == strings.ToLower(keyword) {
 			return true
 		}

@@ -21,6 +21,12 @@ $( document ).ready(function() {
     }
   });
 
+  $('#add-new-category').click(function() {
+    console.log("heloooo")
+//    $('#add-category-keywords').tagEditor()
+    $('#add-category-modal').modal('show')
+  });
+
   $(".categorise").click(function(e){
     e.preventDefault()
     console.log("Clicked on category")
@@ -89,7 +95,7 @@ $( document ).ready(function() {
   });
   
   $('textarea').tagEditor();
-  $('.nav-tabs').stickyTabs();
+//  $('.nav-tabs').stickyTabs();
 
 });
 

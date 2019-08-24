@@ -25,6 +25,8 @@
         {{ template "navbar" "manage"}}
 
         <div class="container container-small bg-white main-content">
+
+            <button type="submit" id="add-new-category" class="btn btn-primary">Add new</button>
             
             <form action="/saveCategories" method="post" class="save-categories">
                 {{ range $categoryIndex, $category := .Categories }}
@@ -53,5 +55,7 @@
                 <button type="submit" id="submit-categories" class="btn btn-primary">Submit</button>
             </form>
         </div>
+        <!-- Modal -->
+        {{ template "add-category-modal"}}
     </body>
 </html>
