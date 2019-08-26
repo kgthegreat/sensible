@@ -2,8 +2,16 @@
 
 <div class="row tweet-content">
     <div class="col-md-1"><img class="avatar" src="{{.User.ProfileImageURL}}"></div>
-    <div class="col-md-11 content"><div><b>{{.User.Name}}</b> <a href="http://twitter.com/{{.User.ScreenName}}">@{{.User.ScreenName}}</a></br><div class="tweet-block">{{.FullText}}</div></div></div>
-    <br></br>
+    <div class="col-md-11 content"><div><b>{{.User.Name}}</b> <a href="http://twitter.com/{{.User.ScreenName}}">@{{.User.ScreenName}}</a></br>
+        {{ if .RetweetedStatus }}
+        RT
+        <div class="tweet-block">{{.RetweetedStatus.FullText}}</div>
+        {{ else }}
+        <div class="tweet-block">{{.FullText}}</div>
+        {{ end }}
+</div>
+</div>
+<br></br>
 
 </div>
 {{ template "interactions" .}}
