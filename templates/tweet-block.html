@@ -1,0 +1,21 @@
+{{ define "tweet-block" }}
+<div class="row tweet-content">
+
+
+    <div class="col-md-1"><img class="avatar" src="{{.User.ProfileImageURL}}"></div>
+    <div class="col-md-11 content">
+         <div><b>{{.User.Name}}</b>
+         <a href="http://twitter.com/{{.User.ScreenName}}">@{{.User.ScreenName}}</a>
+         . <small><a style='color: gray;' href="http://twitter.com/{{.User.ScreenName}}/status/{{.Id}}" title="{{.CreatedAt}}"> {{.CreatedHello }}</a></small> </br> 
+
+        <div class="tweet-block">{{.FullText}}</div>
+    </div>
+    </div>
+    <br></br>
+
+</div>
+{{ template "interactions" .}}
+<hr>
+
+
+{{end}}

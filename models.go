@@ -1,6 +1,8 @@
 package main
 
-import "github.com/ChimeraCoder/anaconda"
+import (
+	"github.com/ChimeraCoder/anaconda"
+)
 
 type Token struct {
 	ConsumerKey       string

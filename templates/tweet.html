@@ -1,20 +1,18 @@
 {{ define "tweet" }}
 
-<div class="row tweet-content">
-    <div class="col-md-1"><img class="avatar" src="{{.User.ProfileImageURL}}"></div>
-    <div class="col-md-11 content"><div><b>{{.User.Name}}</b> <a href="http://twitter.com/{{.User.ScreenName}}">@{{.User.ScreenName}}</a></br>
-        {{ if .RetweetedStatus }}
-        RT
-        <div class="tweet-block">{{.RetweetedStatus.FullText}}</div>
-        {{ else }}
-        <div class="tweet-block">{{.FullText}}</div>
-        {{ end }}
+{{ if .RetweetedStatus }}
+<div class="row">
+    <div class="col-md-1">
+        
+        <div class="retweet icon" title="Retweet" data-toggle="tooltip" data-placement="top" style=" color: gray"></div>
+        </div>
+    <div class="col-md-10 rt-block content">
+    <small><a style='color: gray;' href="http://twitter.com/{{.User.ScreenName}}">{{.User.Name}} Retweeted</a></small></br>
+    </div>
 </div>
-</div>
-<br></br>
 
-</div>
-{{ template "interactions" .}}
-<hr>
-
+{{ template "tweet-block" .RetweetedStatus }}
+{{else}}
+{{ template "tweet-block" . }}
+{{end}}
 {{ end }}

@@ -140,3 +140,7 @@ a:hover { color: #333; text-decoration: none; }
     margin-left: 10px;
     margin-top: 20px;
 }
+
+.rt-block {
+    padding-bottom: 60px;
+}
