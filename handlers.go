@@ -28,8 +28,10 @@ func indexHandler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	if tokenCred.Token != "" || mode == "dev" {
-		if s.Values[userKeywordPresent] == nil && s.Values[screenName] != adminUsername {
+		log.Print("Screen Name from cookie", s.Values[screenName])
+		if s.Values[userKeywordPresent] == nil && s.Values[screenName].([]string)[0] != adminUsername {
 			log.Print("Copying template file")
+
 			userFilename := keywordPrefix + s.Values[screenName].([]string)[0] + dotJson
 			copyFile(templateKeywordFilename, userFilename)
 			s.Values[userKeywordPresent] = userFilename

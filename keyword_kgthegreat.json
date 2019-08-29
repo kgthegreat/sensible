@@ -10,11 +10,6 @@
     "Name": "Politics",
     "Show": true,
     "Keywords": [
-      "hd_kumaraswamy",
-      "agitating workers",
-      "islamicstate",
-      "nationalism",
-      "ballotshakti",
       "LibDem",
       "Biden",
       "Kim Jong-Un",
@@ -23,10 +18,27 @@
       "sanjivbhatt",
       "VoiceofmyBharat",
       "Lok Sabha",
-      "CPI",
-      "Aadhaar",
-      "Mike Pompeo",
-      "military"
+      "cpi",
+      "aadhaar",
+      "mike pompeo",
+      "military",
+      "gun legislation",
+      "water cannon",
+      "narendramodi",
+      "bilateral",
+      "minority affairs",
+      "kashmir",
+      "Savarkar",
+      "Ambedkar",
+      "Prime Minister",
+      "RBI",
+      "Brexiteers",
+      "Remainer",
+      "AltSarkar",
+      "Kashmiris",
+      "ArvindKejriwal",
+      "Dalit",
+      "Trump"
     ]
   },
   "Sports": {
@@ -37,7 +49,13 @@
       "indvsl",
       "wimbledon",
       "serena",
-      "olympic"
+      "olympic",
+      "novak",
+      "tennis",
+      "football",
+      "cricket",
+      "rugby",
+      "usopen"
     ]
   },
   "Tech": {
@@ -51,23 +69,29 @@
       "ibm",
       "github",
       "thelinuxdev",
-      "Code Golf",
+      "code golf",
       "crypto",
-      "Cape Canaveral",
+      "cape canaveral",
       "tech policy",
-      "NASA",
-      "AngularJS",
-      "C++",
-      "DEVCommunity",
+      "nasa",
+      "angularjs",
+      "c++",
+      "devcommunity",
       "front-end",
-      "motherboards"
+      "motherboards",
+      "spacex",
+      "internetfreedom",
+      "reasonml",
+      "elm",
+      "Android"
     ]
   },
   "Travel": {
     "Name": "Travel",
     "Show": true,
     "Keywords": [
-      "catalyst"
+      "nottinghillcarnival",
+      "backpacking"
     ]
   }
 }

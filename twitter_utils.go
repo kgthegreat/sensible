@@ -58,7 +58,14 @@ func itIs(keywords []string, tweet anaconda.Tweet) bool {
 	for _, keyword := range keywords {
 		//check for string empty before getting into if
 		//	if strings.Contains(strings.ToLower(tweet.FullText), strings.ToLower(keyword)) {
-		contains, _ := regexp.MatchString("(?i)\\b"+keyword+"\\b", tweet.FullText)
+		//TODO add ability to search with words starting with #, @ or ending with 's (plurals)
+		var fullText string
+		if tweet.RetweetedStatus != nil {
+			fullText = tweet.RetweetedStatus.FullText
+		} else {
+			fullText = tweet.FullText
+		}
+		contains, _ := regexp.MatchString("(?i)\\b"+keyword+"\\b", fullText)
 		if contains {
 			//		if strings.ToLower(tweet.FullText) == strings.ToLower(keyword) {
 			return true
