@@ -19,12 +19,8 @@ import (
 var api *anaconda.TwitterApi
 var mode string
 
-//var categories = []string{"tech", "politics", "travel", "sports", "business", "other"}
-var store = sessions.NewCookieStore([]byte("asdaskdhasdhgsajdgasdsadksakdhasidoajsdousdasf"))
+var store = sessions.NewCookieStore([]byte(os.Getenv("SESSION_KEY")))
 
-//var store = sessions.NewCookieStore([]byte(storeGUID))
-
-// Session state keys.
 const (
 	tempCredKey             = "tempCred"
 	tokenCredKey            = "tokenCred"

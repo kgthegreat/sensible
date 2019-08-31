@@ -7,6 +7,7 @@ import (
 	"log"
 	"net/http"
 	"net/url"
+	"os"
 	"strconv"
 	"strings"
 
@@ -23,16 +24,18 @@ func indexHandler(w http.ResponseWriter, r *http.Request) {
 
 	tokenCred, ok := s.Values[tokenCredKey].(oauth.Credentials)
 
-	if !ok {
-		log.Print("This user is not logged in")
-	}
-
-	if tokenCred.Token != "" || mode == "dev" {
+	if (tokenCred.Token != "" && ok) || mode == "dev" {
 		log.Print("Screen Name from cookie", s.Values[screenName])
+
+		userFilename := keywordPrefix + s.Values[screenName].([]string)[0] + dotJson
+
+		if _, err := os.Stat(userFilename); err == nil {
+			s.Values[userKeywordPresent] = userFilename
+
+		}
+
 		if s.Values[userKeywordPresent] == nil && s.Values[screenName].([]string)[0] != adminUsername {
 			log.Print("Copying template file")
-
-			userFilename := keywordPrefix + s.Values[screenName].([]string)[0] + dotJson
 			copyFile(templateKeywordFilename, userFilename)
 			s.Values[userKeywordPresent] = userFilename
 		}
@@ -67,6 +70,7 @@ func indexHandler(w http.ResponseWriter, r *http.Request) {
 		renderTemplate(w, "index", p1)
 
 	} else {
+		log.Print("This user is not logged in")
 		e := &Page1{}
 		renderTemplate(w, "login", e)
 	}

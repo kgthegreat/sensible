@@ -6,7 +6,7 @@ $(function () {
 $( document ).ready(function() {
   console.log( "ready!" );
 
-    var a = $('.tab-content .tweet-block')
+    var a = $('.tab-content .js-tweet-block')
     console.log(a)
     for (var i = 0; i < a.length; i++) {
         a[i].innerHTML = urlify(a[i].innerHTML)

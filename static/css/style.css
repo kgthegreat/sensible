@@ -39,18 +39,14 @@
     max-width: 100%;
 }
 
-.tweet-content {
-//height: 100px;
-}
-
 .bg-grey {
     background-color: #e7ecef;
     
 }
 .avatar {
-  width: 48px;
-  height: 48px;
-  border-radius: 5px;
+  width: 36px;
+  height: 36px;
+//  border-radius: 5px;
   -moz-force-broken-image-icon: 1;
 }
 
@@ -141,6 +137,14 @@ a:hover { color: #333; text-decoration: none; }
     margin-top: 20px;
 }
 
-.rt-block {
+.quote {
+    margin-top: 5px;
+    margin-left: -20px;
+    margin-right: 5px;
     margin-bottom: 5px;
+}
+
+.photo-user {
+    margin-left: -5px;
+    margin-right: 5px;
 }

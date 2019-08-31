@@ -1,3 +1,8 @@
+* Immediate
+** Checkin
+** Don't show extra URLs
+** Expand shared URLs
+** Deploy
 * Feature
 ** DONE Add a beautiful login page
 ** DONE Deploy
@@ -27,9 +32,9 @@
 *** TODO Public roadmap with ability for people to give feedback and vote
 *** TODO Proper Error page on offline
 *** TODO Machine learning model? Don't actually use but save keywords as an ML model. You can then use that as an USP
-*** TODO Ability to add category
+*** DONE Ability to add category
 *** TODO Security?
-*** TODO Authentication
+*** DONE Authentication
 *** TODO Machine learning model?
 *** TODO Open source?
 *** TODO Refactor?
@@ -37,7 +42,7 @@
 *** TODO Better font
 *** TODO Multiple words in the same sentence should trigger a category. They need not be together. For e.g. "When you call cow your mother and drink its urine, the world for you becomes an animal kingdom". Here cow and mother forms a context but are not together. In the present model of classification, it will be difficult to classify
 ** TODO Start with human trained classification
-*** TODO HTML Layout
+*** DONE HTML Layout
 *** TODO Change keyword.json to be a model understood by prose
 *** TODO Full tweets text needs to be shown
 *** DONE Categorise as an HTML page. Forget JS

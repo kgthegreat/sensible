@@ -66,13 +66,7 @@ func getAuthenticatedTwitterApi(s *sessions.Session) *anaconda.TwitterApi {
 
 func renderTemplate(w http.ResponseWriter, tmpl string, p interface{}) {
 	templates := template.Must(template.ParseGlob("templates/*"))
-	//	t, err := template.ParseFiles(tmpl + ".html")
-	/*	if err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
-		return
-	}*/
 	err := templates.ExecuteTemplate(w, tmpl+".html", p)
-	//	err = t.Execute(w, p)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 	}
