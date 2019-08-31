@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <link rel="icon" href="/static/images/favicon.png">
+        <link rel="stylesheet" type="text/css" href="/static/css/bootstrap4.min.css">
+        <link rel="stylesheet" type="text/css" href="/static/css/style.css">
+
+        <link rel="stylesheet" type="text/css" href="/static/css/icons.css">
+        <link rel="stylesheet" type="text/css" href="/static/css/jquery.tag-editor.css">
+        <link rel="stylesheet" type="text/css" href="/static/css/jquery.scrolling-tabs.min.css">
+
+        <script src="/static/js/jquery-2.1.4.min.js"></script>
+
+        <script src="/static/js/bootstrap4.min.js"></script>
+
+        <script src="/static/js/sensible.js"></script>
+        <script src="/static/js/jquery.scrolling-tabs.min.js"></script>
+        <script src="/static/js/jquery.caret.min.js"></script>
+        <script src="/static/js/jquery.tag-editor.min.js"></script>
+        <script src="/static/js/jquery.sticky.bootstrap.tabs.js"></script>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+    </head>
+    <body class="bg-grey" style='background-color: #e3e3e3;'>
+
+        {{ template "navbar" "home"}}
+
+        <div class="container container-small main-content" style='background-color: #fbfbff;'>
+
+            <!-- Nav tabs -->
+            <ul class="nav nav-tabs" id="myTab">
+
+                {{range $k, $v := .Tweets}}
+                <li role="presentation" class="nav-item"><a class="nav-link" href="#{{$k}}" aria-controls="{{$k}}" role="tab" data-toggle="tab">{{$k}}</a></li>
+                {{ end }}
+            </ul>
+
+            <div class="tab-content">
+                {{range $k, $v := .Tweets}}
+                <div role="tabpanel" class="tab-pane fade show" id="{{$k}}" style="margin-top: 15px;">
+                    {{range $tweet := $v }}
+                    {{ template "tweet" $tweet }}
+                    {{end}}
+                </div>
+                {{ end }}
+            </div>
+        </div>
+        <!-- Modal -->
+        {{ template "category-modal" .Categories}}
+
+
+    </body>
+</html>
+
+
+

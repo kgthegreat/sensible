@@ -1,0 +1,75 @@
+* Immediate
+** Checkin
+** Don't show extra URLs
+** Expand shared URLs
+** Deploy
+* Feature
+** DONE Add a beautiful login page
+** DONE Deploy
+** DONE Self launch
+*** DONE Write keywords into file
+*** DONE Write keywords into different files for different users
+*** DONE Write keywords into file only for kgthegreat user
+*** DONE Load different files for classification for different users
+*** DONE Write into file for all categories
+*** DONE Add more categories to the UI and backend
+*** DONE Deploy
+*** DONE Categorise frequently - dog food
+*** DONE Better logout
+** TODO 5 people launch
+*** DONE Better representation of tweets - beautify
+*** DONE Write keywords per user. Use db?
+*** DONE land back on same tweet after categorisation
+*** DONE Allow interactions
+*** DONE Counts
+*** DONE Disable retweet/fav after once
+*** TODO Add ability to unretweet/unfav
+*** TODO Don't be open source for now
+*** TODO A pop up before signing in explaining why we need all of these permissions
+*** TODO Allow adding tweet
+*** TODO HTTPs
+** TODO MVP Launch
+*** TODO Public roadmap with ability for people to give feedback and vote
+*** TODO Proper Error page on offline
+*** TODO Machine learning model? Don't actually use but save keywords as an ML model. You can then use that as an USP
+*** DONE Ability to add category
+*** TODO Security?
+*** DONE Authentication
+*** TODO Machine learning model?
+*** TODO Open source?
+*** TODO Refactor?
+*** TODO SSL
+*** TODO Better font
+*** TODO Multiple words in the same sentence should trigger a category. They need not be together. For e.g. "When you call cow your mother and drink its urine, the world for you becomes an animal kingdom". Here cow and mother forms a context but are not together. In the present model of classification, it will be difficult to classify
+** TODO Start with human trained classification
+*** DONE HTML Layout
+*** TODO Change keyword.json to be a model understood by prose
+*** TODO Full tweets text needs to be shown
+*** DONE Categorise as an HTML page. Forget JS
+**** TODO Add ability to add more tags
+**** TODO Add ability to change category
+**** TODO Add ability to go back
+*** TODO Remove bootstrap and use a simple grid or atleast use bootstrap grid
+** TODO Add footer with about info
+** TODO Style footer so that the landing page definitely looks like a single page
+** TODO ML based classification
+** TODO Add ability to add categories per user
+** TODO Add ability to share categories - these can be curated categories and also list of handle to follow
+** TODO iOS App
+** TODO Android App
+** TODO Ability to edit keywords - Can be file edit through a web interface
+** TODO Add ability to add users? Like lists?
+* Infra
+** TODO Redirect IP to domain name
+** TODO Get Https
+** TODO Get a daemon
+** TODO Prepare CI/CD
+** TODO Separate out keywords/storage files from deployment folder
+** TODO Take precautions against deleting storage files
+* Framework
+** DONE Templates and layouts and partials
+** TODO Write tests
+** TODO Add decent logging 
+** TODO Logging as analytics?
+* Performance
+** Introducing bootstrap.bundle js for tooltip instead of bootstrap.min.js has resulted in visible tab delayed loading. Actually the problem is with enabling data tooltip for all elements. It introduces a significant lag in displaying active tab. and then fetching images. rather not have tool tip

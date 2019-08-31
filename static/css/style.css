@@ -1,0 +1,150 @@
+@media (min-width: 768px) {
+    .container-small {
+        width: 500px;
+    }
+    .container-large {
+        width: 970px;
+    }
+    .container-medium {
+        width: 500px;
+    } 
+} 
+} 
+@media (min-width: 992px) {
+    .container-small {
+        width: 600px;
+    }
+    .container-large {
+        width: 1170px;
+    }
+    .container-medium {
+        width: 700px;
+    } 
+
+} 
+@media (min-width: 1200px) {
+    .container-small {
+        width: 600px;
+    }
+    .container-large {
+        width: 1500px;
+    }
+    .container-medium {
+        width: 970px;
+    } 
+    
+}
+
+.container-small, .container-large {
+    max-width: 100%;
+}
+
+.bg-grey {
+    background-color: #e7ecef;
+    
+}
+.avatar {
+  width: 36px;
+  height: 36px;
+//  border-radius: 5px;
+  -moz-force-broken-image-icon: 1;
+}
+
+.logo {
+    text-align: left;
+    padding-top: 20px;
+    padding-bottom: 20px;
+    font-weight: bold;
+    margin-bottom: 1rem;
+    display: block;
+    text-align: left;
+//    width: 960px;
+//    margin: 0 auto;
+    font: 28px Helvetica, sans-serif; color: #333;
+    
+}
+
+.logout {
+    text-align: right;
+    padding-top: 10px;
+    padding-bottom: 20px;
+    margin: 1.5rem;
+    display: block;
+//    margin: 0 auto;
+    font: 16px Helvetica, sans-serif; color: #33f;
+    
+}
+
+
+.home {
+    text-align: center;
+    padding-top: 40px;
+    font-weight: bold;
+    margin-bottom: 1rem;
+    display: block;
+    text-align: left;
+    margin: 0 auto;
+    font: 24px Helvetica, sans-serif; color: #333;
+}
+.home p {
+    font-size: 2rem;
+    margin-top: 3rem;
+    margin-bottom: 3rem;
+}
+a:hover { color: #333; text-decoration: none; }
+ 
+.interactions {
+    padding-top: 10px;
+}
+
+.i {
+  border: solid black;
+  border-width: 0 3px 3px 0;
+  display: inline-block;
+  padding: 3px;
+}
+
+.right {
+  transform: rotate(-45deg);
+  -webkit-transform: rotate(-45deg);
+}
+
+.left {
+  transform: rotate(135deg);
+  -webkit-transform: rotate(135deg);
+}
+
+.interactions {
+    //    padding-bottom: 15px;
+    padding-top: 15px;
+}
+
+.count {
+    margin-left: -50px;
+    margin-top: -2px;
+}
+
+.content {
+    padding-left: 20px;
+}
+
+.main-content {
+    padding-top: 20px;
+}
+
+.category-cloud {
+    margin-left: 10px;
+    margin-top: 20px;
+}
+
+.quote {
+    margin-top: 5px;
+    margin-left: -20px;
+    margin-right: 5px;
+    margin-bottom: 5px;
+}
+
+.photo-user {
+    margin-left: -5px;
+    margin-right: 5px;
+}

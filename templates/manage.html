@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <link rel="icon" href="/static/images/favicon.png">
+        <link rel="stylesheet" type="text/css" href="/static/css/bootstrap4.min.css">
+        <link rel="stylesheet" type="text/css" href="/static/css/style.css">
+
+        <link rel="stylesheet" type="text/css" href="/static/css/icons.css">
+        <link rel="stylesheet" type="text/css" href="/static/css/jquery.tag-editor.css">
+        <link rel="stylesheet" type="text/css" href="/static/css/jquery.scrolling-tabs.min.css">
+
+        <script src="/static/js/jquery-2.1.4.min.js"></script>
+
+        <script src="/static/js/bootstrap4.min.js"></script>
+        <!--script src="/static/js/bootstrap.bundle.min.js"></script-->
+
+        <script src="/static/js/sensible.js"></script>
+        <script src="/static/js/jquery.scrolling-tabs.min.js"></script>
+        <script src="/static/js/jquery.caret.min.js"></script>
+        <script src="/static/js/jquery.tag-editor.min.js"></script>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+    </head>
+    <body class="bg-grey">
+
+        {{ template "navbar" "manage"}}
+
+        <div class="container container-small bg-white main-content">
+
+            <button type="submit" id="add-new-category" class="btn btn-primary">Add new</button>
+            
+            <form action="/saveCategories" method="post" class="save-categories">
+                {{ range $categoryIndex, $category := .Categories }}
+                <div class="form-group row">
+                    <div class="col-sm-2"><h5>{{ $category.Name }}</h5></div>
+                    <div class="col-sm-10">
+                        <div class="form-check">
+                            <input type="checkbox" name="{{$categoryIndex}}" value="true"
+                                   {{ if $category.Show }}
+                                   checked
+                                   {{ end }}
+                            />
+
+                            <label class="form-check-label" for="gridCheck1">
+                                Show
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="save-categories">Keywords</label>
+                    <textarea class="form-control" rows="3" name="{{$categoryIndex}}" >{{ range $kw := $category.Keywords}}{{ $kw}},{{ end }}</textarea>
+                </div>
+                <hr></hr>
+                {{ end }}
+                <button type="submit" id="submit-categories" class="btn btn-primary">Submit</button>
+            </form>
+        </div>
+        <!-- Modal -->
+        {{ template "add-category-modal"}}
+    </body>
+</html>

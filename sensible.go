@@ -1,182 +1,91 @@
 package main
 
 import (
-	"fmt"
-	"github.com/kgthegreat/anaconda"
-	"html/template"
-	"log"
-	"net/http"
-	"net/url"
-	_ "regexp"
-	"strings"
+	"encoding/gob"
 	"flag"
-	"encoding/json"
-	"io/ioutil"
+	"fmt"
+	"log"
+	"net"
+	"net/http"
+	"os"
+	_ "regexp"
+	"strconv"
+
+	"github.com/ChimeraCoder/anaconda"
+	"github.com/garyburd/go-oauth/oauth"
+	"github.com/gorilla/sessions"
 )
 
-type Token struct {
-	ConsumerKey string
-	ConsumerSecret string
-	AccessToken string
-	AccessTokenSecret string
-}
-
-type Keyword struct {
-	TechKeywords []string
-	PoliticsKeywords []string
-	TravelKeywords []string
-}
 var api *anaconda.TwitterApi
 var mode string
 
-type Page struct {
-	Title  string
-	TechTweets []anaconda.Tweet
-	PoliticsTweets []anaconda.Tweet
-	TravelTweets []anaconda.Tweet
-	OtherTweets []anaconda.Tweet
+var store = sessions.NewCookieStore([]byte(os.Getenv("SESSION_KEY")))
+
+const (
+	tempCredKey             = "tempCred"
+	tokenCredKey            = "tokenCred"
+	screenName              = "screenName"
+	sessionName             = "twit"
+	rootKeywordFilename     = "keyword.json"
+	templateKeywordFilename = "keyword_template.json"
+	keywordPrefix           = "keyword_"
+	dotJson                 = ".json"
+	userKeywordPresent      = "filePresent"
+	adminKeywordFile        = "keyword_kgthegreat.json"
+	adminUsername           = "kgthegreat"
+)
+
+var oauthClient = oauth.Client{
+	TemporaryCredentialRequestURI: "https://api.twitter.com/oauth/request_token",
+	ResourceOwnerAuthorizationURI: "https://api.twitter.com/oauth/authorize",
+	TokenRequestURI:               "https://api.twitter.com/oauth/access_token",
 }
 
-func indexHandler(w http.ResponseWriter, r *http.Request) {
-	timelineTweets := getTimelineTweets()
-	keywordStore := populateKeywordStore()
-	classifiedTweets := classifyTweets(timelineTweets, keywordStore)
-	p := &Page{Title: "Tech Tweets", TechTweets: classifiedTweets["tech"], PoliticsTweets: classifiedTweets["politics"], TravelTweets: classifiedTweets["travel"], OtherTweets: classifiedTweets["other"]}
-	renderTemplate(w, "index", p)
-}
-
-func renderTemplate(w http.ResponseWriter, tmpl string, p *Page) {
-    t, err := template.ParseFiles(tmpl + ".html")
-    if err != nil {
-        http.Error(w, err.Error(), http.StatusInternalServerError)
-        return
-    }
-    err = t.Execute(w, p)
-    if err != nil {
-        http.Error(w, err.Error(), http.StatusInternalServerError)
-    }
-}
-
-func classifyTweets(timelineTweets []anaconda.Tweet, keywordStore Keyword) map[string][]anaconda.Tweet {
-	classifiedTweets := make(map[string][]anaconda.Tweet)
-	var techTweets []anaconda.Tweet
-	var politicsTweets []anaconda.Tweet
-	var travelTweets []anaconda.Tweet
-	var otherTweets []anaconda.Tweet
-	for _, tweet := range timelineTweets {
-		if itIs(keywordStore.TechKeywords, tweet) {
-			techTweets = append(techTweets, tweet)
-		} else if itIs(keywordStore.PoliticsKeywords, tweet) {
-			politicsTweets = append(politicsTweets, tweet)
-		} else if itIs(keywordStore.TravelKeywords, tweet) {
-			travelTweets = append(travelTweets, tweet)
-		} else {
-			otherTweets = append(otherTweets, tweet)
-		}
-		
-	}
-	classifiedTweets["tech"] = techTweets
-	classifiedTweets["politics"] = politicsTweets
-	classifiedTweets["travel"] = travelTweets
-	classifiedTweets["other"] = otherTweets
-	return classifiedTweets
-}
-
-func itIs(keywords []string, tweet anaconda.Tweet) bool {
-	for _, keyword := range keywords {
-		if strings.Contains(strings.ToLower(tweet.Text), strings.ToLower(keyword)) {
-			return true
-		}
-	}
-	return false
-}
-
-func populateKeywordStore() Keyword {
-	var keywordStore Keyword
-	filename := "keyword.json"
-	keyword_bytes, err := ioutil.ReadFile(filename)
-	if err != nil {
-		fmt.Println("error", err)
-	}
-	
-	_ = json.Unmarshal(keyword_bytes, &keywordStore)
-	return keywordStore
-}
-
-
-func getTimelineTweets() []anaconda.Tweet{
-	v := url.Values{}
-	v.Set("count", "200")
-	if mode == "dev" {
-		timelineTweets := getDummyTimeline()
-		return timelineTweets
-	} else {
-		timelineTweets, err := api.GetHomeTimeline(v)
-		if err != nil {
-			fmt.Println(err)
-		}
-		return timelineTweets
-	}
-
-}
-
-func getDummyTimeline() []anaconda.Tweet {
-	var dummyTimeline = []anaconda.Tweet{}
-	filename := "timeline.json"
-	timeline, err := ioutil.ReadFile(filename)
-	if err != nil {
-		fmt.Println("error", err)
-	}
-	_ = json.Unmarshal(timeline, &dummyTimeline)
-	return dummyTimeline
-}
-
-func dumpHandler(w http.ResponseWriter, r *http.Request) {
-	v := url.Values{}
-	v.Set("count", "200")
-	timelineTweets, _ := api.GetHomeTimeline(v)
-	fmt.Println("time", timelineTweets)
-	b, err := json.Marshal(timelineTweets)
-	fmt.Println("json", b)
-	if err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
-		return
-	}
-	filename := "timeline.json"
-	ioutil.WriteFile(filename, b, 0600)
-}
-
-func getTokens() Token {
-	var token Token 
-	filename := "token.json"
-	token_bytes, err := ioutil.ReadFile(filename)
-	err = json.Unmarshal(token_bytes, &token)
-	if err != nil {
-		fmt.Println("Error: ", err)
-	}
-	return token
-}
+var signinOAuthClient oauth.Client
 
 func main() {
-	wordPtr := flag.String("mode", "", "which mode to run")
+	modePtr := flag.String("mode", "", "which mode to run")
+
+	portPtr := flag.String("port", "8081", "Which port to run")
 	flag.Parse()
+	fmt.Println("word:", *modePtr)
+	fmt.Println("port:", *portPtr)
 
-	fmt.Println("word:", *wordPtr)
-
-	if *wordPtr == "dev" {
+	if *modePtr == "dev" {
 		mode = "dev"
 	}
 	token := getTokens()
-	api = anaconda.NewTwitterApi(token.AccessToken, token.AccessTokenSecret)
-	anaconda.SetConsumerKey(token.ConsumerKey)
-	anaconda.SetConsumerSecret(token.ConsumerSecret)
-	cssHandler := http.FileServer(http.Dir("./css/"))
-	jsHandler := http.FileServer(http.Dir("./js/"))
-	imagesHandler := http.FileServer(http.Dir("./images/"))
+	//	api = anaconda.NewTwitterApiWithCredentials(token.AccessToken, token.AccessTokenSecret, token.ConsumerKey, token.ConsumerSecret)
+	oauthClient.Credentials.Token = token.ConsumerKey
+	oauthClient.Credentials.Secret = token.ConsumerSecret
+	signinOAuthClient = oauthClient
+	signinOAuthClient.ResourceOwnerAuthorizationURI = "https://api.twitter.com/oauth/authenticate"
+	gob.Register(oauth.Credentials{})
+	staticHandler := http.FileServer(http.Dir("static"))
 	http.HandleFunc("/", indexHandler)
+	http.HandleFunc("/signin", signinHandler)
+	http.HandleFunc("/callback", twitterCallbackHandler)
+	http.HandleFunc("/logout", twitterLogoutHandler)
 	http.HandleFunc("/dump", dumpHandler)
-	http.Handle("/css/", http.StripPrefix("/css/", cssHandler))
-	http.Handle("/js/", http.StripPrefix("/js/", jsHandler))
-	http.Handle("/images/", http.StripPrefix("/images/", imagesHandler))
-	log.Fatal(http.ListenAndServe(":8081", nil))
+	http.HandleFunc("/categorise", categoriseHandler)
+	http.HandleFunc("/retweet", retweetHandler)
+	http.HandleFunc("/fav", favHandler)
+	http.HandleFunc("/saveCategories", saveCategoriesHandler)
+	http.HandleFunc("/manage", manageHandler)
+	http.HandleFunc("/addCategory", addCategoryHandler)
+	http.Handle("/static/", http.StripPrefix("/static/", staticHandler))
+
+	if os.Getenv("LISTEN_PID") == strconv.Itoa(os.Getpid()) {
+		// systemd run
+		f := os.NewFile(3, "from systemd")
+		l, err := net.FileListener(f)
+		if err != nil {
+			log.Fatal(err)
+		}
+		http.Serve(l, nil)
+	} else {
+		// manual run
+		//		log.Fatal(http.ListenAndServe(":8080", nil))
+		log.Fatal(http.ListenAndServe(":"+*portPtr, nil))
+	}
 }

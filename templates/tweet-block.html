@@ -1,0 +1,12 @@
+{{ define "tweet-block" }}
+{{ template "basic-tweet" .}}
+{{ if .QuotedStatus }}
+   {{ template "quoted-tweet-block" .QuotedStatus}}
+{{ end }}
+
+{{ template "interactions" .}}
+<hr>
+
+
+
+{{end}}

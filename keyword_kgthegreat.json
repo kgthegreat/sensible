@@ -1,0 +1,97 @@
+{
+  "Business": {
+    "Name": "Business",
+    "Show": true,
+    "Keywords": [
+      "Zomato"
+    ]
+  },
+  "Politics": {
+    "Name": "Politics",
+    "Show": true,
+    "Keywords": [
+      "LibDem",
+      "Biden",
+      "Kim Jong-Un",
+      "Mob lynching",
+      "civil service",
+      "sanjivbhatt",
+      "VoiceofmyBharat",
+      "Lok Sabha",
+      "cpi",
+      "aadhaar",
+      "mike pompeo",
+      "military",
+      "gun legislation",
+      "water cannon",
+      "narendramodi",
+      "bilateral",
+      "minority affairs",
+      "kashmir",
+      "Savarkar",
+      "Ambedkar",
+      "Prime Minister",
+      "RBI",
+      "Brexiteers",
+      "Remainer",
+      "AltSarkar",
+      "Kashmiris",
+      "ArvindKejriwal",
+      "Dalit",
+      "Trump"
+    ]
+  },
+  "Sports": {
+    "Name": "Sports",
+    "Show": true,
+    "Keywords": [
+      "world cup",
+      "indvsl",
+      "wimbledon",
+      "serena",
+      "olympic",
+      "novak",
+      "tennis",
+      "football",
+      "cricket",
+      "rugby",
+      "usopen"
+    ]
+  },
+  "Tech": {
+    "Name": "Tech",
+    "Show": true,
+    "Keywords": [
+      "full stack",
+      "engineer",
+      "rfc",
+      "websphere",
+      "ibm",
+      "github",
+      "thelinuxdev",
+      "code golf",
+      "crypto",
+      "cape canaveral",
+      "tech policy",
+      "nasa",
+      "angularjs",
+      "c++",
+      "devcommunity",
+      "front-end",
+      "motherboards",
+      "spacex",
+      "internetfreedom",
+      "reasonml",
+      "elm",
+      "Android"
+    ]
+  },
+  "Travel": {
+    "Name": "Travel",
+    "Show": true,
+    "Keywords": [
+      "nottinghillcarnival",
+      "backpacking"
+    ]
+  }
+}

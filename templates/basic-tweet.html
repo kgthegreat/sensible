@@ -1,0 +1,39 @@
+{{ define "basic-tweet"}}
+<div class="row quote">
+    <div class="col-1 photo-user">
+        <!-- Two image tags to control small screen behaviour -->
+        <img class="rounded-circle d-none d-sm-block" src="{{.User.ProfileImageURL}}"/>
+        <img class="rounded-circle d-block d-sm-none avatar" src="{{.User.ProfileImageURL}}"/>
+    </div>
+    <div class="col-11 content">
+        <!-- Meta -->
+        <div>
+        <b>{{.User.Name}}</b>
+        <a href="http://twitter.com/{{.User.ScreenName}}">@{{.User.ScreenName}}</a>
+        . <small><a style='color: gray;' href="http://twitter.com/{{.User.ScreenName}}/status/{{.Id}}" title="{{.CreatedAt}}"> {{.CreatedHello }}</a></small> </br> 
+        </div>
+
+        <!-- Actual Tweet -->
+        <div class="js-tweet-block">
+            {{.FullText}}
+        </div>
+
+        <!-- Media -->
+        <div>
+            {{ if .ExtendedEntities.Media}}
+            {{ if (eq (index .ExtendedEntities.Media 0).Type "photo") }}
+            <img class="img-fluid rounded" src="{{(index .ExtendedEntities.Media 0).Media_url}}"/>
+            {{ else }}
+                        <video  controls class="img-fluid rounded">
+
+                <source src="{{(index (index .ExtendedEntities.Media 0).VideoInfo.Variants 0).Url}}" type="{{(index (index .ExtendedEntities.Media 0).VideoInfo.Variants 0).ContentType}}">
+                Your browser does not support the video tag.
+            </video>
+
+
+            {{end}}
+            {{end}}
+        </div>
+    </div>
+</div>
+{{end}}
