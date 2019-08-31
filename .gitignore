@@ -3,4 +3,5 @@ token.json
 keyword.json
 keyword_tweetNeel.json
 keyword_kgthegreat.json
+release.sh
 .DS_Store
