@@ -3,6 +3,8 @@ Sensible Twitter
 
 Making sense of your twitter timeline
 
+Try it here: http://sensible.com
+
 Introduction
 --------------
 This is a twitter client which segregates your timeline into various topics and categories automagically(well, almost ;)). Written entirely in golang. 
