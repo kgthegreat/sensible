@@ -10,12 +10,35 @@
         <div>
         <b>{{.User.Name}}</b>
         <a href="http://twitter.com/{{.User.ScreenName}}">@{{.User.ScreenName}}</a>
-        . <small><a style='color: gray;' href="http://twitter.com/{{.User.ScreenName}}/status/{{.Id}}" title="{{.CreatedAt}}"> {{.CreatedHello }}</a></small> </br> 
+        . <small><a style='color: gray;' href="http://twitter.com/{{.User.ScreenName}}/status/{{.Id}}" title="{{.CreatedAt}}"> {{.CreatedAtHuman }}</a></small> </br> 
         </div>
 
         <!-- Actual Tweet -->
         <div class="js-tweet-block">
             {{.FullText}}
+
+            <!--br></br>
+                 {{.FullTextWithoutUrl}}
+            <br></br>
+
+            {{.DisplayTextRange}}
+            <br></br>
+            urls:            <br></br>
+            {{range $u, $e := .Entities.Urls}}
+            url: {{ $e.Url }}            <br></br>
+            Display: {{ $e.Display_url }}            <br></br>
+            Expanded: {{ $e.Expanded_url }}
+            {{end}}
+            <br></br>
+            media urls:            <br></br>
+            {{range $u, $e := .ExtendedEntities.Media}}
+            url: {{ $e.Url }}            <br></br>
+                 Display: {{ $e.Display_url }}
+                             Expanded: {{ $e.Expanded_url }}
+            {{end}}
+
+                 <br></br-->
+            
         </div>
 
         <!-- Media -->

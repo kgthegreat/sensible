@@ -1,8 +1,14 @@
 * Immediate
-** Checkin
-** Don't show extra URLs
-** Expand shared URLs
-** Deploy
+** DONE Checkin
+** TODO Don't show extra URLs
+** TODO Expand shared URLs -> Use golang and og tags
+** TODO Highlight hashtags
+** TODO Delete category?
+* User Feedback
+** AB
+*** TODO Explain why such a long list of permissions including posting tweet
+*** TODO Default to shown
+*** TODO If there are no tweets, add a tab with no tweets
 * Feature
 ** DONE Add a beautiful login page
 ** DONE Deploy

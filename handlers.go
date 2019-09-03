@@ -183,7 +183,6 @@ func saveCategoriesHandler(w http.ResponseWriter, r *http.Request) {
 	log.Print("entering saveCategories handler")
 	s := getSession(r, sessionName)
 	if r.Method == "POST" {
-		log.Print("%+v\n", r.Form)
 		if err := r.ParseForm(); err != nil {
 			fmt.Fprintf(w, "ParseForm() err: %v", err)
 			return
@@ -244,7 +243,6 @@ func manageHandler(w http.ResponseWriter, r *http.Request) {
 func addCategoryHandler(w http.ResponseWriter, r *http.Request) {
 	s := getSession(r, sessionName)
 	if r.Method == "POST" {
-		log.Print("%+v\n", r.Form)
 		if err := r.ParseForm(); err != nil {
 			fmt.Fprintf(w, "ParseForm() err: %v", err)
 			return
