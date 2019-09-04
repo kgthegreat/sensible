@@ -14,26 +14,34 @@ import (
 func classifyTweets(timelineTweets []anaconda.Tweet, categories map[string]*Category) map[string][]anaconda.Tweet {
 
 	classifiedTweets := make(map[string][]anaconda.Tweet)
-
-	for _, tweet := range timelineTweets {
-
+	//	var emptyTweets = []anaconda.Tweet{}
+	for categoryIndex, _ := range categories {
+		//		log.Println("Categorising this tweet ", tweet.Text)
 		flag := false
-		for categoryIndex, _ := range categories {
+		for i, tweet := range timelineTweets {
 
+			//			classifiedTweets[categoryIndex] = emptyTweets
 			//log.Print("for category, ", categoryIndex)
 			//log.Print("The show attribute is ", categories[categoryIndex].Show)
-			if itIs(categories[categoryIndex].Keywords, tweet) {
+			if len(categories[categoryIndex].Keywords) > 0 && itIs(categories[categoryIndex].Keywords, tweet) {
+				log.Print("Are we ever here??")
 				flag = true
 				classifiedTweets[categoryIndex] = append(classifiedTweets[categoryIndex], tweet)
+				if i < len(timelineTweets) {
+					timelineTweets = timelineTweets[:i+copy(timelineTweets[i:], timelineTweets[i+1:])]
+				}
+
+				//				timelineTweets[i] = timelineTweets[len(timelineTweets)-1] // Replace it with the last o//ne. CAREFUL only works if you have enough elements.
+				//				timelineTweets = timelineTweets[:len(timelineTweets)-1]
 			}
 
 		}
 		if !flag {
-			classifiedTweets["xOthers"] = append(classifiedTweets["xOthers"], tweet)
+			//			classifiedTweets["xOthers"] = append(classifiedTweets["xOthers"], tweet)
 		}
 
 	}
-
+	classifiedTweets["xOthers"] = timelineTweets
 	return classifiedTweets
 }
 
@@ -41,7 +49,7 @@ func mergeKeywords(categories1 map[string]*Category, categories2 map[string]*Cat
 
 	for category, _ := range categories2 {
 		//		log.Print
-		log.Print("Tryong to print somthhiong:  >>>>> ", categories1[category])
+		//		log.Print("Tryong to print somthhiong:  >>>>> ", categories1[category])
 		if categories2[category].Show {
 			if categories1[category] != nil {
 				categories2[category].Keywords = append(categories2[category].Keywords, categories1[category].Keywords...)
