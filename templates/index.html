@@ -37,17 +37,24 @@
             <div class="tab-content">
                 {{range $k, $v := .Tweets}}
                 <div role="tabpanel" class="tab-pane fade show" id="{{$k}}" style="margin-top: 15px;">
+                    {{ if $v }}
                     {{range $tweet := $v }}
                     {{ template "tweet" $tweet }}
+                    {{end}}
+                    {{ else }}
+                    <div class="alert alert-primary" role="alert">
+                        No tweets in your current feed match the keywords for this category, please add more keywords!<br></br>
+                        You can add more keywords either through <a href="/manage">manage</a> or by using the mouse to select a word or a phrase. Go on, try it!
+                    </div>
                     {{end}}
                 </div>
                 {{ end }}
             </div>
-        </div>
+
+</div>
         <!-- Modal -->
+
         {{ template "category-modal" .Categories}}
-
-
     </body>
 </html>
 

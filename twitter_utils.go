@@ -14,27 +14,33 @@ import (
 func classifyTweets(timelineTweets []anaconda.Tweet, categories map[string]*Category) map[string][]anaconda.Tweet {
 
 	classifiedTweets := make(map[string][]anaconda.Tweet)
-	//	var emptyTweets = []anaconda.Tweet{}
+	//	var emptyTweets = []anaconda.Tweet{anaconda.Tweet{FullText: "Nothing to see here"}}
 	for categoryIndex, _ := range categories {
+		log.Print("Categorising this category: ", categoryIndex)
 		//		log.Println("Categorising this tweet ", tweet.Text)
 		flag := false
-		for i, tweet := range timelineTweets {
+		classifiedTweets[categoryIndex] = nil
+		log.Print("Length is, ", len(categories[categoryIndex].Keywords))
+		log.Print("Keywords are, ", categories[categoryIndex].Keywords)
+		if len(categories[categoryIndex].Keywords) > 0 {
+			log.Print("Category has keywords length greater than 0")
+			for i, tweet := range timelineTweets {
 
-			//			classifiedTweets[categoryIndex] = emptyTweets
-			//log.Print("for category, ", categoryIndex)
-			//log.Print("The show attribute is ", categories[categoryIndex].Show)
-			if len(categories[categoryIndex].Keywords) > 0 && itIs(categories[categoryIndex].Keywords, tweet) {
-				log.Print("Are we ever here??")
-				flag = true
-				classifiedTweets[categoryIndex] = append(classifiedTweets[categoryIndex], tweet)
-				if i < len(timelineTweets) {
-					timelineTweets = timelineTweets[:i+copy(timelineTweets[i:], timelineTweets[i+1:])]
+				//log.Print("for category, ", categoryIndex)
+				//log.Print("The show attribute is ", categories[categoryIndex].Show)
+				if itIs(categories[categoryIndex].Keywords, tweet) {
+
+					flag = true
+					classifiedTweets[categoryIndex] = append(classifiedTweets[categoryIndex], tweet)
+					if i < len(timelineTweets) {
+						timelineTweets = timelineTweets[:i+copy(timelineTweets[i:], timelineTweets[i+1:])]
+					}
+
+					//				timelineTweets[i] = timelineTweets[len(timelineTweets)-1] // Replace it with the last o//ne. CAREFUL only works if you have enough elements.
+					//				timelineTweets = timelineTweets[:len(timelineTweets)-1]
 				}
 
-				//				timelineTweets[i] = timelineTweets[len(timelineTweets)-1] // Replace it with the last o//ne. CAREFUL only works if you have enough elements.
-				//				timelineTweets = timelineTweets[:len(timelineTweets)-1]
 			}
-
 		}
 		if !flag {
 			//			classifiedTweets["xOthers"] = append(classifiedTweets["xOthers"], tweet)
@@ -42,6 +48,7 @@ func classifyTweets(timelineTweets []anaconda.Tweet, categories map[string]*Cate
 
 	}
 	classifiedTweets["xOthers"] = timelineTweets
+	//	log.Print(classifiedTweets["Design"])
 	return classifiedTweets
 }
 
