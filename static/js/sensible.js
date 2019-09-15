@@ -7,15 +7,13 @@ $( document ).ready(function() {
   console.log( "ready!" );
 
     var a = $('.tab-content .js-tweet-block')
-    console.log(a)
     for (var i = 0; i < a.length; i++) {
         a[i].innerHTML = urlify(a[i].innerHTML)
     }
 
   var selection;
-  $('.tweet-content').mouseup(function() {
+  $('.js-tweet-block').mouseup(function() {
     selection = getSelected();
-
     if (selection && (selection = new String(selection).replace(/^\s+|\s+$/g,''))) {
       openModal(selection);
     }
@@ -130,11 +128,9 @@ function callTwitterInteraction(clickedEl, dataEl, remoteApi, color) {
 }
 
 function openModal(selection) {
-
   $('#myModal').on('show.bs.modal', function (event) {
     var modalEl = $(this)
     modalEl.find('.modal-title').text(selection)
-    
   }).modal({
     keyboard: true
   })

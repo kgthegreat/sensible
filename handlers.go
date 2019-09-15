@@ -94,9 +94,8 @@ func dumpHandler(w http.ResponseWriter, r *http.Request) {
 
 func categoriseHandler(w http.ResponseWriter, r *http.Request) {
 	s := getSession(r, sessionName)
-	log.Print("Printing test: ", s.Values["test"])
+
 	log.Print("Keyword filename from cookie just after getting session: ", s.Values[screenName])
-	log.Print("a new variable from cookie just after getting session: ", s.Values["some"])
 
 	if r.Method == "POST" {
 		body, err := ioutil.ReadAll(r.Body)
