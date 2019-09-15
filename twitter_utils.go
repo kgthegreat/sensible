@@ -32,6 +32,7 @@ func classifyTweets(timelineTweets []anaconda.Tweet, categories map[string]*Cate
 
 					flag = true
 					classifiedTweets[categoryIndex] = append(classifiedTweets[categoryIndex], tweet)
+					//delete categorised tweet from timeline tweet
 					if i < len(timelineTweets) {
 						timelineTweets = timelineTweets[:i+copy(timelineTweets[i:], timelineTweets[i+1:])]
 					}
