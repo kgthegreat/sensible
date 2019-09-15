@@ -1,14 +1,18 @@
 * Immediate
 ** DONE Checkin
+** TODO Sticky categories
+** TODO Highlight hashtag
+** TODO Highlight username
+** TODO Streaming API
 ** TODO Don't show extra URLs
 ** TODO Expand shared URLs -> Use golang and og tags
-** TODO Highlight hashtags
 ** TODO Delete category?
 * User Feedback
 ** AB
+*** DONE Default to shown
+*** DONE If there are no tweets, add a tab with no tweets
 *** TODO Explain why such a long list of permissions including posting tweet
-*** TODO Default to shown
-*** TODO If there are no tweets, add a tab with no tweets
+This may not be required at this point in time. I need more metrics
 * Feature
 ** DONE Add a beautiful login page
 ** DONE Deploy

@@ -21,6 +21,8 @@ var mode string
 
 var store = sessions.NewCookieStore([]byte(os.Getenv("SESSION_KEY")))
 
+//var store = sessions.NewCookieStore([]byte(""))
+
 const (
 	tempCredKey             = "tempCred"
 	tokenCredKey            = "tokenCred"

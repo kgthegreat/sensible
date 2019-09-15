@@ -247,14 +247,20 @@ func addCategoryHandler(w http.ResponseWriter, r *http.Request) {
 			fmt.Fprintf(w, "ParseForm() err: %v", err)
 			return
 		}
-		log.Print(">>>>>>>>> PostForm ", r.PostForm)
 
 		filename := s.Values[userKeywordPresent].(string)
 		categories := populateCategories(filename)
 
 		newCategoryName := r.PostForm["add-category-name"][0]
+		log.Print(">>>>>>>>> PostFormCategories ", r.PostForm["add-category-keywords"])
 		newCategoryKeywords := r.PostForm["add-category-keywords"]
+		log.Print(">>>>>>>>> PostFormCategories ", newCategoryKeywords)
+		log.Print(">>>>>>>>> PostFormCategories ", len(newCategoryKeywords))
+		if len(newCategoryKeywords) == 0 || (len(newCategoryKeywords) == 1 && (newCategoryKeywords[0] == "" || newCategoryKeywords[0] == " ")) {
+			newCategoryKeywords = nil
+		}
 		categories[newCategoryName] = &Category{Name: newCategoryName, Show: true, Keywords: newCategoryKeywords}
+		log.Print(">>>>>>>>> PostFormCategories ", categories[newCategoryName].Keywords)
 
 		b, _ := json.Marshal(categories)
 
