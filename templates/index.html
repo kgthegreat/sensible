@@ -22,6 +22,8 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
     </head>
     <body class="bg-grey" style='background-color: #e3e3e3;'>
+        <!-- Modal: Putting it here because somehow its not rendering when put in the end -->
+        {{ template "category-modal" .Categories}}
 
         {{ template "navbar" "home"}}
 
@@ -53,9 +55,6 @@
             </div>
 
 </div>
-        <!-- Modal -->
-
-        {{ template "category-modal" .Categories}}
     </body>
 </html>
 
