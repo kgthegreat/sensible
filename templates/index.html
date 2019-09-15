@@ -45,9 +45,10 @@
                     {{ template "tweet" $tweet }}
                     {{end}}
                     {{ else }}
-                    <div class="alert alert-primary" role="alert">
+                    <div class="alert alert-primary js-tweet-block" role="alert">
                         No tweets in your current feed match the keywords for this category, please add more keywords!<br></br>
-                        You can add more keywords through <a href="/manage">manage</a> 
+                        You can add more keywords through <a href="/manage">manage</a>. You can also simply click on a word using the mouse or select a phrase to categorise.
+                        <br></br>Go on, try it by selecting this phrase using your mouse. It will open a pop up window through which you can click a category and submit.
                     </div>
                     {{end}}
                 </div>
