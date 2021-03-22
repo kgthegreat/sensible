@@ -3,7 +3,7 @@ Sensible Twitter
 
 Making sense of your twitter timeline
 
-Try it here: http://sensible.com
+Try it here: http://trysensible.com
 
 Introduction
 --------------
